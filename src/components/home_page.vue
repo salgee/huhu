@@ -1,5 +1,8 @@
 <template>
- <div>fdsf</div>
+ <div>
+   <router-link tag="span" to="/login">登录</router-link>
+ </div>
+
 </template>
 
 <script>
