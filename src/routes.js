@@ -15,7 +15,6 @@ const routes = [
     component: homePage
   },
   {
-
     name: '438',
     path: '/438',
     component: houseItem
