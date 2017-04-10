@@ -2,14 +2,14 @@
  * Created by Administrator on 2017/3/27.
  */
 // 导入我们要跳转的膜版页面
-import hello from './components/hello.vue'
+import homePage from './components/home_page.vue'
 
 // 定义路由集合
 const routes = [
   {
-    name: 'hello',
+    name: 'homePage',
     path: '/',
-    component: hello
+    component: homePage
   }
 ]
 export default routes
