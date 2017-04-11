@@ -6,6 +6,9 @@
     <div class="login-neirong">
       <mt-field label="手机号" placeholder="请输入手机号" class="login-input">{{loginphone}}</mt-field>
       <mt-field label="密码" placeholder="请输入密码" type="password" class="login-input">{{loginpassword}}</mt-field>
+    </div>
+    <router-link tag="span" to="/wangjipws">忘记密码</router-link>
+    <div class="login-btn">
       <mt-button plain size="large" @click="btnLogin" class="login-button">登录</mt-button>
     </div>
   </div>
