@@ -6,10 +6,14 @@ import homePage from './components/home_page.vue'
 import houseItem from './components/house_item.vue'
 import login from './components/login.vue'
 import addHouse from './components/add_house.vue'
+
 import homeNav from './components/home/home_nav.vue'
 import wallet from './components/home/wallet.vue'
 import user from './components/home/user.vue'
 import order from './components/home/order.vue'
+
+import wangjipws from './components/wangjipws.vue'
+
 // 定义路由集合
 const routes = [
   {
@@ -42,6 +46,11 @@ const routes = [
         component: user
       }
     ]
+  },
+  {
+    name: 'wangjipws',
+    path: '/wangjipws',
+    component: wangjipws
   },
   {
     name: '438',
