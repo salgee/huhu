@@ -1,6 +1,6 @@
 <template>
   <div id="bottomBar">
-      <section class="source active">房源</section>
+      <section class="source " :class="active==='source'?'active':ac">房源</section>
       <section class="order">订单</section>
       <router-link to="/addHouse"><section class="add"><img src="../../assets/images/+@2x.png" alt=""></section></router-link>
       <section class="money">钱包</section>
