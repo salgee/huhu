@@ -7,6 +7,7 @@ import houseItem from './components/house_item.vue'
 import login from './components/login.vue'
 import addHouse from './components/add_house.vue'
 import wangjipws from './components/wangjipws.vue'
+import register from './components/register.vue'
 
 // 定义路由集合
 const routes = [
@@ -14,6 +15,11 @@ const routes = [
     name: 'homePage',
     path: '/',
     component: homePage
+  },
+  {
+    name: 'register',
+    path: '/register',
+    component: register
   },
   {
     name: 'wangjipws',
