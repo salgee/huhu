@@ -1,10 +1,9 @@
 <template>
   <div class="register-zhuye">
-    <mt-header title="标题过长会隐藏后面的内容啊哈哈哈哈">
+    <mt-header title="注册">
       <router-link to="/" slot="left">
-        <mt-button icon="back">返回</mt-button>
+        <router-link tag="span" to="/login"><mt-button icon="back">返回</mt-button></router-link>
       </router-link>
-      <mt-button icon="more" slot="right"></mt-button>
     </mt-header>
   </div>
 </template>
@@ -15,5 +14,7 @@
   }
 </script>
 <style scoped>
-
+  .register-zhuye header{
+    background-color:green;
+  }
 </style>

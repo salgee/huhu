@@ -22,7 +22,6 @@
      我的
    </mt-tab-item>
   </mt-tabbar>
-   <router-link tag="span" to="/login"></router-link>
  </div>
 </template>
 
