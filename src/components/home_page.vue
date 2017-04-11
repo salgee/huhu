@@ -9,7 +9,6 @@
    <img src="../assets/images/返回@2x.png" alt=""><span>您没有需要确定的订单</span><img src="../assets/images/返回@2x.png" >
   </div>
   <nav-bar></nav-bar>
-   <router-link tag="span" to="/login">登录</router-link>
  </div>
 </template>
 
