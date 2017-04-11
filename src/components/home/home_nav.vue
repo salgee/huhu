@@ -1,0 +1,61 @@
+<template>
+  <div class="home-nav">
+    <mt-swipe :auto="0">
+      <mt-swipe-item name="1"><img src="../../assets/logo.png" alt=""></mt-swipe-item>
+      <mt-swipe-item><img src="../../assets/logo.png" alt=""></mt-swipe-item>
+      <mt-swipe-item><img src="../../assets/logo.png" alt=""></mt-swipe-item>
+    </mt-swipe>
+    <mt-cell title="您没有订单需要确认" >
+      <img src="../../assets/images/返回@2x.png" alt="" width="8" height="14">
+      <img slot="icon" src="../../assets/images/布告栏@2x.png" width="14" height="14">
+    </mt-cell>
+  </div>
+</template>
+<script>
+  import {Swipe, SwipeItem, Cell} from 'mint-ui'
+  export default {
+    name: 'addHouse',
+    mounted () {
+
+    },
+    data () {
+      return {}
+    },
+    methods: {},
+    components: {
+      Swipe, SwipeItem, Cell
+    }
+  }
+</script>
+
+<style>
+.home-nav{
+  width:100vw;
+  height: 100vh;
+  font-size: 0;
+}
+.home-nav .mint-swipe{
+  width: 100%;
+  height: 30%;
+  background-color: #000;
+}
+.home-nav .mint-cell-title img{
+  margin-right: 12px;
+}
+.home-nav .mint-swipe img{
+  width: 100%;
+  height: 100%;
+}
+.home-nav .mint-cell {
+  position: relative;
+  top: -15px;
+  margin: 0 auto;
+  width: 90%;
+  min-height: 30px;;
+  background-color: #fff;
+  box-shadow: 0 12px 12px -8px rgba(121,172,54,.8);
+}
+.home-nav .mint-cell-wrapper{
+  font-size: 12px;
+}
+</style>
