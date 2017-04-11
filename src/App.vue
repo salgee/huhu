@@ -13,6 +13,7 @@ export default {
 <style>
 body{
   margin: 0;
+  background: #fafafa;
 }
 #huhu {
   font-family: 'Avenir', Helvetica, Arial, sans-serif;

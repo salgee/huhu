@@ -1,7 +1,7 @@
 <template>
  <div id="homePage">
   <router-view></router-view>
-   <mt-tabbar v-model="selected" >
+   <mt-tabbar v-model="selected" fixed="true">
      <mt-tab-item id="home">
        <img slot="icon" :src="url1">
        房源
@@ -22,7 +22,6 @@
      我的
    </mt-tab-item>
   </mt-tabbar>
-   <router-link tag="span" to="/login"></router-link>
  </div>
 </template>
 

@@ -9,10 +9,14 @@
       <img src="../../assets/images/返回@2x.png" alt="" width="8" height="14">
       <img slot="icon" src="../../assets/images/布告栏@2x.png" width="14" height="14">
     </mt-cell>
+      <div class="houseList" style="padding-bottom: 40px;">
+        <houseItem v-for="n in 5" key="n">{{n}}</houseItem>
+      </div>
   </div>
 </template>
 <script>
   import {Swipe, SwipeItem, Cell} from 'mint-ui'
+  import houseItem from '../house_item.vue'
   export default {
     name: 'addHouse',
     mounted () {
@@ -23,7 +27,7 @@
     },
     methods: {},
     components: {
-      Swipe, SwipeItem, Cell
+      Swipe, SwipeItem, Cell, houseItem
     }
   }
 </script>
