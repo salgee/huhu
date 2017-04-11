@@ -8,7 +8,12 @@
   <div class="orderInfo">
    <img src="../assets/images/返回@2x.png" alt=""><span>您没有需要确定的订单</span><img src="../assets/images/返回@2x.png" >
   </div>
+<<<<<<< HEAD
   <nav-bar active='source'></nav-bar>
+=======
+  <nav-bar></nav-bar>
+   <router-link tag="span" to="/login">登录</router-link>
+>>>>>>> a83b977eccf6c8f01c9cd2fc5588a1d5cd7da140
  </div>
 </template>
 
