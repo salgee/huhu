@@ -1,20 +1,21 @@
 <template>
-    <div>
+  <div>
 
-    </div>
+  </div>
 </template>
-<script>
-    export default {
-      name: 'addHouse',
-      mounted () {
 
-      },
-      data () {
-        return {}
-      },
-      methods: {},
-components: {}
-    }
+<script>
+  export default {
+    name: 'addHouse',
+    mounted () {
+
+    },
+    data () {
+      return {}
+    },
+    methods: {},
+    components: {}
+  }
 </script>
 
 <style>
