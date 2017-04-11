@@ -42,11 +42,6 @@
   }
 </script>
 <style>
-  body{
-    width:100%;
-    height:100%;;
-    background-color:green;
-  }
   .login-img img{
     margin: 60px 37.25%;
   }

@@ -3,7 +3,6 @@
  */
 // 导入我们要跳转的膜版页面
 import homePage from './components/home_page.vue'
-import houseItem from './components/house_item.vue'
 import login from './components/login.vue'
 import addHouse from './components/add_house.vue'
 import singlePush from './components/single_push.vue'
@@ -51,11 +50,6 @@ const routes = [
     name: 'wangjipws',
     path: '/wangjipws',
     component: wangjipws
-  },
-  {
-    name: '438',
-    path: '/438',
-    component: houseItem
   },
   {
     name: 'login',

@@ -1,8 +1,7 @@
 <template>
     <div id="joinVip">
       <mt-header title="VIP特权">
-        <router-link to="/438" slot="left">
-          <!--为了whyccup好编辑-->
+        <router-link to="/" slot="left">
           <mt-button icon="back"></mt-button>
         </router-link>
       </mt-header>

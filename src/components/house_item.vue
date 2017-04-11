@@ -69,6 +69,7 @@
   }
   .houseItem{
     margin:10px;
+    margin-bottom: 40px;
     border: 1px solid #edf3e6;
     padding: 20px 0px;
     padding-top: 30px;
@@ -84,12 +85,12 @@
     content: '';
     overflow: hidden;
     position: absolute;
+    z-index: -1;
     top: 0;
     bottom: 0;
     left: 0;
     right: 0;
-    z-index: -1;
-    transform:rotate(-4deg) scale(1.018,0.94);
+    transform:rotate(-4deg) scale(1.015,0.98);
   }
   .houseAddress{
     font-size: 15px;
