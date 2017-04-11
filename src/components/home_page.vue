@@ -1,72 +1,108 @@
 <template>
  <div id="homePage">
-  <mt-swipe :auto="0">
-   <mt-swipe-item name="1"><img src="../assets/logo.png" alt=""></mt-swipe-item>
-   <mt-swipe-item><img src="../assets/logo.png" alt=""></mt-swipe-item>
-   <mt-swipe-item><img src="../assets/logo.png" alt=""></mt-swipe-item>
-  </mt-swipe>
-  <div class="orderInfo">
-   <img src="../assets/images/返回@2x.png" alt=""><span>您没有需要确定的订单</span><img src="../assets/images/返回@2x.png" >
-  </div>
-  <nav-bar></nav-bar>
+  <router-view></router-view>
+   <mt-tabbar v-model="selected" >
+     <mt-tab-item id="home">
+       <img slot="icon" :src="url1">
+       房源
+     </mt-tab-item>
+   <mt-tab-item id="order">
+     <img slot="icon" :src="url2">
+     订单
+   </mt-tab-item>
+   <mt-tab-item id="add"class="add">
+     <img slot="icon" src="../../static/unselected/添加@2x.png" height="24" width="24">
+   </mt-tab-item>
+   <mt-tab-item id="wallet" >
+     <img slot="icon" :src="url3">
+     钱包
+   </mt-tab-item>
+   <mt-tab-item id="user">
+     <img slot="icon" :src="url4">
+     我的
+   </mt-tab-item>
+  </mt-tabbar>
+   <router-link tag="span" to="/login"></router-link>
  </div>
 </template>
 
 <script>
-import { Swipe, SwipeItem } from 'mint-ui'
-import navBar from './navBar/bottom_bar.vue'
+import {Tabbar, TabItem} from 'mint-ui'
 export default {
   name: 'homepage',
+  mounted () {
+    console.log(this.$route.name)
+    this.selected = this.$route.name
+  },
   data () {
     return {
-      msg: 9
+      selected: '',
+      url1: '../../static/unselected/房源@2x.png',
+      url2: '../../static/unselected/订单@2x.png',
+      url3: '../../static/unselected/钱包@2x.png',
+      url4: '../../static/unselected/我的@2x.png'
     }
   },
   components: {
-    Swipe, SwipeItem, navBar
+    Tabbar, TabItem
+  },
+  computed: {
+  },
+  watch: {
+    selected (val, oldval) {
+      let vm = this
+      vm.url1 = '../../static/unselected/房源@2x.png'
+      vm.url2 = '../../static/unselected/订单@2x.png'
+      vm.url3 = '../../static/unselected/钱包@2x.png'
+      vm.url4 = '../../static/unselected/我的@2x.png'
+      switch (val) {
+        case 'wallet':
+          this.$router.push('/wallet')
+          this.url3 = '../../static/selected/钱包@2x.png'
+          break
+        case 'home':
+          this.$router.push('/home')
+          this.url1 = '../../static/selected/房源@2x.png'
+          break
+        case 'order':
+          this.$router.push('/order')
+          this.url2 = '../../static/selected/订单@2x.png'
+          break
+        case 'user':
+          this.$router.push('/user')
+          this.url4 = '../../static/selected/我的@2x.png'
+          break
+        case 'add':
+          this.$router.push('/addHouse')
+          break
+      }
+    }
   }
 }
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
-<style scoped>
-#homePage{
- width:100vw;
- height: 100vh;
- font-size: 0;
-}
-#homePage .mint-swipe{
- width: 100%;
- height: 30%;
- background-color: #000;
-}
-#homePage .mint-swipe img{
- width: 100%;
- height: 100%;
-}
-#homePage .orderInfo{
- position: relative;
- top: -15px;
- margin: 0 auto;
- width: 90%;
- height: 30px;
- line-height: 30px;
- text-align: center;
- background-color: #fff;
- box-shadow: 0 12px 12px -8px rgba(121,172,54,.8);
-}
- #homePage .orderInfo span{
-  display: inline-block;
-  width: 90%;
-  font-size: 12px;
-  text-indent: 12px;
-  vertical-align: middle;
-  text-align: left;
-  color: #79ac36;
+<style>
+ #homePage{
+  width:100vw;
+  height: 100vh;
+  font-size: 0;
  }
-#homePage .orderInfo img{
- width: 8px;
- height:14px;
- vertical-align: middle;
-}
+ #homePage .mint-tabbar{
+  border-top: 1px solid #ededed;
+ }
+ #homePage .add .mint-tab-item-icon{
+   margin: 0;
+   height: 100%;
+   width: 100%;
+ }
+ #homePage .add .mint-tab-item-icon img{
+  margin: auto;
+  width: 40px;
+  height: 40px;
+ }
+ #homePage .is-selected{
+  color: #79ac36;
+  background-color: #fff;
+ }
 </style>

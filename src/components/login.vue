@@ -43,9 +43,9 @@
   }
 </script>
 <style >
-  body{
-    width:100%;
-    height:100%;;
+  .login{
+    width:100wh;
+    height:100vh;;
     background-color:green;
   }
   .login-img img{
