@@ -12,6 +12,7 @@ import wallet from './components/home/wallet.vue'
 import user from './components/home/user.vue'
 import order from './components/home/order.vue'
 import wangjipws from './components/wangjipws.vue'
+import register from './components/register.vue'
 
 // 定义路由集合
 const routes = [
@@ -45,6 +46,11 @@ const routes = [
         component: user
       }
     ]
+  },
+  {
+    name: 'register',
+    path: '/register',
+    component: register
   },
   {
     name: 'wangjipws',
