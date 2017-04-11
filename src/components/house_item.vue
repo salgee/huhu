@@ -71,9 +71,9 @@
     margin:10px;
     margin-bottom: 40px;
     border: 1px solid #edf3e6;
-    padding: 20px 0px;
+    padding: 20px 0;
     padding-top: 30px;
-    padding-left: 20px;
+    padding-left: 25px;
     border-radius: 5px;
     background: #fff;
     position: relative;
@@ -98,10 +98,10 @@
     position: relative;
   }
   .addressImg{
-    width: 12px;
-    height: 16px;
+    width: 11px;
+    height: 14px;
     position: absolute;
-    top:2px;
+    top:4px;
     left:-14px;
   }
   .houseInfo{
@@ -109,7 +109,10 @@
   }
   .houseInfo span{
     font-size: 12px;
-    margin-right: 2px;
+    margin-right: 4px;
+  }
+  .houseAddress,.houseInfo{
+    color: #8c8c8c;
   }
   .houseBtn button{
     font-size:13px;
