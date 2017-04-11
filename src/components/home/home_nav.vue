@@ -9,7 +9,7 @@
       <img src="../../assets/images/返回@2x.png" alt="" width="8" height="14">
       <img slot="icon" src="../../assets/images/布告栏@2x.png" width="14" height="14">
     </mt-cell>
-      <div class="houseList" style="padding-bottom: 40px;">
+      <div class="houseList" style="padding-bottom: 40px;padding-top: 5px;">
         <houseItem v-for="n in 5" key="n">{{n}}</houseItem>
       </div>
   </div>
