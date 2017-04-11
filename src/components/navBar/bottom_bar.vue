@@ -4,7 +4,7 @@
       <section class="order">订单</section>
       <router-link to="/addHouse"><section class="add"><img src="../../assets/images/+@2x.png" alt=""></section></router-link>
       <section class="money">钱包</section>
-      <section class="user">我的</section>
+      <router-link tag="span" to="/login"><section class="user">我的</section></router-link>
   </div>
 </template>
 
