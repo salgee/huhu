@@ -1,77 +1,120 @@
 <template>
-    <div id="houseItem">
+    <div id="houseOne">
       <div class="houseItem">
+        <img src="../assets/images/vip灰色@2x.png" class="vipImg" v-if="true" @click="joinVip">
+        <img src="../assets/images/vip标识@2x.png" class="vipImg" v-else>
         <div class="houseAddress">
-          <span>哈哈哈市</span><span>就是那座大楼12138号</span>
+          <img src="../assets/images/地址@2x.png" class="addressImg">
+          <span>{{houseCity}}</span><span>{{houseAddress}}</span>
         </div>
         <div class="houseInfo">
-          <span>1居室&nbsp;/</span>
-          <span>1张床&nbsp;/</span>
-          <span>密码</span>
+          <span>{{houseBig}}&nbsp;居室&nbsp;/</span>
+          <span>{{houseBed}}&nbsp;张床&nbsp;/</span>
+          <span>{{houseHowEnter}}</span>
         </div>
         <div class="houseBtn">
-          <button class="oneClick" v-if="true">一键下单</button>
-          <button class="oneClick" v-else>一键下单</button>
-          <button class="joinVIP">加入VIP</button>
+          <button class="oneClick" v-if="true" @click="singlePush">一键下单</button>
+          <button class="oneClick" v-else>一键上架</button>
+          <button class="joinVIP" v-if="true" @click="joinVip">加入VIP</button>
         </div>
       </div>
     </div>
 </template>
-<!--<script>-->
-    <!--export default{-->
-        <!--data(){-->
-            <!--return {-->
-
-            <!--}-->
-        <!--},-->
-        <!--methods: {}-->
-    <!--}-->
-<!--</script>-->
+<script>
+  import Axios from 'axios'
+  Axios.defaults.baseURL = 'http://139.224.238.161:9999'
+  export default{
+    data () {
+      return {
+        houseCity: '房子在的城市',
+        houseAddress: '房子在的详细地址',
+        houseBig: '2',
+        houseBed: '4',
+        houseHowEnter: '怎么进入'
+      }
+    },
+    methods: {
+      login: function () {
+//      let that = this
+        Axios.post('/api/customer/login', {
+          account: '18149106608',
+          password: 'a123456',
+          customerType: 'landlord'
+        }).then(function (data) {
+          if (data.data.user.status === 'normal') {
+            localStorage.whyccupToken = data.data.token
+          }
+        })
+      },
+      singlePush: function () {
+        this.$router.push('singlePush')
+      },
+      joinVip: function () {
+        this.$router.push('joinVip')
+      }
+    },
+    mounted: function () {
+      this.login()
+    }
+  }
+</script>
 <style scoped>
-  .houseItem{
-    margin:10px;
-    border: 1px solid #edf3e6;
-    padding: 20px 10px;
-    border-radius: 5px;
-    background: #fff;
-    position: relative;
+  .vipImg{
+    width: 35px;
+    height: 35px;
+    position: absolute;
+    top: 0;
+    left: -1px;
+    display: block;
   }
   .houseItem{
     margin:10px;
+    margin-bottom: 40px;
     border: 1px solid #edf3e6;
-    padding: 20px 10px;
+    padding: 20px 0;
+    padding-top: 30px;
+    padding-left: 25px;
     border-radius: 5px;
     background: #fff;
     position: relative;
   }
   .houseItem::after{
-    border: 1px solid #edf3e6;
     width: 100%;
     border-radius: 5px;
     background: #c8dcaf;
     content: '';
     overflow: hidden;
     position: absolute;
+    z-index: -1;
     top: 0;
     bottom: 0;
     left: 0;
     right: 0;
-    z-index: -1;
-    transform:rotate(-2deg) translateX(-1px) scale(1.01,1);
+    transform:rotate(-4deg) scale(1.015,0.98);
   }
   .houseAddress{
     font-size: 15px;
     margin-bottom: 15px;
+    position: relative;
+  }
+  .addressImg{
+    width: 11px;
+    height: 14px;
+    position: absolute;
+    top:4px;
+    left:-14px;
   }
   .houseInfo{
     margin-bottom: 25px;
   }
   .houseInfo span{
     font-size: 12px;
-    margin-right: 3px;
+    margin-right: 4px;
+  }
+  .houseAddress,.houseInfo{
+    color: #8c8c8c;
   }
   .houseBtn button{
-    margin-right: 35px;
     font-size:13px;
     padding: 0;
   }
@@ -83,6 +126,7 @@
     outline: none;
     width: 100px;
     height: 27px;
+    margin-right: 40px;
   }
   .houseBtn .joinVIP{
     border: 1px solid #79ac36;
