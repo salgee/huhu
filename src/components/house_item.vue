@@ -22,7 +22,7 @@
 </template>
 <script>
   import Axios from 'axios'
-  Axios.defaults.baseURL = 'http://139.224.238.161:9999'
+  Axios.defaults.baseURL = 'http://a.com'
   export default{
     data () {
       return {
@@ -34,18 +34,6 @@
       }
     },
     methods: {
-      login: function () {
-//      let that = this
-        Axios.post('/api/customer/login', {
-          account: '18149106608',
-          password: 'a123456',
-          customerType: 'landlord'
-        }).then(function (data) {
-          if (data.data.user.status === 'normal') {
-            localStorage.whyccupToken = data.data.token
-          }
-        })
-      },
       singlePush: function () {
         this.$router.push('singlePush')
       },
@@ -54,7 +42,6 @@
       }
     },
     mounted: function () {
-      this.login()
     }
   }
 </script>
