@@ -41,10 +41,6 @@
               localStorage.name = response.data.user.account
               localStorage.token = response.data.token
               alert(response.message)
-              next({
-                path: '/login',
-                query: {redirect: to.fullPath}  // 将跳转的路由path作为参数，登录成功后跳转到该路由
-              })
             } else {
               alert(response.message)
             }
