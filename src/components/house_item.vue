@@ -38,7 +38,7 @@
         this.$router.push('singlePush')
       },
       joinVip: function () {
-        this.$router.push('joinVip')
+        this.$router.push('/user/joinVip')
       }
     },
     mounted: function () {

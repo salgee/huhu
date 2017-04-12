@@ -34,10 +34,6 @@
   }
 </script>
 <style >
-  body{
-    background-color: rgba(242, 242, 242, 1);
-    border-color: rgba(204, 204, 204, 1);
-  }
   #touse{
     background:green;
   }

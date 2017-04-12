@@ -4,8 +4,14 @@
       <img src="../assets/images/login-img-top.png" aheight="100%" width="25%"/>
     </div>
     <div class="login-neirong">
-      <mt-field label="手机号" placeholder="请输入手机号" class="login-input" v-model="loginphone" ></mt-field>
-      <mt-field label="密码" placeholder="请输入密码" type="password" class="login-input" v-model="loginpassword"></mt-field>
+      <mt-cell class="login-input">
+        <input placeholder="请输入手机号"  v-model="loginphone">
+        <img slot="icon" src="../assets/images/登录手机@2x.png" width="20" height="25">
+      </mt-cell>
+      <mt-cell class="login-input">
+        <input placeholder="请输入密码" type="password"  v-model="loginpassword">
+        <img slot="icon" src="../assets/images/登录锁@2x.png" width="20" height="25">
+      </mt-cell>
     </div>
     <router-link tag="span" to="/wangjipws" class="wangjipws">忘记密码?</router-link>
     <router-link tag="span" to="/register" class="register">注册</router-link>
@@ -37,12 +43,12 @@
             headers: {'Content-Type': 'application/json'}
           })
           .then(function (response) {
-            if (response.result === 1) {
-              localStorage.name = response.data.user.account
-              localStorage.token = response.data.token
-              alert(response.message)
+            if (response.data.result === 1) {
+              localStorage.name = response.data.data.user.account
+              localStorage.token = response.data.data.token
+              _this.$router.go(-1)
             } else {
-              alert(response.message)
+
             }
           })
       }
@@ -82,6 +88,8 @@
   }
   .login-neirong .login-input input{
     background-color: transparent;
+    height: 8vh;
+    border: none;
   }
   .login-neirong .login-input input[placeholder], [placeholder], *[placeholder] {
     color:#fff !important;

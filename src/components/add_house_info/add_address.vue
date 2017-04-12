@@ -26,7 +26,7 @@
         position="bottom">
         <mt-picker
           :slots="slots"
-          showToolbar="true"
+          showToolbar=true
           @change="onValuesChange">
           <span>取消</span>
           <span>确定</span>
