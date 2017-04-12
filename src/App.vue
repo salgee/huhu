@@ -13,8 +13,6 @@ export default {
 <style>
 body{
   margin: 0;
-}
-html{
   background: #fafafa;
 }
 #huhu {
