@@ -2,8 +2,10 @@
   <div class="user">
     <div class="user-neirong">
       <img src="../../assets/images/我的图片.png" alt="" class="user-neirong-beijing">
-      <img src="../../assets/images/图层-2.png"  class="user-neirong-geren" >
-      <router-link tag="span" to="/login" class="wangjipws-anniu">未登录</router-link>
+      <div>
+        <img src="../../assets/images/图层-2.png"  class="user-neirong-geren" >
+        <router-link tag="span" to="/login" class="wangjipws-anniu">未登录</router-link>
+      </div>
   </div>
     <mt-cell title="我的评价" is-link></mt-cell>
     <mt-cell title="优惠券" is-link></mt-cell>
