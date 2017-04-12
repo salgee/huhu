@@ -22,7 +22,7 @@
 </template>
 <script>
   import Axios from 'axios'
-  Axios.defaults.baseURL = 'http://139.224.238.161:9999'
+  Axios.defaults.baseURL = 'http://a.com'
   export default{
     data () {
       return {
