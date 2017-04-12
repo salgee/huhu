@@ -30,7 +30,6 @@ import {Tabbar, TabItem} from 'mint-ui'
 export default {
   name: 'homepage',
   mounted () {
-    console.log(this.$route.name)
     this.selected = this.$route.name
   },
   data () {

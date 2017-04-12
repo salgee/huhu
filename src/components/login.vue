@@ -49,7 +49,7 @@
     }
   }
 </script>
-<style>
+<style scoped>
   .login{
     width:100wh;
     height:100vh;;

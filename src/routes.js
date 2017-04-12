@@ -13,7 +13,7 @@ import user from './components/home/user.vue'
 import order from './components/home/order.vue'
 import wangjipws from './components/wangjipws.vue'
 import register from './components/register.vue'
-
+import address from './components/add_house_info/add_address.vue'
 // 定义路由集合
 const routes = [
   {
@@ -60,7 +60,7 @@ const routes = [
   },
   {
     name: 'add',
-    path: '/addhouse',
+    path: '/addHouse',
     component: addHouse
   },
   {
@@ -72,6 +72,11 @@ const routes = [
     name: 'joinVip',
     path: '/joinVip',
     component: joinVip
+  },
+  {
+    name: 'address',
+    path: '/addHouse/address',
+    component: address
   }
 ]
 export default routes
