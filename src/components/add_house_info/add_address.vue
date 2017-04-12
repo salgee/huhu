@@ -70,9 +70,7 @@
 
       },
       popUp () {
-        const vm = this;
-        Axios.
-        vm.popupVisible=true;
+
       }
     },
     components: {
