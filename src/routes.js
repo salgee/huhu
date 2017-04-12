@@ -62,7 +62,7 @@ const routes = [
   },
   {
     name: 'add',
-    path: '/addHouse',
+    path: '/home/addHouse',
     component: addHouse
   },
   {
@@ -77,7 +77,7 @@ const routes = [
   },
   {
     name: 'address',
-    path: '/addHouse/address',
+    path: '/home/addHouse/address',
     component: address
   },
   {

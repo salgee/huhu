@@ -26,10 +26,12 @@
         position="bottom">
         <mt-picker
           :slots="slots"
-          showToolbar=true
+          :showToolbar=true
           @change="onValuesChange">
-          <span>取消</span>
-          <span>确定</span>
+          <div class="title">
+            <span>取消</span>
+            <span>确定</span>
+          </div>
         </mt-picker>
       </mt-popup>
     </div>
@@ -70,7 +72,7 @@
 
       },
       popUp () {
-
+        this.popupVisible = true
       }
     },
     components: {
@@ -105,5 +107,18 @@
 }
 #add .mint-popup{
   width: 100%;
+}
+#add .title {
+  overflow: hidden;
+  padding: 10px;
+  border: 1px solid #ddd;
+}
+#add .title span:first-child,#add .title span:last-child{
+  float: left;
+  font-size: 16px;
+  color: royalblue;
+}
+#add .title span:last-child{
+  float: right;
 }
 </style>
