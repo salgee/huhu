@@ -4,8 +4,14 @@
       <img src="../assets/images/login-img-top.png" aheight="100%" width="25%"/>
     </div>
     <div class="login-neirong">
-      <mt-field label="手机号" placeholder="请输入手机号" class="login-input" v-model="loginphone" ></mt-field>
-      <mt-field label="密码" placeholder="请输入密码" type="password" class="login-input" v-model="loginpassword"></mt-field>
+      <mt-cell class="login-input">
+        <mt-field placeholder="请输入手机号" class="login-input" v-model="loginphone" ></mt-field>
+        <img slot="icon" src="../assets/images/登录手机@2x.png" width="20" height="25">
+      </mt-cell>
+      <mt-cell class="login-input">
+        <mt-field  placeholder="请输入密码" type="password" class="login-input" v-model="loginpassword"></mt-field>
+        <img slot="icon" src="../assets/images/登录锁@2x.png" width="20" height="25">
+      </mt-cell>
     </div>
     <router-link tag="span" to="/wangjipws" class="wangjipws">忘记密码?</router-link>
     <router-link tag="span" to="/register" class="register">注册</router-link>
@@ -40,7 +46,6 @@
             if (response.result === 1) {
               localStorage.name = response.data.user.account
               localStorage.token = response.data.token
-              alert(response.message)
             } else {
               alert(response.message)
             }
