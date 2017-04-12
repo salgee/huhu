@@ -1,42 +1,40 @@
 <template>
   <div id="add">
     <mt-header title="添加房源" style="background: #79ac36;">
-      <router-link to="/" slot="left">
-        <mt-button icon="back"></mt-button>
-      </router-link>
+        <mt-button icon="back" slot="left" @click="$router.go(-1)"></mt-button>
     </mt-header>
     <div class="content">
-      <mt-cell title="标题文字">
+      <mt-cell title="地址" to="/addHouse/address">
         <img src="../assets/images/返回@2x.png" alt="" width="8" height="14">
-        <img slot="icon" src="../assets/images/布告栏@2x.png" width="20" >
+        <img slot="icon" src="../assets/images/地址@2x.png" width="20" >
       </mt-cell>
-      <mt-cell title="标题文字">
+      <mt-cell title="房型">
         <img src="../assets/images/返回@2x.png" alt="" width="8" height="14">
-        <img slot="icon" src="../assets/images/布告栏@2x.png" width="20" >
+        <img slot="icon" src="../assets/images/房型@2x.png" width="20" >
       </mt-cell>
-      <mt-cell title="标题文字">
+      <mt-cell title="面积">
         <img src="../assets/images/返回@2x.png" alt="" width="8" height="14">
-        <img slot="icon" src="../assets/images/布告栏@2x.png" width="20" >
+        <img slot="icon" src="../assets/images/面积@2x.png" width="20" >
       </mt-cell>
-      <mt-cell title="标题文字">
+      <mt-cell title="床位数">
         <img src="../assets/images/返回@2x.png" alt="" width="8" height="14">
-        <img slot="icon" src="../assets/images/布告栏@2x.png" width="20" >
+        <img slot="icon" src="../assets/images/床位数@2x.png" width="20" >
       </mt-cell>
-      <mt-cell title="标题文字">
+      <mt-cell title="入门方式">
         <img src="../assets/images/返回@2x.png" alt="" width="8" height="14">
-        <img slot="icon" src="../assets/images/布告栏@2x.png" width="20" >
+        <img slot="icon" src="../assets/images/入户方式@2x.png" width="20" >
       </mt-cell>
-      <mt-cell title="标题文字">
+      <mt-cell title="需要门卡">
         <input type="checkbox" style="width: 16px; height: 16px">
-        <img slot="icon" src="../assets/images/布告栏@2x.png" width="20" >
+        <img slot="icon" src="../assets/images/需要门卡@2x.png" width="20" >
       </mt-cell>
-      <mt-cell title="标题文字">
+      <mt-cell title="wifi用户名">
         <input type="text" class="wifi" maxlength="30" placeholder="选填">
-        <img slot="icon" src="../assets/images/布告栏@2x.png" width="20" >
+        <img slot="icon" src="../assets/images/wifi用户名@2x.png" width="20" >
       </mt-cell>
-      <mt-cell title="标题文字">
+      <mt-cell title="wifi密码">
         <input type="text" class="wifi" maxlength="30" placeholder="选填">
-        <img slot="icon" src="../assets/images/布告栏@2x.png" width="20" >
+        <img slot="icon" src="../assets/images/wifi密码@2x.png" width="20" >
       </mt-cell>
     </div>
     <div class="submit">
@@ -59,6 +57,13 @@ export default {
     Cell,
     mtHeader: Header,
     mtButton: Button
+  },
+  beforeRouteEnter (to, from, next) {
+    if (localStorage.length === 0) {
+      next('/login')
+    } else {
+      next()
+    }
   }
 }
 </script>
@@ -76,7 +81,7 @@ a {
   margin-left: 5%;
 }
 #add .mint-cell+.mint-cell .mint-cell-wrapper{
-  border-top: 1px solid #000;
+  border-top: 1px solid #ddd;
 }
 #add .mint-cell-title span{
   font-size: 15px;

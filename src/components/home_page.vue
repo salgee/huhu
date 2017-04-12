@@ -1,7 +1,7 @@
 <template>
  <div id="homePage">
   <router-view></router-view>
-   <mt-tabbar v-model="selected" fixed="true">
+   <mt-tabbar v-model="selected" :fixed=true>
      <mt-tab-item id="home">
        <img slot="icon" :src="url1">
        房源
@@ -30,7 +30,6 @@ import {Tabbar, TabItem} from 'mint-ui'
 export default {
   name: 'homepage',
   mounted () {
-    console.log(this.$route.name)
     this.selected = this.$route.name
   },
   data () {

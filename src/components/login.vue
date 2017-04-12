@@ -4,8 +4,14 @@
       <img src="../assets/images/login-img-top.png" aheight="100%" width="25%"/>
     </div>
     <div class="login-neirong">
-      <mt-field label="手机号" placeholder="请输入手机号" class="login-input">{{loginphone}}</mt-field>
-      <mt-field label="密码" placeholder="请输入密码" type="password" class="login-input">{{loginpassword}}</mt-field>
+      <mt-cell class="login-input">
+        <input placeholder="请输入手机号"  v-model="loginphone">
+        <img slot="icon" src="../assets/images/登录手机@2x.png" width="20" height="25">
+      </mt-cell>
+      <mt-cell class="login-input">
+        <input placeholder="请输入密码" type="password"  v-model="loginpassword">
+        <img slot="icon" src="../assets/images/登录锁@2x.png" width="20" height="25">
+      </mt-cell>
     </div>
     <router-link tag="span" to="/wangjipws" class="wangjipws">忘记密码?</router-link>
     <router-link tag="span" to="/register" class="register">注册</router-link>
@@ -28,29 +34,45 @@
     methods: {
       btnLogin: function () {
         var _this = this
-        axios.post('http://139.224.238.161:9999/api/customer/login', {
-          params: {
-            account: _this.loginphone,
-            password: _this.loginpassword,
-            customerType: 'landlord'
-          }
-        })
+        axios.post('http://a.com/api/customer/login', {
+          account: _this.loginphone,
+          password: _this.loginpassword,
+          customerType: 'landlord'
+        },
+          {
+            headers: {'Content-Type': 'application/json'}
+          })
           .then(function (response) {
+            if (response.data.result === 1) {
+              localStorage.name = response.data.data.user.account
+              localStorage.token = response.data.data.token
+              _this.$router.go(-1)
+            } else {
 
+            }
           })
       }
     }
   }
 </script>
-<style>
+
+<style scoped>
   .login{
     width:100wh;
     height:100vh;;
     background-color:green;
   }
-
+  .login-img{
+    width:100%;
+    height:35vh;
+    position: relative;
+  }
   .login-img img{
-    margin: 60px 37.25%;
+    width:20%;
+    height:30%;
+    position: absolute;
+    top:30%;
+    left:40%;
   }
   .login-btn .login-button{
     width:80%;
@@ -66,6 +88,8 @@
   }
   .login-neirong .login-input input{
     background-color: transparent;
+    height: 8vh;
+    border: none;
   }
   .login-neirong .login-input input[placeholder], [placeholder], *[placeholder] {
     color:#fff !important;

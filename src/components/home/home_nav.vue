@@ -17,15 +17,29 @@
 <script>
   import {Swipe, SwipeItem, Cell} from 'mint-ui'
   import houseItem from '../house_item.vue'
+  import Axios from 'axios'
+  Axios.defaults.baseURL = 'http://a.com'
   export default {
     name: 'addHouse',
     mounted () {
-
+      this.getAds()
     },
     data () {
       return {}
     },
-    methods: {},
+    methods: {
+      getAds () {
+        Axios.get('/api/manage/advertising/web/all',
+          {
+            headers: {'Content-Type': 'application/json'}
+          }).then(function (data) {
+            if (data.status === 200) {
+              localStorage.whyccupToken = data.data.data.token
+            }
+            console.log(data)
+          })
+      }
+    },
     components: {
       Swipe, SwipeItem, Cell, houseItem
     }
