@@ -23,17 +23,13 @@ const routes = [
       {
         name: 'home',
         path: '',
+        alias: 'home',
         component: homeNav
       },
       {
         name: 'wallet',
         path: 'wallet',
         component: wallet
-      },
-      {
-        name: 'home',
-        path: 'home',
-        component: homeNav
       },
       {
         name: 'order',
