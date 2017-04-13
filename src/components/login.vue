@@ -55,13 +55,13 @@
     }
   }
 </script>
+
 <style scoped>
   .login{
     width:100wh;
     height:100vh;;
     background-color:green;
   }
-
   .login-img{
     width:100%;
     height:35vh;
