@@ -10,7 +10,7 @@
      <img slot="icon" :src="url2">
      订单
    </mt-tab-item>
-   <mt-tab-item id="add"class="add">
+   <mt-tab-item id="add" class="add">
      <img slot="icon" src="../../static/unselected/添加@2x.png" height="24" width="24">
    </mt-tab-item>
    <mt-tab-item id="wallet" >
@@ -71,7 +71,7 @@ export default {
           this.url4 = '../../static/selected/我的@2x.png'
           break
         case 'add':
-          this.$router.push('/addHouse')
+          this.$router.push('/home/addHouse')
           break
       }
     }

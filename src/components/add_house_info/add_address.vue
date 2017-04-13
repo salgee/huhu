@@ -26,10 +26,13 @@
         position="bottom">
         <mt-picker
           :slots="slots"
-          showToolbar=true
+          :showToolbar=true
+          valueKey="provincename"
           @change="onValuesChange">
-          <span>取消</span>
-          <span>确定</span>
+          <div class="title">
+            <span>取消</span>
+            <span>确定</span>
+          </div>
         </mt-picker>
       </mt-popup>
     </div>
@@ -37,11 +40,12 @@
 </template>
 <script>
   import {Cell, Header, Button, Picker, Popup} from 'mint-ui'
-  import Axios from 'axios'
-  Axios.defaults.baseURL = 'http://a.com'
+  import province from '../../assets/db/province.json'
+  import city from '../../assets/db/city.json'
   export default {
     name: 'addHouse',
     mounted () {
+      console.log(province, city)
     },
     data () {
       return {
@@ -51,12 +55,25 @@
             flex: 1,
             values: [],
             className: 'slot1',
-            textAlign: 'right'
-          }, {
+            textAlign: 'left'
+          },
+          {
             divider: true,
             content: '-',
             className: 'slot2'
-          }, {
+          },
+          {
+            flex: 1,
+            values: [],
+            className: 'slot3',
+            textAlign: 'center'
+          },
+          {
+            divider: true,
+            content: '-',
+            className: 'right'
+          },
+          {
             flex: 1,
             values: [],
             className: 'slot3',
@@ -66,11 +83,14 @@
       }
     },
     methods: {
-      onValuesChange () {
-
+      onValuesChange (picker, values) {
+        console.log(picker, values)
       },
       popUp () {
-
+        this.slots[0].values = province.provinces
+        this.slots[2].values = city.citys
+        console.log(this.slots)
+        this.popupVisible = true
       }
     },
     components: {
@@ -105,5 +125,18 @@
 }
 #add .mint-popup{
   width: 100%;
+}
+#add .title {
+  overflow: hidden;
+  padding: 10px;
+  border: 1px solid #ddd;
+}
+#add .title span:first-child,#add .title span:last-child{
+  float: left;
+  font-size: 16px;
+  color: royalblue;
+}
+#add .title span:last-child{
+  float: right;
 }
 </style>

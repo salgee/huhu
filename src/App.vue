@@ -39,29 +39,51 @@ a{
   color: #000;
 }
 .slide-left-enter-active {
-  transition: all .5s linear;
+  position: absolute;
+  top: 0;
+  z-index: 100;
+  background-color: #fff;
+  transition: transform .3s linear;
 }
 .slide-left-leave-active {
+  positon: absolute;
+  top: 0;
+  z-index: 99;
   transform: translateX(-10%);
-  transition: all .2s ease-in;
+  transition: transform .3s ease-in;
 }
 .slide-left-enter {
-  transform: translateX(90%);
+  position: absolute;
+  z-index: 100;
+  background-color: #fff;
+  transform: translateX(100%);
 }
 .slide-left-leave {
+  position: absolute;
+  z-index: 99;
   transform: translateX(0);
 }
 .slide-right-enter-active {
-  transition: all .8s linear;
+  position: absolute;
+  z-index: 99;
+  transition: transform .3s linear;
 }
 .slide-right-leave-active {
-  transform: translateX(90%);
-  transition: all .5s ease-in;
+  position: absolute;
+  z-index: 100;
+  background-color: #fff;
+  transform: translateX(100%);
+  transition: transform .3s ease-in;
 }
 .slide-right-enter {
+  position: absolute;
+  z-index: 99;
   transform: translateX(-10%);
 }
 .slide-right-leave {
+  position: absolute;
+  z-index: 100;
+  background-color: #fff;
   transform: translateX(0);
 }
 </style>
