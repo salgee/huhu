@@ -1,21 +1,21 @@
 <template>
     <div id="houseOne">
       <div class="houseItem">
-        <img src="../assets/images/vip灰色@2x.png" class="vipImg" v-if="true" @click="joinVip">
-        <img src="../assets/images/vip标识@2x.png" class="vipImg" v-else>
+        <img src="../assets/images/vip标识@2x.png" class="vipImg"  v-if="vipIsOrNo">
+        <img src="../assets/images/vip灰色@2x.png" class="vipImg" v-else @click="joinVip">
         <div class="houseAddress">
           <img src="../assets/images/地址@2x.png" class="addressImg">
-          <span>{{houseInfo.city}}</span><span>{{houseInfo.address}}</span><span>{{houseInfo.buildingNo}}</span>
+          <span>{{houseInfo.district}}</span><span>{{houseInfo.address}}</span><span>{{houseInfo.buildingNo}}</span>
         </div>
         <div class="houseInfo">
           <span>{{houseInfo.bedRoom}}&nbsp;居室&nbsp;/</span>
-          <span>{{houseBed}}&nbsp;张床&nbsp;/</span>
+          <span>{{houseInfo.bedAmount}}&nbsp;张床&nbsp;/</span>
           <span>{{houseInfo.doorWayName}}</span>
         </div>
         <div class="houseBtn">
-          <button class="oneClick" v-if="true" @click="singlePush">一键下单</button>
-          <button class="oneClick" v-else>一键上架</button>
-          <button class="joinVIP" v-if="true" @click="joinVip">加入VIP</button>
+          <button class="oneClick" v-if="upAndDown" >一键上架</button>
+          <button class="oneClick" v-else @click="singlePush">一键下单</button>
+          <button class="joinVIP" v-if="!vipIsOrNo" @click="joinVip">加入VIP</button>
         </div>
       </div>
     </div>
@@ -27,7 +27,8 @@
     props: ['houseInfo'],
     data () {
       return {
-        houseBed: '5'
+        vipIsOrNo: this.houseInfo.vip,
+        upAndDown: this.houseInfo.dcr
       }
     },
     methods: {
@@ -80,6 +81,9 @@
     font-size: 15px;
     margin-bottom: 15px;
     position: relative;
+    white-space:nowrap;
+    overflow:hidden;
+    text-overflow:ellipsis;
   }
   .addressImg{
     width: 11px;

@@ -53,7 +53,6 @@
           }).then(function (data) {
             if (data.status === 200) {
               that.houseInfos = data.data.data
-              console.log(that.houseInfos)
             }
             console.log(data)
           })
