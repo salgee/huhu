@@ -2,7 +2,7 @@
   <div>
     <div>
       <mt-header fixed title="忘记密码"  id="touse">
-        <router-link to="/login" slot="left">
+        <router-link to="/user/login/#" slot="left">
           <mt-button icon="back"></mt-button>
         </router-link>
       </mt-header>

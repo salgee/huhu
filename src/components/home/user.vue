@@ -4,20 +4,20 @@
       <img src="../../assets/images/我的图片.png" alt="" class="user-neirong-beijing">
       <div>
         <img src="../../assets/images/图层-2.png"  class="user-neirong-geren" >
-        <router-link tag="span" to="/login" class="wangjipws-anniu">未登录</router-link>
+        <router-link tag="span" to="/user/login/#" class="wangjipws-anniu">未登录</router-link>
       </div>
   </div>
-    <mt-cell title="我的评价" is-link></mt-cell>
-    <mt-cell title="优惠券" is-link></mt-cell>
-    <mt-cell title="分享" is-link></mt-cell>
-    <mt-cell title="设置余额支付密码" is-link></mt-cell>
-    <mt-cell title="设置" is-link></mt-cell>
+    <mt-cell title="我的评价" to="/wodepinjia"  is-link></mt-cell>
+    <mt-cell title="优惠券" to="/youhuijuan" is-link></mt-cell>
+    <mt-cell title="分享" to="/fenxiang" is-link></mt-cell>
+    <mt-cell title="设置余额支付密码" to="/zhifumima" is-link></mt-cell>
+    <mt-cell title="设置" to="/shezhi" is-link></mt-cell>
   </div>
 </template>
 
 <script>
   export default {
-    name: 'addHouse',
+    name: 'user',
     data () {
       return {
       }
