@@ -5,7 +5,7 @@
 import homePage from './components/home_page.vue'
 import login from './components/login.vue'
 import addHouse from './components/add_house.vue'
-import singlePush from './components/single_push.vue'
+import pushOrderBefore from './components/push_order_before.vue'
 import joinVip from './components/join_vip.vue'
 import homeNav from './components/home/home_nav.vue'
 import wallet from './components/home/wallet.vue'
@@ -105,9 +105,9 @@ const routes = [
     component: zhifumima
   },
   {
-    name: 'singlePush',
-    path: '/singlePush',
-    component: singlePush
+    name: 'pushOrderBefore',
+    path: '/pushOrderBefore',
+    component: pushOrderBefore
   },
   {
     name: 'joinVip',

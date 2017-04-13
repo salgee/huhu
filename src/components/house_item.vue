@@ -13,8 +13,8 @@
           <span>{{houseInfo.doorWayName}}</span>
         </div>
         <div class="houseBtn">
-          <button class="oneClick" v-if="upAndDown" >一键上架</button>
-          <button class="oneClick" v-else @click="singlePush">一键下单</button>
+          <button class="oneClick" v-if="upAndDown == 'offLine'" >一键上架</button>
+          <button class="oneClick" v-else @click="pushOrderBefore">一键下单</button>
           <button class="joinVIP" v-if="!vipIsOrNo" @click="joinVip">加入VIP</button>
         </div>
       </div>
@@ -28,12 +28,12 @@
     data () {
       return {
         vipIsOrNo: this.houseInfo.vip,
-        upAndDown: this.houseInfo.dcr
+        upAndDown: this.houseInfo.status
       }
     },
     methods: {
-      singlePush: function () {
-        this.$router.push('singlePush')
+      pushOrderBefore: function () {
+        this.$router.push('pushOrderBefore')
       },
       joinVip: function () {
         this.$router.push('/user/joinVip')

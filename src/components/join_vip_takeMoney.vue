@@ -16,6 +16,7 @@
 </script>
 <style scoped>
   #takeMoney{
+    width: 100vw;
     height: 100vh;
   }
   .mint-header{

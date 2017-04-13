@@ -20,6 +20,7 @@
 </script>
 <style scoped>
   #agreement{
+    width: 100vw;
     height: 100vh;
   }
   .mint-header{
