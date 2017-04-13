@@ -13,7 +13,7 @@
   export default{
     methods: {
       goVip: function () {
-        this.$router.push('/user/joinVip')
+        window.history.go(-1)
       }
     }
   }
