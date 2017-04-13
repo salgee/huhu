@@ -13,8 +13,8 @@
         <img slot="icon" src="../assets/images/登录锁@2x.png" width="20" height="25">
       </mt-cell>
     </div>
-    <router-link tag="span" to="/wangjipws" class="wangjipws">忘记密码?</router-link>
-    <router-link tag="span" to="/register" class="register">注册</router-link>
+    <router-link tag="span" to="/user/wangjipws/#" class="wangjipws">忘记密码?</router-link>
+    <router-link tag="span" to="/user/register/#" class="register">注册</router-link>
     <div class="login-btn">
       <mt-button plain size="large" @click="btnLogin" class="login-button">登录</mt-button>
     </div>
@@ -47,6 +47,7 @@
               localStorage.name = response.data.data.user.account
               localStorage.token = response.data.data.token
               _this.$router.go(-1)
+//              router.push({ path: 'user'})
             } else {
 
             }
@@ -59,7 +60,7 @@
 <style scoped>
   .login{
     width:100wh;
-    height:100vh;;
+    height:100vh;
     background-color:green;
   }
   .login-img{

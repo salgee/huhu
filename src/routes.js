@@ -16,6 +16,11 @@ import register from './components/register.vue'
 import address from './components/add_house_info/add_address.vue'
 import vipAgreement from './components/join_vip_agreement.vue'
 import vipTakeMoney from './components/join_vip_takeMoney.vue'
+import wodepinjia from './components/wode/wodepinjia'
+import youhuijuan from './components/wode/youhuijuan'
+import zhifumima from './components/wode/zhifumima'
+import shezhi from './components/wode/shezhi'
+import fenxiang from './components/wode/fenxiang'
 
 // 定义路由集合
 const routes = [
@@ -41,30 +46,63 @@ const routes = [
       },
       {
         name: 'user',
-        path: 'user',
+        path: '/user',
         component: user
       }
     ]
   },
   {
     name: 'register',
-    path: '/register',
+    path: '/user/register',
+    alias: './user/register/#',
     component: register
   },
   {
     name: 'wangjipws',
-    path: '/wangjipws',
+    path: '/user/wangjipws',
+    alias: './user/wangjipws/#',
     component: wangjipws
   },
   {
     name: 'login',
-    path: '/login',
+    path: '/user/login',
+    alias: './user/login/#',
     component: login
   },
   {
     name: 'add',
     path: '/home/addHouse',
     component: addHouse
+  },
+  {
+    name: 'user',
+    path: '/user',
+    component: user
+  },
+  {
+    name: 'shezhi',
+    path: '/shezhi',
+    component: shezhi
+  },
+  {
+    name: 'wodepinjia',
+    path: '/wodepinjia',
+    component: wodepinjia
+  },
+  {
+    name: 'youhuijuan',
+    path: '/youhuijuan',
+    component: youhuijuan
+  },
+  {
+    name: 'fenxiang',
+    path: '/fenxiang',
+    component: fenxiang
+  },
+  {
+    name: 'zhifumima',
+    path: '/zhifumima',
+    component: zhifumima
   },
   {
     name: 'singlePush',

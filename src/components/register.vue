@@ -2,7 +2,7 @@
   <div class="register-zhuye">
     <mt-header title="注册">
       <router-link to="/" slot="left">
-        <router-link tag="span" to="/login"><mt-button icon="back">返回</mt-button></router-link>
+        <router-link tag="span" to="/user/login/#"><mt-button icon="back">返回</mt-button></router-link>
       </router-link>
     </mt-header>
   </div>
@@ -14,6 +14,10 @@
   }
 </script>
 <style scoped>
+  .register-zhuye{
+    width:100wh;
+    height:100vh;
+  }
   .register-zhuye header{
     background-color:green;
   }
