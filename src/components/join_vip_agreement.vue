@@ -19,6 +19,9 @@
   }
 </script>
 <style scoped>
+  #singlePush{
+    height: 100vh;
+  }
   .mint-header{
     background: #74a92e!important;
   }

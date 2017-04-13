@@ -10,7 +10,7 @@
       <img slot="icon" src="../../assets/images/布告栏@2x.png" width="14" height="14">
     </mt-cell>
       <div class="houseList" style="padding-bottom: 40px;padding-top: 5px;">
-        <houseItem v-for="n in 5" key="n">{{n}}</houseItem>
+        <houseItem v-for="houseInfo in houseInfos" key="houseInfo" :houseInfo="houseInfo"></houseItem>
       </div>
   </div>
 </template>
@@ -23,9 +23,12 @@
     name: 'addHouse',
     mounted () {
       this.getAds()
+      this.homeList()
     },
     data () {
-      return {}
+      return {
+        houseInfos: []
+      }
     },
     methods: {
       getAds () {
@@ -34,7 +37,23 @@
             headers: {'Content-Type': 'application/json'}
           }).then(function (data) {
             if (data.status === 200) {
-              localStorage.whyccupToken = data.data.data.token
+            }
+//            console.log(data)
+//            console.log('------------------------')
+          })
+      },
+      //  whyccup写的
+      homeList: function () {
+        let that = this
+        Axios.get('/api/house/list',
+          {
+            headers: {'Content-Type': 'application/json',
+              'x-api-token': localStorage.token
+            }
+          }).then(function (data) {
+            if (data.status === 200) {
+              that.houseInfos = data.data.data
+              console.log(that.houseInfos)
             }
             console.log(data)
           })

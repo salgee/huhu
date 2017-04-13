@@ -40,30 +40,33 @@
           .then(action => {
             this.$router.push('/')
           })
-      },
-      login: function () {
-//      let that = this
-        Axios.post('/api/customer/login', {
-          account: '18149106608',
-          password: 'a123456',
-          customerType: 'landlord'
-        },
-          {
-            headers: {'Content-Type': 'application/json'}
-          }).then(function (data) {
-            if (data.status === 200) {
-              localStorage.whyccupToken = data.data.data.token
-            }
-            console.log(data)
-          })
       }
+//      login: function () {
+//      let that = this
+//        Axios.post('/api/customer/login', {
+//          account: '18149106608',
+//          password: 'a123456',
+//          customerType: 'landlord'
+//        },
+//          {
+//            headers: {'Content-Type': 'application/json'}
+//          }).then(function (data) {
+//            if (data.status === 200) {
+//              localStorage.whyccupToken = data.data.data.token
+//            }
+//            console.log(data)
+//          })
+//      }
     },
     mounted: function () {
-      this.login()
+//      this.login()
     }
   }
 </script>
 <style scoped>
+  #joinVip{
+    height: 100vh;
+  }
   .mint-header{
     background: #74a92e!important;
   }
