@@ -79,6 +79,8 @@ const routes = [
     name: 'address',
     path: '/addHouse/address',
     component: address
+  },
+  {
     name: 'vipAgreement',
     path: '/user/joinVip/vipAgreement',
     component: vipAgreement

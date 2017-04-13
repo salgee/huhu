@@ -5,12 +5,12 @@
         <img src="../assets/images/vip标识@2x.png" class="vipImg" v-else>
         <div class="houseAddress">
           <img src="../assets/images/地址@2x.png" class="addressImg">
-          <span>{{houseCity}}</span><span>{{houseAddress}}</span>
+          <span>{{houseInfo.city}}</span><span>{{houseInfo.address}}</span><span>{{houseInfo.buildingNo}}</span>
         </div>
         <div class="houseInfo">
-          <span>{{houseBig}}&nbsp;居室&nbsp;/</span>
+          <span>{{houseInfo.bedRoom}}&nbsp;居室&nbsp;/</span>
           <span>{{houseBed}}&nbsp;张床&nbsp;/</span>
-          <span>{{houseHowEnter}}</span>
+          <span>{{houseInfo.doorWayName}}</span>
         </div>
         <div class="houseBtn">
           <button class="oneClick" v-if="true" @click="singlePush">一键下单</button>
@@ -24,13 +24,10 @@
   import Axios from 'axios'
   Axios.defaults.baseURL = 'http://a.com'
   export default{
+    props: ['houseInfo'],
     data () {
       return {
-        houseCity: '房子在的城市',
-        houseAddress: '房子在的详细地址',
-        houseBig: '2',
-        houseBed: '4',
-        houseHowEnter: '怎么进入'
+        houseBed: '5'
       }
     },
     methods: {
