@@ -4,7 +4,7 @@
         <mt-button icon="back" slot="left" @click="$router.go(-1)"></mt-button>
     </mt-header>
     <div class="content">
-      <mt-cell title="地址" to="/addHouse/address">
+      <mt-cell title="地址" to="/home/addHouse/address">
         <img src="../assets/images/返回@2x.png" alt="" width="8" height="14">
         <img slot="icon" src="../assets/images/地址@2x.png" width="20" >
       </mt-cell>
