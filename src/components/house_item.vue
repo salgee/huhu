@@ -1,47 +1,66 @@
 <template>
     <div id="houseOne">
       <div class="houseItem">
-        <img src="../assets/images/vip灰色@2x.png" class="vipImg" v-if="true" @click="joinVip">
-        <img src="../assets/images/vip标识@2x.png" class="vipImg" v-else>
+        <img src="../assets/images/vip标识@2x.png" class="vipImg"  v-if="vipIsOrNo">
+        <img src="../assets/images/vip灰色@2x.png" class="vipImg" v-else @click="joinVip">
         <div class="houseAddress">
           <img src="../assets/images/地址@2x.png" class="addressImg">
-          <span>{{houseCity}}</span><span>{{houseAddress}}</span>
+          <span>{{district}}</span><span>{{houseInfo.address}}</span><span>{{houseInfo.buildingNo}}</span>
         </div>
         <div class="houseInfo">
-          <span>{{houseBig}}&nbsp;居室&nbsp;/</span>
-          <span>{{houseBed}}&nbsp;张床&nbsp;/</span>
-          <span>{{houseHowEnter}}</span>
+          <span>{{houseInfo.bedRoom}}&nbsp;居室&nbsp;/</span>
+          <span>{{bedNum}}&nbsp;张床&nbsp;/</span>
+          <span>{{houseInfo.doorWayName}}</span>
         </div>
         <div class="houseBtn">
-          <button class="oneClick" v-if="true" @click="singlePush">一键下单</button>
-          <button class="oneClick" v-else>一键上架</button>
-          <button class="joinVIP" v-if="true" @click="joinVip">加入VIP</button>
+          <button class="oneClick" v-if="upAndDown == 'offLine'" >一键上架</button>
+          <button class="oneClick" v-else @click="pushOrderBefore">一键下单</button>
+          <button class="joinVIP" v-if="!vipIsOrNo" @click="joinVip">加入VIP</button>
         </div>
       </div>
     </div>
 </template>
 <script>
   import Axios from 'axios'
+  import _ from 'lodash'
   Axios.defaults.baseURL = 'http://a.com'
   export default{
+    props: ['houseInfo'],
     data () {
       return {
-        houseCity: '房子在的城市',
-        houseAddress: '房子在的详细地址',
-        houseBig: '2',
-        houseBed: '4',
-        houseHowEnter: '怎么进入'
+        vipIsOrNo: this.houseInfo.vip,
+        upAndDown: this.houseInfo.status,
+        bedNum: '',
+        district: ''
       }
     },
     methods: {
-      singlePush: function () {
-        this.$router.push('singlePush')
+      pushOrderBefore: function () {
+        this.$router.push('pushOrderBefore')
       },
       joinVip: function () {
         this.$router.push('/user/joinVip')
+      },
+      howBed: function () {
+        let array = this.houseInfo.bedAmount.split(',').join(':').split(':')
+        let evens = _.filter(array, function (n, i) {
+          return i % 2 !== 0
+        })
+//      reduce() js原生高级函数。 parseInt() 解析一个数字字符串，并返回一个整数。
+        this.bedNum = evens.reduce(function (x, y) {
+          return parseInt(x) + parseInt(y)
+        })
+      },
+      getDistrict: function () {
+        if (this.houseInfo.district == null) {
+          this.district = ''
+        } else {
+//          this.district =
+        }
       }
     },
     mounted: function () {
+      this.howBed()
     }
   }
 </script>
@@ -83,6 +102,9 @@
     font-size: 15px;
     margin-bottom: 15px;
     position: relative;
+    white-space:nowrap;
+    overflow:hidden;
+    text-overflow:ellipsis;
   }
   .addressImg{
     width: 11px;

@@ -16,9 +16,9 @@
         </div>
       </div>
       <div class="joinVipBtn">
-        <mt-button size="large">签订协议</mt-button>
+        <mt-button size="large" @click="takeMoney">签订协议</mt-button>
         <div style="padding-top: 8px;position: relative;">
-          <input type="checkbox" id="agree">
+          <input type="checkbox" id="agree" v-model="checked">
           <label for="agree"></label>
           <div class="vipAgree">
             <span>我已同意</span>
@@ -34,36 +34,39 @@
   import Axios from 'axios'
   Axios.defaults.baseURL = 'http://a.com'
   export default{
+    data () {
+      return {
+        checked: false
+      }
+    },
     methods: {
       goHome: function () {
         this.$messagebox.confirm('确定放弃吗?', '')
           .then(action => {
-            this.$router.push('/')
+            window.history.go(-1)
           })
       },
-      login: function () {
-//      let that = this
-        Axios.post('/api/customer/login', {
-          account: '18149106608',
-          password: 'a123456',
-          customerType: 'landlord'
-        },
-          {
-            headers: {'Content-Type': 'application/json'}
-          }).then(function (data) {
-            if (data.status === 200) {
-              localStorage.whyccupToken = data.data.data.token
-            }
-            console.log(data)
+      takeMoney: function () {
+        if (this.checked === false) {
+          this.$toast({
+            message: '请签订VIP协议',
+            position: 'bottom',
+            duration: 1000
           })
+        } else {
+          this.$router.push('/user/joinVip/vipTakeMoney')
+        }
       }
     },
     mounted: function () {
-      this.login()
     }
   }
 </script>
 <style scoped>
+  #joinVip{
+    width: 100vw;
+    height: 100vh;
+  }
   .mint-header{
     background: #74a92e!important;
   }
@@ -136,7 +139,7 @@
   .joinVipBtn label:before{
     content: '';
     position:absolute;
-    top: 45%;
+    top: 42%;
     left: 10%;
     width: 12px;
     height: 12px;

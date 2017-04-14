@@ -1,6 +1,7 @@
 <template>
-  <div>
-
+  <div id="order">
+    <mt-header title="订单">
+    </mt-header>
   </div>
 </template>
 
@@ -19,6 +20,7 @@
 </script>
 
 <style>
-
-
+  .mint-header{
+    background: #74a92e!important;
+  }
 </style>

@@ -66,7 +66,7 @@
             flex: 1,
             values: [],
             className: 'slot1',
-            textAlign: 'left'
+            textAlign: 'center'
           },
           {
             divider: true,
@@ -82,13 +82,13 @@
           {
             divider: true,
             content: '-',
-            className: 'right'
+            className: 'center'
           },
           {
             flex: 1,
             values: [],
             className: 'slot3',
-            textAlign: 'left'
+            textAlign: 'center'
           }
         ],
         prv: ''
