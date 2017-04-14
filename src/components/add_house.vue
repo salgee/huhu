@@ -1,14 +1,14 @@
 <template>
   <div id="add">
     <mt-header title="添加房源" style="background: #79ac36;">
-        <mt-button icon="back" slot="left" @click="$router.go(-1)"></mt-button>
+        <mt-button icon="back" slot="left" @click="$router.push({name: 'home'})"></mt-button>
     </mt-header>
     <div class="content">
       <mt-cell title="地址" to="/home/addHouse/address">
         <img src="../assets/images/返回@2x.png" alt="" width="8" height="14">
         <img slot="icon" src="../assets/images/地址@2x.png" width="20" >
       </mt-cell>
-      <mt-cell title="房型">
+      <mt-cell title="房型" @click="console.log(1)">
         <img src="../assets/images/返回@2x.png" alt="" width="8" height="14">
         <img slot="icon" src="../assets/images/房型@2x.png" width="20" >
       </mt-cell>
@@ -47,7 +47,6 @@ import {Cell, Header, Button} from 'mint-ui'
 export default {
   name: 'addHouse',
   mounted () {
-
   },
   data () {
     return {}
@@ -80,9 +79,6 @@ a {
   width: 95%;
   margin-left: 5%;
 }
-#add .mint-cell+.mint-cell .mint-cell-wrapper{
-  border-top: 1px solid #ddd;
-}
 #add .mint-cell-title span{
   font-size: 15px;
   margin-left: 20px;
@@ -109,6 +105,15 @@ a {
 }
 #add .submit button{
   background-color: #79ac36;
-  box-shadow: 0 5px 0 1px #ddd;
+  box-shadow: 0 3px 0 1px #ddd;
+}
+#add .mint-cell:last-child {
+  background-image: none;
+}
+#add .mint-cell:first-child .mint-cell-wrapper {
+  background-image: none;
+}
+.mint-toast {
+  font-size: 12px !important;
 }
 </style>

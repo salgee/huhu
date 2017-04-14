@@ -15,7 +15,7 @@ import wangjipws from './components/wangjipws.vue'
 import register from './components/register.vue'
 import address from './components/add_house_info/add_address.vue'
 import vipAgreement from './components/join_vip_agreement.vue'
-
+import map from './components/add_house_info/map.vue'
 // 定义路由集合
 const routes = [
   {
@@ -84,6 +84,11 @@ const routes = [
     name: 'vipAgreement',
     path: '/user/joinVip/vipAgreement',
     component: vipAgreement
+  },
+  {
+    name: 'map',
+    path: '/home/addHouse/address/map',
+    component: map
   }
 ]
 export default routes
