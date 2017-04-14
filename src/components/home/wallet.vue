@@ -1,6 +1,7 @@
 <template>
-  <div>
-
+  <div id="wallet">
+    <mt-header title="钱包">
+    </mt-header>
   </div>
 </template>
 
@@ -19,6 +20,7 @@
 </script>
 
 <style>
-
-
+  .mint-header{
+    background: #74a92e!important;
+  }
 </style>

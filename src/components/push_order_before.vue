@@ -6,11 +6,13 @@
     <div class="pushInfo">
       <mt-cell title="接待方式">
         <img slot="icon" src="../assets/images/客户接待@2x.png" width="20">
-        <img src="../assets/images/返回@2x.png" width="8" height="14" @click="reception">
+        <img src="../assets/images/返回@2x.png" width="8" height="14" @click="openPicker" v-if="reception==''">
+        <span v-model="reception" v-else @click="openPicker">{{reception}}</span>
       </mt-cell>
       <mt-cell title="接引时间">
         <img slot="icon" src="../assets/images/接引时间@2x.png" width="20" >
-        <img src="../assets/images/返回@2x.png" width="8" height="14">
+        <img src="../assets/images/返回@2x.png" width="8" height="14" @click="openReceiveTime" v-if="receive==''">
+        <span v-model="receive" v-else @click="openReceiveTime">{{receive}}</span>
       </mt-cell>
       <mt-cell title="清洁时间">
         <img slot="icon" src="../assets/images/清洁时间@2x.png" width="20" >
@@ -41,36 +43,89 @@
       <div>合计:￥119</div>
       <button class="btn">我要下单</button>
     </div>
-    <mt-popup v-model="popupReception" position="bottom">
-      <mt-picker :slots="slots" :showToolbar="true">
+    <mt-popup v-model="popupReception" position="bottom" >
+      <mt-picker :slots="receptionSlots" :showToolbar="true" @change="getValue">
         <div class="pickerTitle">
-          <div style="text-align: left;">取消</div>
-          <div style="text-align: right;color:#74a92e">确定</div>
+          <div style="text-align: left;"><span @click="receptionCancel">取消</span></div>
+          <div style="text-align: right;color:#74a92e"><span @click="getReception">确定</span></div>
+        </div>
+      </mt-picker>
+    </mt-popup>
+    <mt-popup v-model="popupReceive" position="bottom">
+      <mt-picker :slots="ReceiveSlots" :showToolbar="true" @change="getReceiveTimeValue">
+        <div class="pickerTitle">
+          <div style="text-align: left;"><span @click="receiveCancel">取消</span></div>
+          <div style="text-align: right;color:#74a92e"><span @click="getReceive">确定</span></div>
         </div>
       </mt-picker>
     </mt-popup>
   </div>
 </template>
 <script>
+//  import { Picker } from 'mint-ui'
   export default{
     methods: {
       goHome: function () {
         this.$router.push('/')
       },
-      reception: function () {
+//  -------------------------------接待方式popup和picker
+      openPicker: function () {
         this.popupReception = true
+      },
+      receptionCancel: function () {
+        this.popupReception = false
+      },
+      getReception: function () {
+        this.popupReception = false
+        this.reception = this.saveReception
+      },
+      getValue: function (picker) {
+        this.saveReception = picker.getValues()[0]
+      },
+//  -------------------------------接待时间popup和picker
+      openReceiveTime: function () {
+        this.popupReceive = true
+      },
+      receiveCancel: function () {
+        this.popupReceive = false
+      },
+      getReceive: function () {
+        this.popupReceive = false
+        this.receive = this.saveReceive
+      },
+      getReceiveTimeValue: function (picker) {
+        this.saveReceive = picker.getValues()[0] + picker.getValues()[1]
       }
     },
     data () {
       return {
+//  -------------------------------接待方式popup和picker
         popupReception: false,
-        slots: [
+        receptionSlots: [
           {
             values: ['自主入住', '接引客户'],
-            className: 'slot1',
+            className: 'receptionSlot',
             textAlign: 'center'
           }
-        ]
+        ],
+        reception: '',
+        saveReception: '',
+//  ------------------------------接待时间popup和picker
+        popupReceive: false,
+        ReceiveSlots: [
+          {
+            values: ['2017-4-15(周六)', '2017-4-16(周日)', '2017-4-17(周一)', '2017-4-18(周二)', '2017-4-19(周三)', '2017-4-20(周四)', '2017-4-21(周五)'],
+            className: 'receiveSlots1',
+            textAlign: 'left'
+          },
+          {
+            values: ['08:00-08:30', '08:30-09:00', '09:00-09:30', '09:30-10:00', '10:00-10:30', '10:30-11:00', '11:00-11:30'],
+            className: 'receiveSlots2',
+            textAlign: 'right'
+          }
+        ],
+        receive: '',
+        saveReceive: ''
       }
     }
   }
@@ -88,6 +143,10 @@
     margin-top: 10px;
     margin-bottom: 10px;
     background: #fff;
+  }
+  .pushInfo span{
+    font-size: 13px;
+    color: #000;
   }
   .pushInfo .guest{
     border: none;
@@ -181,11 +240,16 @@
     padding: 0 10px;
     box-sizing: border-box;
   }
+
+
 </style>
 <style>
   .pushInfo .mint-cell-title span{
     color: #8c8c8c;
     font-size: 15px;
     padding-left: 10px;
+  }
+  .receptionSlot{
+    width: 100%;
   }
 </style>

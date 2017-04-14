@@ -5,11 +5,11 @@
         <img src="../assets/images/vip灰色@2x.png" class="vipImg" v-else @click="joinVip">
         <div class="houseAddress">
           <img src="../assets/images/地址@2x.png" class="addressImg">
-          <span>{{houseInfo.district}}</span><span>{{houseInfo.address}}</span><span>{{houseInfo.buildingNo}}</span>
+          <span>{{district}}</span><span>{{houseInfo.address}}</span><span>{{houseInfo.buildingNo}}</span>
         </div>
         <div class="houseInfo">
           <span>{{houseInfo.bedRoom}}&nbsp;居室&nbsp;/</span>
-          <span>{{houseInfo.bedAmount}}&nbsp;张床&nbsp;/</span>
+          <span>{{bedNum}}&nbsp;张床&nbsp;/</span>
           <span>{{houseInfo.doorWayName}}</span>
         </div>
         <div class="houseBtn">
@@ -22,13 +22,16 @@
 </template>
 <script>
   import Axios from 'axios'
+  import _ from 'lodash'
   Axios.defaults.baseURL = 'http://a.com'
   export default{
     props: ['houseInfo'],
     data () {
       return {
         vipIsOrNo: this.houseInfo.vip,
-        upAndDown: this.houseInfo.status
+        upAndDown: this.houseInfo.status,
+        bedNum: '',
+        district: ''
       }
     },
     methods: {
@@ -37,9 +40,27 @@
       },
       joinVip: function () {
         this.$router.push('/user/joinVip')
+      },
+      howBed: function () {
+        let array = this.houseInfo.bedAmount.split(',').join(':').split(':')
+        let evens = _.filter(array, function (n, i) {
+          return i % 2 !== 0
+        })
+//      reduce() js原生高级函数。 parseInt() 解析一个数字字符串，并返回一个整数。
+        this.bedNum = evens.reduce(function (x, y) {
+          return parseInt(x) + parseInt(y)
+        })
+      },
+      getDistrict: function () {
+        if (this.houseInfo.district == null) {
+          this.district = ''
+        } else {
+//          this.district =
+        }
       }
     },
     mounted: function () {
+      this.howBed()
     }
   }
 </script>
