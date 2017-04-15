@@ -62,7 +62,8 @@
             duration: 1000
           })
         } else {
-          vm.$router.push({name: 'address', params: {address: vm.$refs.input.value}})
+          sessionStorage.huhu_address = vm.$refs.input.value
+          vm.$router.push({name: 'address'})
         }
       }
     },

@@ -1,11 +1,12 @@
 <template>
   <div id="add">
     <mt-header title="添加房源" style="background: #79ac36;">
-        <mt-button icon="back" slot="left" @click="$router.push({name: 'home'})"></mt-button>
+        <mt-button icon="back" slot="left" @click="clearAdData"></mt-button>
     </mt-header>
     <div class="content">
       <mt-cell title="地址" to="/home/addHouse/address">
-        <img src="../assets/images/返回@2x.png" alt="" width="8" height="14">
+        <span v-if="address">{{address}}</span>
+        <img v-else src="../assets/images/返回@2x.png" alt="" width="8" height="14">
         <img slot="icon" src="../assets/images/地址@2x.png" width="20" >
       </mt-cell>
       <mt-cell title="房型" @click="console.log(1)">
@@ -49,9 +50,22 @@ export default {
   mounted () {
   },
   data () {
-    return {}
+    return {
+      address: sessionStorage.huhu_wholeAddress
+    }
   },
-  methods: {},
+  methods: {
+    clearAdData () {
+      let vm = this
+      Promise.resolve(
+        sessionStorage.clear()
+      ).then(
+        () => {
+          vm.$router.push('/home')
+        }
+      )
+    }
+  },
   components: {
     Cell,
     mtHeader: Header,
@@ -74,6 +88,15 @@ a {
 #add{
   width: 100vw;
   height: 100vh;
+}
+#add .mint-cell-value{
+  max-width: 200px;
+  font-size: 12px;
+}
+#add .mint-cell-value span {
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
 }
 #add .mint-cell-wrapper {
   width: 95%;

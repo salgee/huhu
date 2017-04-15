@@ -1,7 +1,7 @@
 <template>
   <div id="add">
     <mt-header title="地址详情" style="background: #79ac36;">
-      <mt-button icon="back" slot="left" @click="$router.push({name: 'add'})"></mt-button>
+      <mt-button icon="back" slot="left" @click="clearAdData"></mt-button>
     </mt-header>
     <div class="content">
       <a @click="popUp">
@@ -52,15 +52,14 @@
       this.prv = province.provinces.map(
         (name) => name.provincename
       )
-      this.addressDet = this.$route.params.address || '请输入小区地址'
     },
     data () {
       return {
         popupVisible: false,
         selectedArea: '',
-        title: '省、市、区',
-        addressDet: '',
-        buldingNo: '',
+        title: sessionStorage.huhu_province || '省、市、区',
+        addressDet: sessionStorage.huhu_address || '请输入小区地址',
+        buldingNo: sessionStorage.huhu_No || '',
         slots: [
           {
             flex: 1,
@@ -137,7 +136,7 @@
             duration: 2000
           })
         } else {
-          vm.title = vm.selectedArea
+          vm.title = sessionStorage.huhu_province = vm.selectedArea
         }
         this.popupVisible = false
       },
@@ -167,6 +166,31 @@
           })
           return
         }
+        Promise.resolve((() => {
+          sessionStorage.huhu_No = vm.buldingNo
+          sessionStorage.huhu_wholeAddress = sessionStorage.huhu_province + sessionStorage.huhu_address + sessionStorage.huhu_No
+        })()
+        ).then(
+          () => {
+            vm.$router.push({name: 'add'})
+          }
+        )
+      },
+      clearAdData () {
+        let vm = this
+        Promise.resolve((() => {
+          if (sessionStorage.huhu_wholeAddress !== undefined) {
+            return
+          }
+          window.sessionStorage.removeItem('huhu_province')
+          window.sessionStorage.removeItem('huhu_address')
+          window.sessionStorage.removeItem('huhu_No')
+        })()
+        ).then(
+          () => {
+            vm.$router.push({name: 'add'})
+          }
+        )
       }
     },
     components: {
