@@ -35,6 +35,7 @@ body{
   font-family: 'Avenir', Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  background-color: #ededed;
 }
 a{
   text-decoration: none;
@@ -48,7 +49,7 @@ a{
   transition: transform .3s linear;
 }
 .slide-left-leave-active {
-  positon: absolute;
+  position: absolute;
   top: 0;
   z-index: 99;
   transform: translateX(-10%);

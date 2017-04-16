@@ -38,24 +38,23 @@
         currentAddress: '',
         nearByAddress: [],
         sug: '',
-        map: ''
+        map: '',
+        coordinate: ''
       }
     },
     methods: {
       setPlace (address, poi) {
         let vm = this
-        vm.$refs.input.id = ''
         vm.map.panTo(poi)
-        nearBy(poi, vm)
+        nearBy(poi, vm, address)
         vm.$refs.ul.scrollTop = 0
-        vm.$refs.input.value = address
       },
       tip () {
         this.$refs.input.id = 'suggestId'
       },
       saveAddress () {
         let vm = this
-        if (vm.$refs.input.value === '') {
+        if (vm.$refs.input.value === '' || vm.coordinate === '') {
           Toast({
             message: '请选择地址',
             position: 'bottom',
@@ -63,6 +62,7 @@
           })
         } else {
           sessionStorage.huhu_address = vm.$refs.input.value
+          sessionStorage.huhu_coordinate = vm.coordinate
           vm.$router.push({name: 'address'})
         }
       }
@@ -132,8 +132,9 @@
     list-style: none;
     padding: 10px;
   }
-  #map .mint-cell-wrapper,.mint-cell{
+  #map .mint-cell-wrapper,#map .mint-cell{
     background-image: none !important;
+    cursor: pointer;
   }
   #map .area-suggestion li+li{
     border-top: 1px solid #000;

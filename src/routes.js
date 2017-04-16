@@ -22,7 +22,7 @@ import youhuijuan from './components/wode/youhuijuan'
 import zhifumima from './components/wode/zhifumima'
 import shezhi from './components/wode/shezhi'
 import fenxiang from './components/wode/fenxiang'
-
+import bedInfo from './components/add_house_info/bed_info.vue'
 // 定义路由集合
 const routes = [
   {
@@ -134,6 +134,11 @@ const routes = [
     name: 'vipTakeMoney',
     path: '/user/joinVip/vipTakeMoney',
     component: vipTakeMoney
+  },
+  {
+    name: 'bedInfo',
+    path: '/home/addHouse/bedInfo',
+    component: bedInfo
   }
 ]
 export default routes

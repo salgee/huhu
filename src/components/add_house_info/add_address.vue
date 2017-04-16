@@ -4,18 +4,16 @@
       <mt-button icon="back" slot="left" @click="clearAdData"></mt-button>
     </mt-header>
     <div class="content">
-      <a @click="popUp">
+      <a class="city" @click="popUp">
       <mt-cell :title="title">
         <img src="../../assets/images/返回@2x.png" alt="" width="8" height="14">
         <img slot="icon" src="../../assets/images/省市区@2x.png" width="20" >
       </mt-cell>
       </a>
-      <router-link :to="{ name: 'map'}">
-        <mt-cell :title="addressDet" >
-          <img src="../../assets/images/返回@2x.png" alt="" width="8" height="14">
-          <img slot="icon" src="../../assets/images/地址@2x.png" width="20" >
-        </mt-cell>
-      </router-link>
+      <mt-cell :title="addressDet" to="/home/addHouse/address/map">
+        <img src="../../assets/images/返回@2x.png" alt="" width="8" height="14">
+        <img slot="icon" src="../../assets/images/地址@2x.png" width="20" >
+      </mt-cell>
       <div display="none"></div>
       <div class="address-details">
         <img src="../../assets/images/请输入详细楼号@2x.png" width="20" >
@@ -30,7 +28,6 @@
         <mt-picker
           :slots="slots"
           :showToolbar=true
-          valueKey="provincename"
           @change="onValuesChange">
           <div class="title">
             <span @click="popupVisible=false">取消</span>
@@ -52,11 +49,13 @@
       this.prv = province.provinces.map(
         (name) => name.provincename
       )
+      console.log(this.seletedID)
     },
     data () {
       return {
         popupVisible: false,
         selectedArea: '',
+        seletedID: {},
         title: sessionStorage.huhu_province || '省、市、区',
         addressDet: sessionStorage.huhu_address || '请输入小区地址',
         buldingNo: sessionStorage.huhu_No || '',
@@ -95,6 +94,7 @@
     },
     methods: {
       onValuesChange (picker, values) {
+        let vm = this
         if (values[0] === undefined) return
         // 过滤省级列表获取省级id
         let selPrv = province.provinces.filter(
@@ -105,7 +105,7 @@
           (name) => name.fatherID === selPrv[0].provinceID
         )
         // 将符合要求的市级列表返回
-        this.slots[2].values = cities.map(
+        vm.slots[2].values = cities.map(
           (name) => name.cityname
         )
         // 过滤市级列表获取市级id
@@ -118,10 +118,21 @@
           (name) => name.fatherID === selCity[0].cityID
         )
         // 将符合要求的区级列表返回
-        this.slots[4].values = areas.map(
+        vm.slots[4].values = areas.map(
           (name) => name.areaname
         )
-        this.selectedArea = values.join('')
+        // 返回所在地区区号
+        let selArea = areas.filter(
+          (name) => name.areaname === values[2]
+        )
+        if (selArea[0] === undefined) return
+        vm.selectedArea = values.join('')
+        // 保存省市区ID
+        if (selPrv[0].provinceID !== '310000') return
+        vm.seletedID.province = selPrv[0].provinceID
+        vm.seletedID.city = selCity[0].cityID
+        vm.seletedID.district = selArea[0].areaID
+        sessionStorage.huhu_addressID = JSON.stringify(vm.seletedID)
       },
       popUp () {
         this.slots[0].values = this.prv
@@ -185,6 +196,7 @@
           window.sessionStorage.removeItem('huhu_province')
           window.sessionStorage.removeItem('huhu_address')
           window.sessionStorage.removeItem('huhu_No')
+          window.sessionStorage.removeItem('huhu_addressID')
         })()
         ).then(
           () => {
@@ -205,10 +217,10 @@
 
 <style scoped>
 #add .address-details{
-  margin-left: 5%;
-  padding: 0 10px;
+  margin-left: 8%;
   height: 48px;
   line-height: 48px;
+  border-top: 1px solid #ddd;
 }
 #add .address-details img{
   vertical-align: middle;
@@ -217,26 +229,11 @@
   border: none;
   outline: none;
   vertical-align: middle;
+  width: 80%;
   margin-left: 25px;
   font-size: 15px;
 }
 #add .submit{
   top:300px;
-}
-#add .mint-popup{
-  width: 100%;
-}
-#add .title {
-  overflow: hidden;
-  padding: 10px;
-  border: 1px solid #ddd;
-}
-#add .title span:first-child,#add .title span:last-child{
-  float: left;
-  font-size: 16px;
-  color: royalblue;
-}
-#add .title span:last-child{
-  float: right;
 }
 </style>

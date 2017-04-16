@@ -107,10 +107,14 @@ function Bmap (target) {
 }
 // 返回附近地点
 let geoc = new BMap.Geocoder()
-function nearBy (pt, target) {
+function nearBy (pt, target, address) {
   geoc.getLocation(pt, function (rs) {
+    target.$refs.input.id = ''
     target.currentAddress = rs.address
     target.nearByAddress = rs.surroundingPois
+    target.coordinate = `${rs.point.lat},${rs.point.lng}`
+    target.$refs.input.value = address || rs.address
+    target.$refs.input.blur()
   }, {
     poiRadius: 1000, // 检索范围
     numPois: 10 // 返回坐标数

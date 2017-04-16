@@ -34,7 +34,8 @@
       getAds () {
         Axios.get('/api/manage/advertising/web/all',
           {
-            headers: {'Content-Type': 'application/json'}
+            headers: {
+              'Content-Type': 'application/json'}
           }).then(function (data) {
             if (data.status === 200) {
             }
