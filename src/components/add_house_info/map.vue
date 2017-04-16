@@ -39,7 +39,7 @@
         nearByAddress: [],
         sug: '',
         map: '',
-        coordinate: ''
+        coordinate: {}
       }
     },
     methods: {
@@ -62,7 +62,7 @@
           })
         } else {
           sessionStorage.huhu_address = vm.$refs.input.value
-          sessionStorage.huhu_coordinate = vm.coordinate
+          sessionStorage.huhu_coordinate = JSON.stringify(vm.coordinate)
           vm.$router.push({name: 'address'})
         }
       }

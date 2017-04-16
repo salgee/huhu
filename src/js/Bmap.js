@@ -112,7 +112,7 @@ function nearBy (pt, target, address) {
     target.$refs.input.id = ''
     target.currentAddress = rs.address
     target.nearByAddress = rs.surroundingPois
-    target.coordinate = `${rs.point.lat},${rs.point.lng}`
+    target.coordinate = rs.point
     target.$refs.input.value = address || rs.address
     target.$refs.input.blur()
   }, {

@@ -39,9 +39,9 @@ export default {
   name: 'addHouse',
   data () {
     return {
-      check4Small: !(sessionStorage.huhu_smallBed === 'false'),
-      check4Middle: !(sessionStorage.huhu_middleBed === 'false'),
-      check4Big: !(sessionStorage.huhu_bigBed === 'false'),
+      check4Small: Boolean(Number(sessionStorage.huhu_smallBed)),
+      check4Middle: Boolean(Number(sessionStorage.huhu_middleBed)),
+      check4Big: Boolean(Number(sessionStorage.huhu_bigBed)),
       samllBed: sessionStorage.huhu_smallBed,
       middleBed: sessionStorage.huhu_middleBed,
       bigBed: sessionStorage.huhu_bigBed

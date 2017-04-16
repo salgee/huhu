@@ -227,7 +227,7 @@ export default {
       json.address = sessionStorage.huhu_address
       json.buildingNo = sessionStorage.huhu_No
       json.area = vm.houseArea[vm.houseType]
-      json.bedRoom = sessionStorage.huhu_houseType.slice(0)
+      json.bedRoom = sessionStorage.huhu_houseType.slice(0, 1)
       let bedAmount = sessionStorage.huhu_smallBed !== 'false' ? `1.35:${sessionStorage.huhu_smallBed},` : ''
       bedAmount += sessionStorage.huhu_middleBed !== 'false' ? `1.5:${sessionStorage.huhu_middleBed},` : ''
       bedAmount += sessionStorage.huhu_bigBed !== 'false' ? `1.8:${sessionStorage.huhu_bigBed},` : ''
@@ -237,22 +237,29 @@ export default {
       json.wifiName = sessionStorage.huhu_wifiProfile
       json.wifiPwd = sessionStorage.huhu_wifiPwd
       json.foregift = 123.67
-      json.coordinate = sessionStorage.huhu_coordinate
+      json.lat = JSON.parse(sessionStorage.huhu_coordinate).lat
+      json.lng = JSON.parse(sessionStorage.huhu_coordinate).lng
       Axios.post('/api/house/add',
         json, {
           headers: {
             'Content-Type': 'application/json',
-            'token': localStorage.token
+            'x-api-token': localStorage.token
           }
         }).then(function (data) {
-          if (data.status === 200) {
+          if (data.data.message === 'isOk') {
+            Toast({
+              message: '添加成功',
+              position: 'bottom',
+              duration: 2000
+            })
+            sessionStorage.clear()
+            vm.$router.push('/home')
+          } else {
             Toast({
               message: data.data.message,
               position: 'bottom',
               duration: 2000
             })
-          } else {
-            console.log(data.message)
           }
         })
     }
