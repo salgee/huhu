@@ -10,7 +10,10 @@
       <img slot="icon" src="../../assets/images/布告栏@2x.png" width="14" height="14">
     </mt-cell>
       <div class="houseList" style="padding-bottom: 40px;padding-top: 5px;">
-        <houseItem v-for="houseInfo in houseInfos" key="houseInfo" :houseInfo="houseInfo"></houseItem>
+        <div class="homeBackground" v-if="houseInfos.length === 0">
+          <p>您还没有添加房源哦，赶快去添加吧</p>
+        </div>
+        <houseItem v-else v-for="houseInfo in houseInfos" key="houseInfo" :houseInfo="houseInfo"></houseItem>
       </div>
   </div>
 </template>
@@ -23,6 +26,7 @@
     name: 'addHouse',
     mounted () {
       this.homeList()
+      console.log(this.houseInfos.length)
     },
     data () {
       return {
@@ -88,5 +92,21 @@
 }
 .home-nav .mint-cell-wrapper{
   font-size: 12px;
+}
+.homeBackground {
+  position: relative;
+  padding-top: 100%;
+  font-size: 13px;
+  text-align: center;
+    background: url(../../assets/images/activity_one_house.png) no-repeat center;
+  background-size: 40%;
+}
+.homeBackground p {
+  position: absolute;
+  top: 70%;
+  left: 0;
+  right: 0;
+  color: #bdbdbd;
+  letter-spacing: 2px;
 }
 </style>
