@@ -13,7 +13,7 @@
         <div class="homeBackground" v-if="houseInfos.length === 0">
           <p>您还没有添加房源哦，赶快去添加吧</p>
         </div>
-        <houseItem v-else v-for="houseInfo in houseInfos" key="houseInfo" :houseInfo="houseInfo"></houseItem>
+        <houseItem v-else v-for="houseInfo in houseInfos" key="houseInfo.id" :houseInfo="houseInfo"></houseItem>
       </div>
   </div>
 </template>
@@ -26,7 +26,6 @@
     name: 'addHouse',
     mounted () {
       this.homeList()
-      console.log(this.houseInfos.length)
     },
     data () {
       return {

@@ -1,8 +1,7 @@
 <template>
-    <div id="houseOne">
-      <div class="houseItem">
+      <div class="houseItem" @click="abc">
         <img src="../assets/images/vip标识@2x.png" class="vipImg"  v-if="vipIsOrNo">
-        <img src="../assets/images/vip灰色@2x.png" class="vipImg" v-else @click="joinVip">
+        <img src="../assets/images/vip灰色@2x.png" class="vipImg" v-else @click.stop="joinVip">
         <div class="houseAddress">
           <img src="../assets/images/地址@2x.png" class="addressImg">
           <span>{{district}}</span><span>{{houseInfo.address}}</span><span>{{houseInfo.buildingNo}}</span>
@@ -14,11 +13,10 @@
         </div>
         <div class="houseBtn">
           <button class="oneClick" v-if="upAndDown == 'offLine'" >一键上架</button>
-          <button class="oneClick" v-else @click="pushOrderBefore">一键下单</button>
-          <button class="joinVIP" v-if="!vipIsOrNo" @click="joinVip">加入VIP</button>
+          <button class="oneClick" v-else @click.stop="pushOrderBefore">一键下单</button>
+          <button class="joinVIP" v-if="!vipIsOrNo" @click.stop="joinVip">加入VIP</button>
         </div>
       </div>
-    </div>
 </template>
 <script>
   import Axios from 'axios'
@@ -35,6 +33,9 @@
       }
     },
     methods: {
+      abc: function () {
+        this.$router.push('/user/changeHouse')
+      },
       pushOrderBefore: function () {
         this.$router.push('pushOrderBefore')
       },
@@ -62,6 +63,7 @@
     },
     mounted: function () {
       this.howBed()
+      this.getDistrict()
     }
   }
 </script>

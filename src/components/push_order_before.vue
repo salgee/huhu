@@ -43,14 +43,16 @@
       <div>合计:￥119</div>
       <button class="btn">我要下单</button>
     </div>
+    <!--接待方式-->
     <mt-popup v-model="popupReception" position="bottom" >
-      <mt-picker :slots="receptionSlots" :showToolbar="true" @change="getValue">
+      <mt-picker :slots="receptionSlots" :showToolbar="true" @change="getValue" :visibleItemCount="3">
         <div class="pickerTitle">
           <div style="text-align: left;"><span @click="receptionCancel">取消</span></div>
           <div style="text-align: right;color:#74a92e"><span @click="getReception">确定</span></div>
         </div>
       </mt-picker>
     </mt-popup>
+    <!--接待时间-->
     <mt-popup v-model="popupReceive" position="bottom">
       <mt-picker :slots="ReceiveSlots" :showToolbar="true" @change="getReceiveTimeValue">
         <div class="pickerTitle">
