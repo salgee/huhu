@@ -23,10 +23,9 @@
   import Axios from 'axios'
   Axios.defaults.baseURL = 'http://a.com'
   export default {
-    name: 'addHouse',
+    name: 'housenav',
     mounted () {
       this.homeList()
-      console.log(this.houseInfos.length)
     },
     data () {
       return {

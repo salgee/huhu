@@ -88,6 +88,14 @@ import json from '../assets/db/houseInfo.json'
 Axios.defaults.baseURL = 'http://a.com'
 export default {
   name: 'addHouse',
+  beforeRouteEnter (to, from, next) {
+    // 在渲染该组件的对应路由被 confirm 前调用
+    if (sessionStorage.overdueToken === '1') {
+      next('/user/login')
+    } else {
+      next()
+    }
+  },
   data () {
     return {
       address: sessionStorage.huhu_wholeAddress,
@@ -271,13 +279,6 @@ export default {
     Picker,
     Popup,
     Toast
-  },
-  beforeRouteEnter (to, from, next) {
-    if (localStorage.length === 0) {
-      next('/login')
-    } else {
-      next()
-    }
   }
 }
 </script>
