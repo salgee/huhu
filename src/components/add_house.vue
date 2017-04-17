@@ -10,7 +10,7 @@
         <img slot="icon" src="../assets/images/地址@2x.png" width="20" >
       </mt-cell>
       <a @click="popUp">
-        <mt-cell title="房型" @click="console.log(1)">
+        <mt-cell title="房型">
           <span v-if="houseType">{{houseType}}</span>
           <img v-else src="../assets/images/返回@2x.png" alt="" width="8" height="14">
           <img slot="icon" src="../assets/images/房型@2x.png" width="20" >
@@ -88,6 +88,15 @@ import json from '../assets/db/houseInfo.json'
 Axios.defaults.baseURL = 'http://a.com'
 export default {
   name: 'addHouse',
+  beforeRouteEnter (to, from, next) {
+    // 在渲染该组件的对应路由被 confirm 前调用
+    if (sessionStorage.overdueToken === '1') {
+      next('/user/login')
+    } else {
+      if (from.path.indexOf('add') === -1) sessionStorage.huhu_path = from.path
+      next()
+    }
+  },
   data () {
     return {
       address: sessionStorage.huhu_wholeAddress,
@@ -138,11 +147,14 @@ export default {
   methods: {
     clearAdData () {
       let vm = this
-      Promise.resolve(
+      Promise.resolve((() => {
+        let path = sessionStorage.huhu_path || '/home'
         sessionStorage.clear()
+        return path
+      })()
       ).then(
-        () => {
-          vm.$router.push('/home')
+        (path) => {
+          vm.$router.push(path)
         }
       )
     },
@@ -252,8 +264,9 @@ export default {
               position: 'bottom',
               duration: 2000
             })
+            let path = sessionStorage.huhu_path || '/home'
             sessionStorage.clear()
-            vm.$router.push('/home')
+            vm.$router.push(path)
           } else {
             Toast({
               message: data.data.message,
@@ -271,13 +284,6 @@ export default {
     Picker,
     Popup,
     Toast
-  },
-  beforeRouteEnter (to, from, next) {
-    if (localStorage.length === 0) {
-      next('/login')
-    } else {
-      next()
-    }
   }
 }
 </script>

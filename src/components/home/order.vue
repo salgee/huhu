@@ -29,7 +29,7 @@
 
 <script>
   export default {
-    name: 'addHouse',
+    name: 'order',
     mounted () {
 
     },
