@@ -51,11 +51,12 @@
           return parseInt(x) + parseInt(y)
         })
       },
+      //  用区名替换数字区码
       getDistrict: function () {
-        if (this.houseInfo.district == null) {
+        if (this.houseInfo.district === 'null') {
           this.district = ''
         } else {
-//          this.district =
+          this.district = this.houseInfo.district
         }
       }
     },

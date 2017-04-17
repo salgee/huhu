@@ -22,7 +22,6 @@
   export default {
     name: 'addHouse',
     mounted () {
-      this.getAds()
       this.homeList()
     },
     data () {
@@ -31,18 +30,6 @@
       }
     },
     methods: {
-      getAds () {
-        Axios.get('/api/manage/advertising/web/all',
-          {
-            headers: {
-              'Content-Type': 'application/json'}
-          }).then(function (data) {
-            if (data.status === 200) {
-            }
-//            console.log(data)
-//            console.log('------------------------')
-          })
-      },
       //  whyccup写的
       homeList: function () {
         let that = this
@@ -52,8 +39,15 @@
               'x-api-token': localStorage.token
             }
           }).then(function (data) {
-            if (data.status === 200) {
+            if (data.data.message === 'isOk') {
+              sessionStorage.overdueToken = 0
               that.houseInfos = data.data.data
+            } else {
+              sessionStorage.overdueToken = 1
+              that.$toast({
+                message: '您的登录已过期',
+                position: 'bottom'
+              })
             }
             console.log(data)
           })

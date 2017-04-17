@@ -1,6 +1,7 @@
 <template>
   <div id="order">
     <mt-header title="订单">
+      <!--<mt-button icon="back" slot="right" @click="goPushList"></mt-button>-->
     </mt-header>
   </div>
 </template>
