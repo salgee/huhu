@@ -43,7 +43,7 @@
       goHome: function () {
         this.$messagebox.confirm('确定放弃吗?', '')
           .then(action => {
-            this.$router.push('/')
+            window.history.go(-1)
           })
       },
       takeMoney: function () {
@@ -64,6 +64,7 @@
 </script>
 <style scoped>
   #joinVip{
+    width: 100vw;
     height: 100vh;
   }
   .mint-header{

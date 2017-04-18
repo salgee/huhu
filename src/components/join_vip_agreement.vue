@@ -13,13 +13,14 @@
   export default{
     methods: {
       goVip: function () {
-        this.$router.push('/user/joinVip')
+        window.history.go(-1)
       }
     }
   }
 </script>
 <style scoped>
   #agreement{
+    width: 100vw;
     height: 100vh;
   }
   .mint-header{

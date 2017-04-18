@@ -10,7 +10,10 @@
       <img slot="icon" src="../../assets/images/布告栏@2x.png" width="14" height="14">
     </mt-cell>
       <div class="houseList" style="padding-bottom: 40px;padding-top: 5px;">
-        <houseItem v-for="houseInfo in houseInfos" key="houseInfo" :houseInfo="houseInfo"></houseItem>
+        <div class="homeBackground" v-if="houseInfos.length === 0">
+          <p>您还没有添加房源哦，赶快去添加吧</p>
+        </div>
+        <houseItem v-else v-for="houseInfo in houseInfos" key="houseInfo.id" :houseInfo="houseInfo"></houseItem>
       </div>
   </div>
 </template>
@@ -20,9 +23,8 @@
   import Axios from 'axios'
   Axios.defaults.baseURL = 'http://a.com'
   export default {
-    name: 'addHouse',
+    name: 'housenav',
     mounted () {
-      this.getAds()
       this.homeList()
     },
     data () {
@@ -31,17 +33,6 @@
       }
     },
     methods: {
-      getAds () {
-        Axios.get('/api/manage/advertising/web/all',
-          {
-            headers: {'Content-Type': 'application/json'}
-          }).then(function (data) {
-            if (data.status === 200) {
-            }
-//            console.log(data)
-//            console.log('------------------------')
-          })
-      },
       //  whyccup写的
       homeList: function () {
         let that = this
@@ -51,8 +42,15 @@
               'x-api-token': localStorage.token
             }
           }).then(function (data) {
-            if (data.status === 200) {
+            if (data.data.message === 'isOk') {
+              sessionStorage.overdueToken = 0
               that.houseInfos = data.data.data
+            } else {
+              sessionStorage.overdueToken = 1
+              that.$toast({
+                message: '您的登录已过期',
+                position: 'bottom'
+              })
             }
             console.log(data)
           })
@@ -93,5 +91,21 @@
 }
 .home-nav .mint-cell-wrapper{
   font-size: 12px;
+}
+.homeBackground {
+  position: relative;
+  padding-top: 100%;
+  font-size: 13px;
+  text-align: center;
+    background: url(../../assets/images/activity_one_house.png) no-repeat center;
+  background-size: 40%;
+}
+.homeBackground p {
+  position: absolute;
+  top: 70%;
+  left: 0;
+  right: 0;
+  color: #bdbdbd;
+  letter-spacing: 2px;
 }
 </style>
