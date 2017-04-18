@@ -6,11 +6,11 @@
     <div class="login-neirong">
       <mt-cell class="login-input">
         <input placeholder="请输入手机号"  v-model="loginphone">
-        <img slot="icon" src="../assets/images/登录手机@2x.png" width="20" height="25">
+        <img slot="icon" src="../assets/images/登录手机@2x.png" width="12" height="21">
       </mt-cell>
       <mt-cell class="login-input">
         <input placeholder="请输入密码" type="password"  v-model="loginpassword">
-        <img slot="icon" src="../assets/images/登录锁@2x.png" width="20" height="25">
+        <img slot="icon" src="../assets/images/登录锁@2x.png" width="13" height="17">
       </mt-cell>
     </div>
     <router-link tag="span" to="/user/wangjipws/#" class="wangjipws">忘记密码?</router-link>
@@ -59,9 +59,10 @@
 
 <style scoped>
   .login{
-    width:100wh;
+    width:100vw;
     height:100vh;
-    background-color:green;
+    background: url(../assets/images/login.png) no-repeat;
+    background-size:100% 100%;
   }
   .login-img{
     width:100%;
@@ -78,8 +79,10 @@
   .login-btn .login-button{
     width:80%;
     margin:20px 10%;
-    border: 2px solid #fff!important;
+    border: 1px solid #fff!important;
     color: #fff!important;
+    font-size: 14px;
+    height: 30px;
   }
   .login-neirong .login-input{
     width:80%;
@@ -91,16 +94,23 @@
     background-color: transparent;
     height: 8vh;
     border: none;
+    outline: 0;
   }
   .login-neirong .login-input input[placeholder], [placeholder], *[placeholder] {
     color:#fff !important;
   }
   .wangjipws{
+    display: inline-block;
     color:#fff;
     margin-left:10%;
+    font-size: 12px;
+    margin-top: 15px;
   }
   .register{
+    display: inline-block;
     color:#fff;
-    margin-left:45%;
+    margin-left:55%;
+    font-size: 12px;
+    margin-top: 15px;
   }
 </style>
