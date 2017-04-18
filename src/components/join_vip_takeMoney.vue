@@ -6,20 +6,14 @@
     <p>支付押金<span>{{money}}</span></p>
     <div class="pay-for">
       <h3>选择支付方式</h3>
-      <mt-cell>
-        <span class="title" slot="title">余额</span>
-        <input type="radio" id="balance" v-model="pay" name="pay"  value="ba">
-        <label for="balance"></label>
-        <img slot="icon" src="../assets/images/余额@2x.png" width="20" height="16">
-      </mt-cell>
       <mt-cell title="微信">
         <span class="title" slot="title">微信</span>
-        <input type="radio" v-model="pay" id="we" name="pay" value="we">
+        <input type="radio" v-model="pay" id="we" name="pay" checked="checked" disabled value="we">
         <label for="we"></label>
         <img slot="icon" src="../assets/images/微信@2x.png" width="20" height="16">
       </mt-cell>
       <div class="submit">
-        <mt-button type="danger" size="large" @click="payFor">提交</mt-button>
+        <mt-button type="danger" size="small" @click="payFor">立即支付</mt-button>
       </div>
     </div>
   </div>
@@ -35,42 +29,77 @@
   export default{
     name: 'payFor',
     mounted () {
-      let vm = this
-      Axios.get('/api/manage/product/detail/houseForegift/310000/310100/1')
-        .then(function (data) {
-          let dt = data.data
-          if (dt.message === 'isOk') {
-            vm.money = data.data.data + '元'
-          } else {
-            vm.money = '金额请求失败，请重试'
-            Toast({
-              message: dt.message,
-              position: 'bottom',
-              duration: 1500
-            })
-          }
-        })
-        .catch(function () {
-          vm.money = '金额请求失败，请重试'
-          Toast({
-            message: '请求错误，请稍后重试',
-            position: 'bottom',
-            duration: 1500
-          })
-        })
+      // 请求支付押金
+      this.getFee()
+      // 请求余额
+      this.getBalance()
     },
     data () {
       return {
-        pay: 'ba',
-        money: ''
+        pay: 'we',
+        money: '',
+        balance: ''
       }
     },
     methods: {
       goVip: function () {
         window.history.go(-1)
       },
+      getFee () {
+        let vm = this
+        Axios.get(`/api/manage/product/detail/houseForegift/${sessionStorage.huhu_province}/${sessionStorage.huhu_city}/${sessionStorage.huhu_bedNum}`)
+          .then(function (data) {
+            let dt = data.data
+            if (dt.message === 'isOk') {
+              vm.money = data.data.data + '元'
+            } else {
+              vm.money = '金额请求失败，请重试'
+              Toast({
+                message: dt.message,
+                position: 'bottom',
+                duration: 1500
+              })
+            }
+          })
+          .catch(function () {
+            vm.money = '金额请求失败，请重试'
+            Toast({
+              message: '请求错误，请稍后重试',
+              position: 'bottom',
+              duration: 1500
+            })
+          })
+      },
+      getBalance () {
+        let vm = this
+        Axios.get('/api/customer/landlord')
+          .then(function (data) {
+            vm.balance = parseFloat(data.data.data.balance).toFixed(2) + '元'
+          })
+          .catch(function (e) {
+            Toast({
+              message: '请求错误，请稍后重试',
+              position: 'bottom',
+              duration: 1500
+            })
+          })
+      },
       payFor () {
-
+        let vm = this
+        if (vm.pay === 'we') {
+          Axios.post('/api/pay/weixin/houseForegif',
+            {
+              price: sessionStorage.huhu_bedNum,
+              houseId: sessionStorage.huhu_key,
+              payType: 'payHouseForegift'
+            })
+        } else {
+          Toast({
+            message: '请求错误，请刷新页面',
+            position: 'bottom',
+            duration: 1500
+          })
+        }
       }
     },
     components: {
@@ -114,7 +143,7 @@
   }
   .pay-for .mint-cell span {
     font-size: 12px;
-    margin-left: 10px;
+    margin: 0 10px;
   }
   .pay-for .mint-cell input{
     display: none;
@@ -143,7 +172,7 @@
   }
   .submit {
     position: absolute;
-    bottom: 60px;
+    bottom: 150px;
     right: 0;
     left: 0;
     margin: auto;
@@ -151,6 +180,8 @@
     text-align: center;
   }
   .submit button{
+    width: 80%;
+    font-size: 12px;
     background-color: #79ac36;
     box-shadow: 0 4px 0 -1px #ddd;
   }

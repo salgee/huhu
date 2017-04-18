@@ -85,8 +85,13 @@
         this.$router.push('/home/pushOrderBefore')
       },
       joinVip: function () {
-        Promise.resolve(
+        let vm = this
+        Promise.resolve((() => {
           sessionStorage.huhu_bedNum = this.bedNum
+          sessionStorage.huhu_province = vm.houseInfo.province
+          sessionStorage.huhu_city = vm.houseInfo.city
+          sessionStorage.huhu_key = vm.houseInfo.id
+        })()
         )
           .then(
             this.$router.push('/user/joinVip')
