@@ -74,11 +74,6 @@ const routes = [
     component: addHouse
   },
   {
-    name: 'user',
-    path: '/user',
-    component: user
-  },
-  {
     name: 'shezhi',
     path: '/shezhi',
     component: shezhi
