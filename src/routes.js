@@ -15,11 +15,11 @@ import wangjipws from './components/wangjipws.vue'
 import register from './components/register.vue'
 import address from './components/add_house_info/add_address.vue'
 import vipAgreement from './components/join_vip_agreement.vue'
+import vipTakeMoney from './components/join_vip_takeMoney.vue'
 import wodepinjia from './components/wode/wodepinjia'
 import youhuijuan from './components/wode/youhuijuan'
 import zhifumima from './components/wode/zhifumima'
 import shezhi from './components/wode/shezhi'
-import fenxiang from './components/wode/fenxiang'
 
 // 定义路由集合
 const routes = [
@@ -94,11 +94,6 @@ const routes = [
     component: youhuijuan
   },
   {
-    name: 'fenxiang',
-    path: '/fenxiang',
-    component: fenxiang
-  },
-  {
     name: 'zhifumima',
     path: '/zhifumima',
     component: zhifumima
@@ -122,6 +117,11 @@ const routes = [
     name: 'vipAgreement',
     path: '/user/joinVip/vipAgreement',
     component: vipAgreement
+  },
+  {
+    name: 'vipTakeMoney',
+    path: '/user/joinVip/vipTakeMoney',
+    component: vipTakeMoney
   }
 ]
 export default routes

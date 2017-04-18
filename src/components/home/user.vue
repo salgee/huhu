@@ -10,7 +10,7 @@
   </div>
     <mt-cell title="我的评价" to="/wodepinjia"  is-link></mt-cell>
     <mt-cell title="优惠券" to="/youhuijuan" is-link></mt-cell>
-    <mt-cell title="分享" to="/fenxiang" is-link></mt-cell>
+    <mt-cell title="分享"  is-link></mt-cell>
     <mt-cell title="设置余额支付密码" to="/zhifumima" is-link></mt-cell>
     <mt-cell title="设置" to="/shezhi" is-link></mt-cell>
   </div>

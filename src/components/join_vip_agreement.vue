@@ -1,5 +1,5 @@
 <template>
-  <div id="singlePush">
+  <div id="agreement">
     <mt-header title="呼呼管家VIP协议">
       <mt-button icon="back" slot="left" @click="goVip"></mt-button>
     </mt-header>
@@ -19,7 +19,7 @@
   }
 </script>
 <style scoped>
-  #singlePush{
+  #agreement{
     height: 100vh;
   }
   .mint-header{
