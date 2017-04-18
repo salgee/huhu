@@ -4,16 +4,20 @@
       <mt-button icon="back" slot="left" @click="goHome"></mt-button>
     </mt-header>
     <div class="pushInfo">
-      <mt-cell title="接待方式">
-        <img slot="icon" src="../assets/images/客户接待@2x.png" width="20">
-        <img src="../assets/images/返回@2x.png" width="8" height="14" @click="openPicker" v-if="reception==''">
-        <span v-model="reception" v-else @click="openPicker">{{reception}}</span>
-      </mt-cell>
-      <mt-cell title="接引时间">
-        <img slot="icon" src="../assets/images/接引时间@2x.png" width="20" >
-        <img src="../assets/images/返回@2x.png" width="8" height="14" @click="openReceiveTime" v-if="receive==''">
-        <span v-model="receive" v-else @click="openReceiveTime">{{receive}}</span>
-      </mt-cell>
+      <a @click="openPicker">
+        <mt-cell title="接待方式">
+          <img slot="icon" src="../assets/images/客户接待@2x.png" width="20">
+          <img src="../assets/images/返回@2x.png" width="8" height="14" v-if="reception==''">
+          <span v-model="reception" v-else>{{reception}}</span>
+        </mt-cell>
+      </a>
+      <a @click="openReceiveTime">
+        <mt-cell title="接引时间">
+          <img slot="icon" src="../assets/images/接引时间@2x.png" width="20" >
+          <img src="../assets/images/返回@2x.png" width="8" height="14"  v-if="receive==''">
+          <span v-model="receive" v-else>{{receive}}</span>
+        </mt-cell>
+      </a>
       <mt-cell title="清洁时间">
         <img slot="icon" src="../assets/images/清洁时间@2x.png" width="20" >
         <img src="../assets/images/返回@2x.png" width="8" height="14">
@@ -133,6 +137,9 @@
   }
 </script>
 <style scoped>
+  a {
+    font-size: 0;
+  }
   .mint-header{
     background: #74a92e!important;
   }

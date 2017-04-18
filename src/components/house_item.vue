@@ -1,5 +1,5 @@
 <template>
-      <div class="houseItem" @click="abc">
+      <div class="houseItem" @click="goChangeHouse(houseInfo.id)">
         <img src="../assets/images/vip标识@2x.png" class="vipImg"  v-if="vipIsOrNo">
         <img src="../assets/images/vip灰色@2x.png" class="vipImg" v-else @click.stop="joinVip">
         <div class="houseAddress">
@@ -33,11 +33,43 @@
       }
     },
     methods: {
-      abc: function () {
-        this.$router.push('/user/changeHouse')
+      goChangeHouse: function (key) {
+        sessionStorage.huhu_key = key
+//        sessionStorage.huhu_province =
+        sessionStorage.huhu_addressID = '{"province": "' + this.houseInfo.province + '", "city": "' + this.houseInfo.city + '", "district": "' + this.houseInfo.district + '"}'
+        sessionStorage.huhu_address = this.houseInfo.address
+        sessionStorage.huhu_No = this.houseInfo.buildingNo
+        sessionStorage.huhu_wholeAddress = sessionStorage.huhu_province + sessionStorage.huhu_address + sessionStorage.huhu_No
+        sessionStorage.huhu_houseType = this.houseInfo.bedRoom + '居室'
+        var str = this.houseInfo.bedAmount
+        if (str.indexOf('1.35') === -1) {
+          sessionStorage.huhu_smallBed = false
+        } else {
+          sessionStorage.huhu_smallBed = str[str.indexOf('1.35') + 5]
+        }
+        if (str.indexOf('1.5') === -1) {
+          sessionStorage.huhu_middleBed = false
+        } else {
+          sessionStorage.huhu_middleBed = str[str.indexOf('1.5') + 4]
+        }
+        if (str.indexOf('1.8') === -1) {
+          sessionStorage.huhu_bigBed = false
+        } else {
+          sessionStorage.huhu_bigBed = str[str.indexOf('1.8') + 4]
+        }
+        // 保存床位数据
+        sessionStorage.huhu_bedNum = sessionStorage.huhu_smallBed === 'false' ? '' : `${sessionStorage.huhu_smallBed}床1.35m,`
+        sessionStorage.huhu_bedNum += sessionStorage.huhu_middleBed === 'false' ? '' : `${sessionStorage.huhu_middleBed}床1.5m,`
+        sessionStorage.huhu_bedNum += sessionStorage.huhu_bigBed === 'false' ? '' : `${sessionStorage.huhu_bigBed}床1.8m,`
+        sessionStorage.huhu_gateType = this.houseInfo.doorWayName
+        sessionStorage.huhu_dcr = this.houseInfo.dcr
+        sessionStorage.huhu_wifiProfile = this.houseInfo.wifiName
+        sessionStorage.huhu_wifiPwd = this.houseInfo.wifiPwd
+//        this.$router.push({name: 'changeHouse', params: { houseInfo: this.houseInfo }})
+        this.$router.push({name: 'changeHouse'})
       },
       pushOrderBefore: function () {
-        this.$router.push('pushOrderBefore')
+        this.$router.push('/home/pushOrderBefore')
       },
       joinVip: function () {
         this.$router.push('/user/joinVip')

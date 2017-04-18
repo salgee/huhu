@@ -22,6 +22,10 @@
   import houseItem from '../house_item.vue'
   import Axios from 'axios'
   Axios.defaults.baseURL = 'http://a.com'
+  Axios.defaults.headers = {
+    'Content-Type': 'application/json',
+    'x-api-token': localStorage.token
+  }
   export default {
     name: 'housenav',
     mounted () {
@@ -38,15 +42,10 @@
         let that = this
         Axios.get('/api/house/list',
           {
-            headers: {'Content-Type': 'application/json',
-              'x-api-token': localStorage.token
-            }
           }).then(function (data) {
             if (data.data.message === 'isOk') {
-              sessionStorage.overdueToken = 0
               that.houseInfos = data.data.data
             } else {
-              sessionStorage.overdueToken = 1
               that.$toast({
                 message: '您的登录已过期',
                 position: 'bottom'

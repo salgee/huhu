@@ -109,7 +109,7 @@ const routes = [
   },
   {
     name: 'pushOrderBefore',
-    path: '/pushOrderBefore',
+    path: '/home/pushOrderBefore',
     component: pushOrderBefore
   },
   {
