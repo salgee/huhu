@@ -30,6 +30,7 @@
     name: 'housenav',
     mounted () {
       this.homeList()
+      sessionStorage.overchangeorsave = 'change'
     },
     data () {
       return {
@@ -44,8 +45,10 @@
           {
           }).then(function (data) {
             if (data.data.message === 'isOk') {
+              sessionStorage.overdueToken = 0
               that.houseInfos = data.data.data
             } else {
+              sessionStorage.overdueToken = 1
               that.$toast({
                 message: '您的登录已过期',
                 position: 'bottom'

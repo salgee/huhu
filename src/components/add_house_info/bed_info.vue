@@ -37,6 +37,14 @@
 import {Header, Toast} from 'mint-ui'
 export default {
   name: 'addHouse',
+  beforeRouteEnter (to, from, next) {
+    if (from.path === '/user/changeHouse') {
+      localStorage.bed_info_fromPath = '/user/changeHouse'
+      next()
+    } else {
+      next()
+    }
+  },
   data () {
     return {
       check4Small: Boolean(Number(sessionStorage.huhu_smallBed)),
@@ -69,7 +77,9 @@ export default {
       } else {
         sessionStorage.huhu_bedNum = sessionStorage.huhu_bedNum.slice(0, -1)
         console.log(sessionStorage.huhu_bedNum)
-        vm.$router.push('/home/addHouse')
+        let path = localStorage.bed_info_fromPath || '/home/addHouse'
+        localStorage.removeItem('bed_info_fromPath')
+        vm.$router.push(path)
       }
     }
   }
