@@ -49,7 +49,12 @@
         sessionStorage.huhu_province += area.areas.filter(function (pp) {
           return pp.areaID === that.houseInfo.district
         })[0].areaname
-        sessionStorage.huhu_addressID = '{"province": "' + this.houseInfo.province + '", "city": "' + this.houseInfo.city + '", "district": "' + this.houseInfo.district + '"}'
+        let obj = {
+          province: that.houseInfo.province,
+          city: that.houseInfo.city,
+          district: that.houseInfo.district
+        }
+        sessionStorage.huhu_addressID = JSON.stringify(obj)
         sessionStorage.huhu_address = this.houseInfo.address
         sessionStorage.huhu_No = this.houseInfo.buildingNo
         sessionStorage.huhu_wholeAddress = sessionStorage.huhu_province + sessionStorage.huhu_address + sessionStorage.huhu_No

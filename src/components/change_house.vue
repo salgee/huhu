@@ -2,8 +2,8 @@
   <div id="changeHouse">
     <mt-header title="修改房源" style="background: #79ac36;">
       <mt-button icon="back" slot="left" @click="clearAdData"></mt-button>
-      <span slot="right" v-if="changeOrSave" @click="change">编辑</span>
-      <span slot="right" v-else @click="save">保存</span>
+      <span slot="right" v-if="changeOrSave === 'change'" @click="change">编辑</span>
+      <span slot="right" v-else @click="updateHouse">保存</span>
     </mt-header>
     <div class="content">
       <mt-cell title="地址" to="/home/addHouse/address">
@@ -49,7 +49,7 @@
         <input type="text" class="wifi" maxlength="25" placeholder="选填" v-model="wifiPwd">
         <img slot="icon" src="../assets/images/wifi密码@2x.png" width="20" >
       </mt-cell>
-      <div class="notTouch" v-if="changeOrSave" @click="toastB"></div>
+      <div class="notTouch" v-if="changeOrSave === 'change'" @click="toastB"></div>
     </div>
     <div class="submit">
       <mt-button type="danger" size="large" @click="goDown" v-if="upAndDown">下架</mt-button>
@@ -99,7 +99,7 @@
     data () {
       return {
         upAndDown: true,
-        changeOrSave: true,
+        changeOrSave: sessionStorage.overchangeorsave,
 //        OriginalInfo: this.$route.params.houseInfo,
         address: sessionStorage.huhu_wholeAddress,
 //        sessionStorage.huhu_wholeAddress应该是组件中存储的
@@ -199,19 +199,10 @@
         })
       },
       change: function () {
-        if (this.changeOrSave === true) {
-          this.changeOrSave = false
-        } else {
-          this.changeOrSave = true
+        if (this.changeOrSave === 'change') {
+          sessionStorage.overchangeorsave = 'save'
+          this.changeOrSave = 'save'
         }
-      },
-      save: function () {
-        if (this.changeOrSave === true) {
-          this.changeOrSave = false
-        } else {
-          this.changeOrSave = true
-        }
-        this.updateHouse()
       },
       toastB: function () {
         this.$toast({
@@ -321,8 +312,6 @@
         json.wifiName = sessionStorage.huhu_wifiProfile
         json.wifiPwd = sessionStorage.huhu_wifiPwd
         json.foregift = 123.67
-        json.lat = JSON.parse(sessionStorage.huhu_coordinate).lat
-        json.lng = JSON.parse(sessionStorage.huhu_coordinate).lng
         Axios.post('/api/house/update',
           json, {
             headers: {
