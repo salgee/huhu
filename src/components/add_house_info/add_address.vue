@@ -57,7 +57,6 @@
       this.prv = province.provinces.map(
         (name) => name.provincename
       )
-      console.log(this.seletedID)
     },
     data () {
       return {

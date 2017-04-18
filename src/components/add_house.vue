@@ -260,7 +260,7 @@ export default {
         }).then(function (data) {
           if (data.data.message === 'isOk') {
             Toast({
-              message: '添加成功',
+              message: '房源添加成功',
               position: 'bottom',
               duration: 2000
             })
