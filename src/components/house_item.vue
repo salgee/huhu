@@ -72,7 +72,12 @@
         this.$router.push('/home/pushOrderBefore')
       },
       joinVip: function () {
-        this.$router.push('/user/joinVip')
+        Promise.resolve(
+          sessionStorage.huhu_bedNum = this.bedNum
+        )
+          .then(
+            this.$router.push('/user/joinVip')
+          )
       },
       howBed: function () {
         let array = this.houseInfo.bedAmount.split(',').join(':').split(':')
