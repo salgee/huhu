@@ -51,7 +51,6 @@
                 position: 'bottom'
               })
             }
-            console.log(data)
           })
       }
     },

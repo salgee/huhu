@@ -45,6 +45,14 @@
   import area from '../../assets/db/area.json'
   export default {
     name: 'addHouse',
+    beforeRouteEnter (to, from, next) {
+      if (from.path === '/user/changeHouse') {
+        localStorage.add_address_fromPath = '/user/changeHouse'
+        next()
+      } else {
+        next()
+      }
+    },
     mounted () {
       this.prv = province.provinces.map(
         (name) => name.provincename
@@ -190,17 +198,21 @@
       clearAdData () {
         let vm = this
         Promise.resolve((() => {
+          let path = localStorage.add_address_fromPath || '/home/addHouse'
+          localStorage.removeItem('add_address_fromPath')
           if (sessionStorage.huhu_wholeAddress !== undefined) {
-            return
+            return path
           }
           window.sessionStorage.removeItem('huhu_province')
           window.sessionStorage.removeItem('huhu_address')
           window.sessionStorage.removeItem('huhu_No')
           window.sessionStorage.removeItem('huhu_addressID')
+          window.sessionStorage.removeItem('huhu_addressID')
+          return path
         })()
         ).then(
-          () => {
-            vm.$router.push({name: 'add'})
+          (path) => {
+            vm.$router.push(path)
           }
         )
       }

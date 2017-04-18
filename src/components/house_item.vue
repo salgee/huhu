@@ -21,6 +21,9 @@
 <script>
   import Axios from 'axios'
   import _ from 'lodash'
+  import province from '../assets/db/province.json'
+  import city from '../assets/db/city.json'
+  import area from '../assets/db/area.json'
   Axios.defaults.baseURL = 'http://a.com'
   export default{
     props: ['houseInfo'],
@@ -34,8 +37,18 @@
     },
     methods: {
       goChangeHouse: function (key) {
+        let that = this
+        sessionStorage.huhu_status = that.houseInfo.status
         sessionStorage.huhu_key = key
-//        sessionStorage.huhu_province =
+        sessionStorage.huhu_province = province.provinces.filter(function (pp) {
+          return pp.provinceID === that.houseInfo.province
+        })[0].provincename
+        sessionStorage.huhu_province += city.citys.filter(function (pp) {
+          return pp.cityID === that.houseInfo.city
+        })[0].cityname
+        sessionStorage.huhu_province += area.areas.filter(function (pp) {
+          return pp.areaID === that.houseInfo.district
+        })[0].areaname
         sessionStorage.huhu_addressID = '{"province": "' + this.houseInfo.province + '", "city": "' + this.houseInfo.city + '", "district": "' + this.houseInfo.district + '"}'
         sessionStorage.huhu_address = this.houseInfo.address
         sessionStorage.huhu_No = this.houseInfo.buildingNo
@@ -86,10 +99,13 @@
       },
       //  用区名替换数字区码
       getDistrict: function () {
+        let that = this
         if (this.houseInfo.district === 'null') {
           this.district = ''
         } else {
-          this.district = this.houseInfo.district
+          this.district = area.areas.filter(function (pp) {
+            return pp.areaID === that.houseInfo.district
+          })[0].areaname
         }
       }
     },
