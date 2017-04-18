@@ -23,6 +23,7 @@ import zhifumima from './components/wode/zhifumima'
 import shezhi from './components/wode/shezhi'
 import changeHouse from './components/change_house.vue'
 import pushList from './components/push_list.vue'
+import bedInfo from './components/add_house_info/bed_info.vue'
 // 定义路由集合
 const routes = [
   {
@@ -139,6 +140,11 @@ const routes = [
     name: 'pushList',
     path: '/order/pushList',
     component: pushList
+  },
+  {
+    name: 'bedInfo',
+    path: '/home/addHouse/bedInfo',
+    component: bedInfo
   }
 ]
 export default routes
