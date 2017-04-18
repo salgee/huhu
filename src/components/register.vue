@@ -15,7 +15,7 @@
 </script>
 <style scoped>
   .register-zhuye{
-    width:100wh;
+    width:100vw;
     height:100vh;
   }
   .register-zhuye header{

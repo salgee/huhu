@@ -46,6 +46,7 @@
             if (response.data.result === 1) {
               localStorage.name = response.data.data.user.account
               localStorage.token = response.data.data.token
+              localStorage.accountType = response.data.data.accountType
               _this.$router.go(-1)
 //              router.push({ path: 'user'})
             } else {
