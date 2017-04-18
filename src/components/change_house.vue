@@ -150,11 +150,11 @@
     },
     mounted: function () {
 //      判断是上架还是下架
-//      if (this.OriginalInfo.status === 'normal') {
-//        this.upAndDown = true
-//      } else {
-//        this.upAndDown = false
-//      }
+      if (sessionStorage.huhu_status === 'normal') {
+        this.upAndDown = true
+      } else {
+        this.upAndDown = false
+      }
 //      存值，为了接口好更新
 //      修改进路由之前存当前房源的数据sessionStorage储存
     },
@@ -168,7 +168,6 @@
         let that = this
         Axios.post('/api/house/online/' + sessionStorage.huhu_key + '/offLine'
         ).then(function (data) {
-          console.log(data)
           if (data.data.message === 'isOk') {
             that.houseInfos = data.data.data
           } else {
@@ -358,6 +357,7 @@
       Toast
     },
     beforeRouteEnter (to, from, next) {
+      console.log(from)
       if (localStorage.length === 0) {
         next('/login')
       } else {

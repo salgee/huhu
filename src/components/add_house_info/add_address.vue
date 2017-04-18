@@ -45,18 +45,18 @@
   import area from '../../assets/db/area.json'
   export default {
     name: 'addHouse',
-    mounted () {
-      this.prv = province.provinces.map(
-        (name) => name.provincename
-      )
-    },
     beforeRouteEnter (to, from, next) {
-      // 在当前路由改变，但是该组件被复用时调用
-      if (sessionStorage.overdueToken === '1' && (to.path === '/order' || to.path === '/wallet')) {
+      if (from.path === '/user/changeHouse') {
+        localStorage.add_address_fromPath = '/user/changeHouse'
         next()
       } else {
         next()
       }
+    },
+    mounted () {
+      this.prv = province.provinces.map(
+        (name) => name.provincename
+      )
     },
     data () {
       return {
@@ -197,17 +197,21 @@
       clearAdData () {
         let vm = this
         Promise.resolve((() => {
+          let path = localStorage.add_address_fromPath || '/home/addHouse'
+          localStorage.removeItem('add_address_fromPath')
           if (sessionStorage.huhu_wholeAddress !== undefined) {
-            return
+            return path
           }
           window.sessionStorage.removeItem('huhu_province')
           window.sessionStorage.removeItem('huhu_address')
           window.sessionStorage.removeItem('huhu_No')
           window.sessionStorage.removeItem('huhu_addressID')
+          window.sessionStorage.removeItem('huhu_addressID')
+          return path
         })()
         ).then(
-          () => {
-            vm.$router.push({name: 'add'})
+          (path) => {
+            vm.$router.push(path)
           }
         )
       }
