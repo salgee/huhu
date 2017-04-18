@@ -21,6 +21,9 @@ import wodepinjia from './components/wode/wodepinjia'
 import youhuijuan from './components/wode/youhuijuan'
 import zhifumima from './components/wode/zhifumima'
 import shezhi from './components/wode/shezhi'
+import changeHouse from './components/change_house.vue'
+import pushList from './components/push_list.vue'
+import bedInfo from './components/add_house_info/bed_info.vue'
 // 定义路由集合
 const routes = [
   {
@@ -95,7 +98,7 @@ const routes = [
   },
   {
     name: 'pushOrderBefore',
-    path: '/pushOrderBefore',
+    path: '/home/pushOrderBefore',
     component: pushOrderBefore
   },
   {
@@ -122,6 +125,21 @@ const routes = [
     name: 'vipTakeMoney',
     path: '/user/joinVip/vipTakeMoney',
     component: vipTakeMoney
+  },
+  {
+    name: 'changeHouse',
+    path: '/user/changeHouse',
+    component: changeHouse
+  },
+  {
+    name: 'pushList',
+    path: '/order/pushList',
+    component: pushList
+  },
+  {
+    name: 'bedInfo',
+    path: '/home/addHouse/bedInfo',
+    component: bedInfo
   }
 ]
 export default routes

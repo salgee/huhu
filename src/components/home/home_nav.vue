@@ -22,10 +22,15 @@
   import houseItem from '../house_item.vue'
   import Axios from 'axios'
   Axios.defaults.baseURL = 'http://a.com'
+  Axios.defaults.headers = {
+    'Content-Type': 'application/json',
+    'x-api-token': localStorage.token
+  }
   export default {
     name: 'housenav',
     mounted () {
       this.homeList()
+      sessionStorage.overchangeorsave = 'change'
     },
     data () {
       return {
@@ -38,9 +43,6 @@
         let that = this
         Axios.get('/api/house/list',
           {
-            headers: {'Content-Type': 'application/json',
-              'x-api-token': localStorage.token
-            }
           }).then(function (data) {
             if (data.data.message === 'isOk') {
               sessionStorage.overdueToken = 0
@@ -52,7 +54,6 @@
                 position: 'bottom'
               })
             }
-            console.log(data)
           })
       }
     },

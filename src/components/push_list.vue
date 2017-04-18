@@ -1,6 +1,6 @@
 <template>
     <div id="pushList">
-      <mt-header title="添加房源" style="background: #79ac36;">
+      <mt-header title="消息列表" style="background: #79ac36;">
         <mt-button icon="back" slot="left" @click="goBack"></mt-button>
       </mt-header>
     </div>

@@ -1,7 +1,9 @@
 <template>
   <div id="changeHouse">
-    <mt-header title="添加房源" style="background: #79ac36;">
+    <mt-header title="修改房源" style="background: #79ac36;">
       <mt-button icon="back" slot="left" @click="clearAdData"></mt-button>
+      <span slot="right" v-if="changeOrSave === 'change'" @click="change">编辑</span>
+      <span slot="right" v-else @click="updateHouse">保存</span>
     </mt-header>
     <div class="content">
       <mt-cell title="地址" to="/home/addHouse/address">
@@ -47,9 +49,11 @@
         <input type="text" class="wifi" maxlength="25" placeholder="选填" v-model="wifiPwd">
         <img slot="icon" src="../assets/images/wifi密码@2x.png" width="20" >
       </mt-cell>
+      <div class="notTouch" v-if="changeOrSave === 'change'" @click="toastB"></div>
     </div>
     <div class="submit">
-      <mt-button type="danger" size="large" @click="addHouse">提交</mt-button>
+      <mt-button type="danger" size="large" @click="goDown" v-if="upAndDown">下架</mt-button>
+      <mt-button type="danger" size="large" @click="goUp" v-else>上架</mt-button>
     </div>
     <mt-popup
       v-model="popupVisible"
@@ -86,11 +90,19 @@
   import Axios from 'axios'
   import json from '../assets/db/houseInfo.json'
   Axios.defaults.baseURL = 'http://a.com'
+  Axios.defaults.headers = {
+    'Content-Type': 'application/json',
+    'x-api-token': localStorage.token
+  }
   export default {
     name: 'addHouse',
     data () {
       return {
+        upAndDown: true,
+        changeOrSave: sessionStorage.overchangeorsave,
+//        OriginalInfo: this.$route.params.houseInfo,
         address: sessionStorage.huhu_wholeAddress,
+//        sessionStorage.huhu_wholeAddress应该是组件中存储的
         popupVisible: false,
         popupVisible1: false,
         houseType: sessionStorage.huhu_houseType,
@@ -99,6 +111,7 @@
         selected1: '',
         dcr: sessionStorage.huhu_dcr === 'true',
         bedInfo: sessionStorage.huhu_bedNum,
+//        sessionStorage.huhu_bedNum组件中存储的
         wifiProfile: sessionStorage.huhu_wifiProfile || '',
         wifiPwd: sessionStorage.huhu_wifiPwd || '',
         houseArea: {
@@ -135,7 +148,69 @@
         sessionStorage.huhu_wifiPwd = val
       }
     },
+    mounted: function () {
+//      判断是上架还是下架
+      if (sessionStorage.huhu_status === 'normal') {
+        this.upAndDown = true
+      } else {
+        this.upAndDown = false
+      }
+//      存值，为了接口好更新
+//      修改进路由之前存当前房源的数据sessionStorage储存
+    },
     methods: {
+      goDown: function () {
+        if (this.upAndDown === true) {
+          this.upAndDown = false
+        } else {
+          this.upAndDown = true
+        }
+        let that = this
+        Axios.post('/api/house/online/' + sessionStorage.huhu_key + '/offLine'
+        ).then(function (data) {
+          if (data.data.message === 'isOk') {
+            that.houseInfos = data.data.data
+          } else {
+            that.$toast({
+              message: '您的登录已过期',
+              position: 'bottom'
+            })
+          }
+        })
+      },
+      goUp: function () {
+        if (this.upAndDown === true) {
+          this.upAndDown = false
+        } else {
+          this.upAndDown = true
+        }
+        let that = this
+        Axios.post('/api/house/online/' + sessionStorage.huhu_key + '/normal'
+        ).then(function (data) {
+          console.log(data)
+          if (data.data.message === 'isOk') {
+            that.houseInfos = data.data.data
+          } else {
+            that.$toast({
+              message: '您的登录已过期',
+              position: 'bottom'
+            })
+          }
+        })
+      },
+      change: function () {
+        if (this.changeOrSave === 'change') {
+          sessionStorage.overchangeorsave = 'save'
+          this.changeOrSave = 'save'
+        }
+      },
+      toastB: function () {
+        this.$toast({
+          message: '请点击编辑进行修改',
+          position: 'bottom',
+          duration: 2000
+        })
+      },
       clearAdData () {
         let vm = this
         Promise.resolve(
@@ -186,7 +261,7 @@
           })
         }
       },
-      addHouse () {
+      updateHouse () {
         let vm = this
         if (vm.address === undefined) {
           Toast({
@@ -237,9 +312,7 @@
         json.wifiName = sessionStorage.huhu_wifiProfile
         json.wifiPwd = sessionStorage.huhu_wifiPwd
         json.foregift = 123.67
-        json.lat = JSON.parse(sessionStorage.huhu_coordinate).lat
-        json.lng = JSON.parse(sessionStorage.huhu_coordinate).lng
-        Axios.post('/api/house/add',
+        Axios.post('/api/house/update',
           json, {
             headers: {
               'Content-Type': 'application/json',
@@ -248,7 +321,7 @@
           }).then(function (data) {
             if (data.data.message === 'isOk') {
               Toast({
-                message: '添加成功',
+                message: '修改成功',
                 position: 'bottom',
                 duration: 2000
               })
@@ -273,6 +346,7 @@
       Toast
     },
     beforeRouteEnter (to, from, next) {
+      console.log(from)
       if (localStorage.length === 0) {
         next('/login')
       } else {
@@ -318,6 +392,15 @@
     background-color: #fff;
     margin-top: 10px;
     font-size: 0;
+    position: relative;
+  }
+  .notTouch{
+    position: absolute;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    z-index: 9999;
   }
   #changeHouse .wifi{
     border: none;
@@ -354,7 +437,7 @@
     padding: 10px;
     border: 1px solid #ddd;
   }
-  #changeHouse .title span:first-child,#add .title span:last-child{
+  #changeHouse .title span:first-child,#changeHouse .title span:last-child{
     float: left;
     font-size: 16px;
     color: royalblue;
