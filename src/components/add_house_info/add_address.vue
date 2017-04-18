@@ -49,7 +49,14 @@
       this.prv = province.provinces.map(
         (name) => name.provincename
       )
-      console.log(this.seletedID)
+    },
+    beforeRouteEnter (to, from, next) {
+      // 在当前路由改变，但是该组件被复用时调用
+      if (sessionStorage.overdueToken === '1' && (to.path === '/order' || to.path === '/wallet')) {
+        next()
+      } else {
+        next()
+      }
     },
     data () {
       return {

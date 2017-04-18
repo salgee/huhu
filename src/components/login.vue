@@ -59,7 +59,7 @@
 
 <style scoped>
   .login{
-    width:100wh;
+    width:100vw;
     height:100vh;
     background-color:green;
   }
