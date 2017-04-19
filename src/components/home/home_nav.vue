@@ -25,10 +25,6 @@
   export default {
     name: 'housenav',
     mounted () {
-      Axios.defaults.headers = {
-        'Content-Type': 'application/json',
-        'x-api-token': localStorage.token
-      }
       this.homeList()
       sessionStorage.overchangeorsave = 'change'
     },
@@ -41,7 +37,10 @@
       //  whyccup写的
       homeList: function () {
         let that = this
-        Axios.get('/api/house/list').then(function (data) {
+        Axios.get('/api/house/list', {headers: {
+          'Content-Type': 'application/json',
+          'x-api-token': localStorage.token
+        }}).then(function (data) {
           if (data.data.message === 'isOk') {
             that.houseInfos = data.data.data
           } else {
