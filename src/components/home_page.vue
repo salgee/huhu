@@ -32,15 +32,6 @@ export default {
   mounted () {
     this.selected = this.$route.name
   },
-  beforeRouteUpdate (to, from, next) {
-    // 在当前路由改变，但是该组件被复用时调用
-    console.log(to)
-    if (sessionStorage.overdueToken !== '1' && (to.path === '/order' || to.path === '/wallet')) {
-      next('/user/login')
-    } else {
-      next()
-    }
-  },
   data () {
     return {
       selected: '',

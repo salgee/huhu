@@ -35,7 +35,7 @@
       <div class="serviceRight">
         <span class="vipPrice">(VIP价￥118)</span>
         <span>￥119</span>
-        <div><router-link tag="span" class="joinVip" to="/user/joinVip">申请VIP</router-link></div>
+        <div><router-link tag="span" class="joinVip" to="/user/vip/joinVip">申请VIP</router-link></div>
       </div>
     </div>
 

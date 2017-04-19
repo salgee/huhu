@@ -155,21 +155,18 @@
       } else {
         this.upAndDown = false
       }
-//      存值，为了接口好更新
-//      修改进路由之前存当前房源的数据sessionStorage储存
     },
     methods: {
       goDown: function () {
-        if (this.upAndDown === true) {
-          this.upAndDown = false
-        } else {
-          this.upAndDown = true
-        }
         let that = this
         Axios.post('/api/house/online/' + sessionStorage.huhu_key + '/offLine'
         ).then(function (data) {
           if (data.data.message === 'isOk') {
-            that.houseInfos = data.data.data
+            that.$indicator.open('下架中')
+            setTimeout(() => {
+              that.$indicator.close()
+              that.upAndDown = false
+            }, 1000)
           } else {
             that.$toast({
               message: '您的登录已过期',
@@ -179,17 +176,16 @@
         })
       },
       goUp: function () {
-        if (this.upAndDown === true) {
-          this.upAndDown = false
-        } else {
-          this.upAndDown = true
-        }
         let that = this
         Axios.post('/api/house/online/' + sessionStorage.huhu_key + '/normal'
         ).then(function (data) {
           console.log(data)
           if (data.data.message === 'isOk') {
-            that.houseInfos = data.data.data
+            that.$indicator.open('上架中')
+            setTimeout(() => {
+              that.$indicator.close()
+              that.upAndDown = true
+            }, 1000)
           } else {
             that.$toast({
               message: '您的登录已过期',
