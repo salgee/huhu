@@ -1,0 +1,9 @@
+diff a/src/components/login.vue b/src/components/login.vue	(rejected hunks)
+@@ -47,6 +47,7 @@
+               localStorage.name = response.data.data.user.account
+               localStorage.token = response.data.data.token
+               _this.$router.go(-1)
++//              router.push({ path: 'user'})
+             } else {
+ 
+             }
