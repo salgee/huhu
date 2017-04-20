@@ -1,20 +1,22 @@
 <template>
-      <div class="houseItem" @click="goChangeHouse(houseInfo.id)">
+      <div class="houseItem">
         <img src="../assets/images/vip标识@2x.png" class="vipImg"  v-if="vipIsOrNo">
         <img src="../assets/images/vip灰色@2x.png" class="vipImg" v-else @click.stop="joinVip">
-        <div class="houseAddress">
-          <img src="../assets/images/地址@2x.png" class="addressImg">
-          <span>{{district}}</span><span>{{houseInfo.address}}</span><span>{{houseInfo.buildingNo}}</span>
-        </div>
-        <div class="houseInfo">
-          <span>{{houseInfo.bedRoom}}&nbsp;居室&nbsp;/</span>
-          <span>{{bedNum}}&nbsp;张床&nbsp;/</span>
-          <span>{{houseInfo.doorWayName}}</span>
+        <div @click="goChangeHouse(houseInfo.id)" style="padding-top: 30px">
+          <div class="houseAddress">
+            <img src="../assets/images/地址@2x.png" class="addressImg">
+            <span>{{district}}</span><span>{{houseInfo.address}}</span><span>{{houseInfo.buildingNo}}</span>
+          </div>
+          <div class="houseInfo">
+            <span>{{houseInfo.bedRoom}}&nbsp;居室&nbsp;/</span>
+            <span>{{bedNum}}&nbsp;张床&nbsp;/</span>
+            <span>{{houseInfo.doorWayName}}</span>
+          </div>
         </div>
         <div class="houseBtn">
-          <button class="oneClick" v-if="upAndDown == 'offLine'" >一键上架</button>
-          <button class="oneClick" v-else @click.stop="pushOrderBefore">一键下单</button>
-          <button class="joinVIP" v-if="!vipIsOrNo" @click.stop="joinVip">加入VIP</button>
+          <button class="oneClick" v-if="upAndDown == 'offLine'" @click="goChangeHouse(houseInfo.id)">一键上架</button>
+          <button class="oneClick" v-else @click="pushOrderBefore">一键下单</button>
+          <button class="joinVIP" v-if="!vipIsOrNo" @click="joinVip">加入VIP</button>
         </div>
       </div>
 </template>
@@ -99,7 +101,7 @@
         })()
         )
           .then(
-            this.$router.push('/user/joinVip')
+            this.$router.push('/user/vip/joinVip')
           )
       },
       howBed: function () {
@@ -143,8 +145,7 @@
     margin:10px;
     margin-bottom: 40px;
     border: 1px solid #edf3e6;
-    padding: 20px 0;
-    padding-top: 30px;
+    padding-bottom: 20px;
     padding-left: 25px;
     border-radius: 5px;
     background: #fff;
@@ -180,7 +181,7 @@
     left:-14px;
   }
   .houseInfo{
-    margin-bottom: 25px;
+    padding-bottom: 25px;
   }
   .houseInfo span{
     font-size: 12px;

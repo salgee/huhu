@@ -103,7 +103,7 @@ const routes = [
   },
   {
     name: 'joinVip',
-    path: '/user/joinVip',
+    path: '/user/vip/joinVip',
     component: joinVip
   },
   {
@@ -113,7 +113,7 @@ const routes = [
   },
   {
     name: 'vipAgreement',
-    path: '/user/joinVip/vipAgreement',
+    path: '/user/vip/joinVip/vipAgreement',
     component: vipAgreement
   },
   {
@@ -123,7 +123,7 @@ const routes = [
   },
   {
     name: 'vipTakeMoney',
-    path: '/user/joinVip/vipTakeMoney',
+    path: '/user/vip/joinVip/vipTakeMoney',
     component: vipTakeMoney
   },
   {

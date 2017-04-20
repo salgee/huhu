@@ -35,7 +35,7 @@
       <div class="serviceRight">
         <span class="vipPrice">(VIP价￥118)</span>
         <span>￥119</span>
-        <div><router-link tag="span" class="joinVip" to="/user/joinVip">申请VIP</router-link></div>
+        <div><router-link tag="span" class="joinVip" to="/user/vip/joinVip">申请VIP</router-link></div>
       </div>
     </div>
 
@@ -64,9 +64,20 @@
   </div>
 </template>
 <script>
-//  import { Picker } from 'mint-ui'
+  import moment from 'moment'
   export default{
+    mounted () {
+      this.getDays()
+    },
     methods: {
+      getDays: function () {
+        let days = []
+        for (let i = 1; i <= 60; i++) {
+          let day = moment().add(i, 'd').format('YYYY-MM-DD(ddd)')
+          days.push(day)
+        }
+        sessionStorage.days = JSON.stringify(days)
+      },
       goHome: function () {
         this.$router.push('/')
       },
@@ -95,8 +106,13 @@
         this.popupReceive = false
         this.receive = this.saveReceive
       },
-      getReceiveTimeValue: function (picker) {
+      getReceiveTimeValue: function (picker, values) {
         this.saveReceive = picker.getValues()[0] + picker.getValues()[1]
+//        if (values[0] > values[1]) {
+//          picker.setSlotValue(1, values[0]);
+//        }
+//        console.log()
+//        console.log(values[0])
       }
     },
     data () {
@@ -116,12 +132,12 @@
         popupReceive: false,
         ReceiveSlots: [
           {
-            values: ['2017-4-15(周六)', '2017-4-16(周日)', '2017-4-17(周一)', '2017-4-18(周二)', '2017-4-19(周三)', '2017-4-20(周四)', '2017-4-21(周五)'],
+            values: JSON.parse(sessionStorage.days),
             className: 'receiveSlots1',
             textAlign: 'left'
           },
           {
-            values: ['08:00-08:30', '08:30-09:00', '09:00-09:30', '09:30-10:00', '10:00-10:30', '10:30-11:00', '11:00-11:30'],
+            values: ['08:00-08:30', '08:30-09:00', '09:00-09:30', '09:30-10:00', '10:00-10:30', '10:30-11:00', '11:00-11:30', '11:30-12:00', '12:00-12:30', '12:30-13:00', '13:00-13:30', '13:30-14:00', '14:00-14:30', '14:30-15:00', '15:00-15:30', '15:30-16:00', '16:00-16:30', '16:30-17:00', '17:00-17:30', '17:30-18:00', '18:00-18:30', '18:30-19:00', '19:00-19:30', '19:30-20:00'],
             className: 'receiveSlots2',
             textAlign: 'right'
           }

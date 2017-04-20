@@ -3,7 +3,7 @@
     <div class="user-neirong">
       <img src="../../assets/images/我的图片.png" alt="" class="user-neirong-beijing">
       <div>
-        <mt-actionsheet :actions="actions" v-model="img" ></mt-actionsheet>
+        <!--<mt-actionsheet :actions="actions" v-model="img" ></mt-actionsheet>-->
         <img src="../../assets/images/图层-2.png"  class="user-neirong-geren" >
         <router-link tag="span" to="/user/login/#" class="wangjipws-anniu">未登录</router-link>
       </div>
@@ -21,6 +21,8 @@
     name: 'user',
     data () {
       return {
+//        actions: '',
+//        img: ''
       }
     }
   }
