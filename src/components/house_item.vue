@@ -2,17 +2,19 @@
       <div class="houseItem" @click="goChangeHouse(houseInfo.id)">
         <img src="../assets/images/vip标识@2x.png" class="vipImg"  v-if="vipIsOrNo">
         <img src="../assets/images/vip灰色@2x.png" class="vipImg" v-else @click.stop="joinVip">
-        <div class="houseAddress">
-          <img src="../assets/images/地址@2x.png" class="addressImg">
-          <span>{{district}}</span><span>{{houseInfo.address}}</span><span>{{houseInfo.buildingNo}}</span>
-        </div>
-        <div class="houseInfo">
-          <span>{{houseInfo.bedRoom}}&nbsp;居室&nbsp;/</span>
-          <span>{{bedNum}}&nbsp;张床&nbsp;/</span>
-          <span>{{houseInfo.doorWayName}}</span>
+        <div style="padding-top: 30px">
+          <div class="houseAddress">
+            <img src="../assets/images/地址@2x.png" class="addressImg">
+            <span>{{district}}</span><span>{{houseInfo.address}}</span><span>{{houseInfo.buildingNo}}</span>
+          </div>
+          <div class="houseInfo">
+            <span>{{houseInfo.bedRoom}}&nbsp;居室&nbsp;/</span>
+            <span>{{bedNum}}&nbsp;张床&nbsp;/</span>
+            <span>{{houseInfo.doorWayName}}</span>
+          </div>
         </div>
         <div class="houseBtn">
-          <button class="oneClick" v-if="upAndDown == 'offLine'" >一键上架</button>
+          <button class="oneClick" v-if="upAndDown == 'offLine'" @click.stop="easyUp">一键上架</button>
           <button class="oneClick" v-else @click.stop="pushOrderBefore">一键下单</button>
           <button class="joinVIP" v-if="!vipIsOrNo" @click.stop="joinVip">加入VIP</button>
         </div>
@@ -36,6 +38,27 @@
       }
     },
     methods: {
+      easyUp: function () {
+        let that = this
+        Axios.post('/api/house/online/' + this.houseInfo.id + '/normal', {headers: {
+          'Content-Type': 'application/json',
+          'x-api-token': localStorage.token
+        }}).then(function (data) {
+          console.log(data)
+          if (data.data.message === 'isOk') {
+            that.$indicator.open('上架中')
+            setTimeout(() => {
+              that.$indicator.close()
+              that.upAndDown = ''
+            }, 500)
+          } else {
+            that.$toast({
+              message: '您的登录已过期',
+              position: 'bottom'
+            })
+          }
+        })
+      },
       goChangeHouse: function (key) {
         let that = this
         sessionStorage.huhu_status = that.houseInfo.status
@@ -90,7 +113,17 @@
         this.$router.push('/home/pushOrderBefore')
       },
       joinVip: function () {
-        this.$router.push('/user/joinVip')
+        let vm = this
+        Promise.resolve((() => {
+          sessionStorage.huhu_bedNum = this.bedNum
+          sessionStorage.huhu_province = vm.houseInfo.province
+          sessionStorage.huhu_city = vm.houseInfo.city
+          sessionStorage.huhu_key = vm.houseInfo.id
+        })()
+        )
+          .then(
+            this.$router.push('/user/vip/joinVip')
+          )
       },
       howBed: function () {
         let array = this.houseInfo.bedAmount.split(',').join(':').split(':')
@@ -133,8 +166,7 @@
     margin:10px;
     margin-bottom: 40px;
     border: 1px solid #edf3e6;
-    padding: 20px 0;
-    padding-top: 30px;
+    padding-bottom: 20px;
     padding-left: 25px;
     border-radius: 5px;
     background: #fff;
@@ -170,7 +202,7 @@
     left:-14px;
   }
   .houseInfo{
-    margin-bottom: 25px;
+    padding-bottom: 25px;
   }
   .houseInfo span{
     font-size: 12px;

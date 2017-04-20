@@ -88,15 +88,6 @@ import json from '../assets/db/houseInfo.json'
 Axios.defaults.baseURL = 'http://a.com'
 export default {
   name: 'addHouse',
-  beforeRouteEnter (to, from, next) {
-    // 在渲染该组件的对应路由被 confirm 前调用
-    if (sessionStorage.overdueToken === '1') {
-      next('/user/login')
-    } else {
-      if (from.path.indexOf('add') === -1) sessionStorage.huhu_path = from.path
-      next()
-    }
-  },
   data () {
     return {
       address: sessionStorage.huhu_wholeAddress,

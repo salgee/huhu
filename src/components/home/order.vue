@@ -34,7 +34,9 @@
 
     },
     data () {
-      return {}
+      return {
+        selected: '1'
+      }
     },
     methods: {
       goPushList: function () {

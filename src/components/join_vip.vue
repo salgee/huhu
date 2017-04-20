@@ -22,10 +22,9 @@
           <label for="agree"></label>
           <div class="vipAgree">
             <span>我已同意</span>
-            <router-link tag="a" to="/user/joinVip/vipAgreement">《VIP服务协议》</router-link>
+            <router-link tag="a" to="/user/vip/joinVip/vipAgreement">《VIP服务协议》</router-link>
             <div>首次加入VIP30日内不能取消</div>
           </div>
-
         </div>
       </div>
     </div>
@@ -54,7 +53,7 @@
             duration: 1000
           })
         } else {
-          this.$router.push('/user/joinVip/vipTakeMoney')
+          this.$router.push('/user/vip/joinVip/vipTakeMoney')
         }
       }
     },

@@ -6,11 +6,11 @@
       <mt-swipe-item><img src="../../assets/logo.png" alt=""></mt-swipe-item>
     </mt-swipe>
     <mt-cell title="您没有订单需要确认" >
-      <img src="../../assets/images/返回@2x.png" alt="" width="8" height="14">
+      <img src="../../assets/images/返回@2x.png" alt="" width="8" height="14"  >
       <img slot="icon" src="../../assets/images/布告栏@2x.png" width="14" height="14">
     </mt-cell>
-      <div class="houseList" style="padding-bottom: 40px;padding-top: 5px;">
-        <div class="homeBackground" v-if="houseInfos.length === 0">
+      <div class="houseList" style="padding-bottom: 40px;padding-top: 5px;" >
+        <div class="homeBackground" v-if="houseInfos.length === 0" >
           <p>您还没有添加房源哦，赶快去添加吧</p>
         </div>
         <houseItem v-else v-for="houseInfo in houseInfos" key="houseInfo.id" :houseInfo="houseInfo"></houseItem>
@@ -21,14 +21,13 @@
   import {Swipe, SwipeItem, Cell} from 'mint-ui'
   import houseItem from '../house_item.vue'
   import Axios from 'axios'
+  import moment from 'moment'
+  moment.locale('zh-cn')
   Axios.defaults.baseURL = 'http://a.com'
-  Axios.defaults.headers = {
-    'Content-Type': 'application/json',
-    'x-api-token': localStorage.token
-  }
   export default {
     name: 'housenav',
     mounted () {
+      this.getDays()
       this.homeList()
       sessionStorage.overchangeorsave = 'change'
     },
@@ -38,23 +37,30 @@
       }
     },
     methods: {
+      getDays: function () {
+        let days = []
+        for (let i = 1; i <= 60; i++) {
+          let day = moment().add(i, 'd').format('YYYY-MM-DD(ddd)')
+          days.push(day)
+        }
+        sessionStorage.days = JSON.stringify(days)
+      },
       //  whyccup写的
       homeList: function () {
         let that = this
-        Axios.get('/api/house/list',
-          {
-          }).then(function (data) {
-            if (data.data.message === 'isOk') {
-              sessionStorage.overdueToken = 0
-              that.houseInfos = data.data.data
-            } else {
-              sessionStorage.overdueToken = 1
-              that.$toast({
-                message: '您的登录已过期',
-                position: 'bottom'
-              })
-            }
-          })
+        Axios.get('/api/house/list', {headers: {
+          'Content-Type': 'application/json',
+          'x-api-token': localStorage.token
+        }}).then(function (data) {
+          if (data.data.message === 'isOk') {
+            that.houseInfos = data.data.data
+          } else {
+            that.$toast({
+              message: '您的登录已过期',
+              position: 'bottom'
+            })
+          }
+        })
       }
     },
     components: {
