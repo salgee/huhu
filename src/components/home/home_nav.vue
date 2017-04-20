@@ -28,6 +28,7 @@
     name: 'housenav',
     mounted () {
       this.getDays()
+      this.getTodayTime()
       this.homeList()
       sessionStorage.overchangeorsave = 'change'
     },
@@ -37,13 +38,49 @@
       }
     },
     methods: {
+//      获得今天
       getDays: function () {
         let days = []
-        for (let i = 1; i <= 60; i++) {
-          let day = moment().add(i, 'd').format('YYYY-MM-DD(ddd)')
-          days.push(day)
+        if (moment().get('h') >= 17) {
+          for (let i = 1; i <= 60; i++) {
+            let day = moment().add(i, 'd').format('YYYY-MM-DD(ddd)')
+            days.push(day)
+          }
+        } else {
+          for (let i = 0; i <= 60; i++) {
+            let day = moment().add(i, 'd').format('YYYY-MM-DD(ddd)')
+            days.push(day)
+          }
         }
         sessionStorage.days = JSON.stringify(days)
+      },
+//      获得现在时间
+      getTodayTime: function () {
+        let todayTime = []
+        let today = moment().get('h')
+        let a = ''
+        let b = ''
+        if (today >= '5' && today <= '17') {
+          if (moment().add(30, 'm').get('h') === moment().get('h')) {
+            for (let i = 3; i < 20 - today; i++) {
+              a = moment().add(i, 'h').get('h') + ':00-' + moment().add(i, 'h').get('h') + ':30'
+              todayTime.push(a)
+              b = moment().add(i, 'h').get('h') + ':30-' + moment().add(1 + i, 'h').get('h') + ':00'
+              todayTime.push(b)
+            }
+          } else {
+            for (let j = 3; j < 20 - today; j++) {
+              b = moment().add(j, 'h').get('h') + ':30-' + moment().add(1 + j, 'h').get('h') + ':00'
+              todayTime.push(b)
+              a = moment().add(1 + j, 'h').get('h') + ':00-' + moment().add(1 + j, 'h').get('h') + ':30'
+              todayTime.push(a)
+            }
+            todayTime.pop()
+          }
+        } else {
+          todayTime = ['08:00-08:30', '08:30-09:00', '09:00-09:30', '09:30-10:00', '10:00-10:30', '10:30-11:00', '11:00-11:30', '11:30-12:00', '12:00-12:30', '12:30-13:00', '13:00-13:30', '13:30-14:00', '14:00-14:30', '14:30-15:00', '15:00-15:30', '15:30-16:00', '16:00-16:30', '16:30-17:00', '17:00-17:30', '17:30-18:00', '18:00-18:30', '18:30-19:00', '19:00-19:30', '19:30-20:00']
+        }
+        sessionStorage.todayTime = JSON.stringify(todayTime)
       },
       //  whyccup写的
       homeList: function () {

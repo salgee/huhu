@@ -9,13 +9,13 @@
         <img src="../assets/images/返回@2x.png" width="8" height="14" v-if="reception==''" @click="openPicker">
         <span v-model="reception" v-else @click="openPicker">{{reception}}</span>
       </mt-cell>
-      <mt-cell title="接引时间">
-        <img slot="icon" src="../assets/images/接引时间@2x.png" width="20" @click="openReceiveTime">
-        <img src="../assets/images/返回@2x.png" width="8" height="14"  v-if="receive==''" @click="openReceiveTime">
-        <span v-model="receive" v-else @click="openReceiveTime">{{receive}}</span>
+      <mt-cell title="接引时间" @click.native="userSelf">
+        <img slot="icon" src="../assets/images/接引时间@2x.png" width="20" @click.stop="openReceiveTime">
+        <img src="../assets/images/返回@2x.png" width="8" height="14"  v-if="receive==''" @click.stop="openReceiveTime" v-show="byUserSelf">
+        <span v-model="receive" v-else @click.stop="openReceiveTime">{{receive}}</span>
       </mt-cell>
       <mt-cell title="清洁时间">
-        <img slot="icon" src="../assets/images/清洁时间@2x.png" width="20" >
+        <img slot="icon" src="../assets/images/清洁时间@2x.png" width="20">
         <img src="../assets/images/返回@2x.png" width="8" height="14">
       </mt-cell>
       <mt-cell title="入住人姓名">
@@ -81,13 +81,26 @@
       getReception: function () {
         this.popupReception = false
         this.reception = this.saveReception
+        if (this.reception === '自主入住') {
+          this.byUserSelf = false
+        } else {
+          this.byUserSelf = true
+        }
       },
       getValue: function (picker) {
         this.saveReception = picker.getValues()[0]
       },
 //  -------------------------------接待时间popup和picker
       openReceiveTime: function () {
-        this.popupReceive = true
+        if (this.reception === '') {
+          this.$toast({
+            message: '请先选择接待方式',
+            position: 'bottom',
+            duration: 1000
+          })
+        } else {
+          this.popupReceive = true
+        }
       },
       receiveCancel: function () {
         this.popupReceive = false
@@ -98,19 +111,40 @@
       },
       getReceiveTimeValue: function (picker, values) {
         this.saveReceive = picker.getValues()[0] + picker.getValues()[1]
-        if (this.select === values[0]) {
-          return
+        if (values[0] === JSON.parse(sessionStorage.days)[0]) {
+          picker.setSlotValues(1, JSON.parse(sessionStorage.todayTime))
         } else {
-          if (values[0] !== JSON.parse(sessionStorage.days)[0]) {
-            picker.setSlotValue(1, '08:00-08:30')
-          }
+          picker.setSlotValues(1, ['08:00-08:30', '08:30-09:00', '09:00-09:30', '09:30-10:00', '10:00-10:30', '10:30-11:00', '11:00-11:30', '11:30-12:00', '12:00-12:30', '12:30-13:00', '13:00-13:30', '13:30-14:00', '14:00-14:30', '14:30-15:00', '15:00-15:30', '15:30-16:00', '16:00-16:30', '16:30-17:00', '17:00-17:30', '17:30-18:00', '18:00-18:30', '18:30-19:00', '19:00-19:30', '19:30-20:00'])
+//
         }
-        values[0] = this.select
+      },
+//      判断改变的是个哪个Solt,并使时间Solt复位
+//      goSlotFirst: function (picker, values) {
+//        if (this.select === values[0]) {
+//          return
+//        } else {
+//          if (values[0] !== JSON.parse(sessionStorage.days)[0]) {
+//            picker.setSlotValue(1, '08:00-08:30')
+//          }
+//        }
+//        values[0] = this.select
+//      },
+      userSelf: function () {
+        if (this.reception === '自主入住') {
+          this.$toast({
+            message: '自主入住不用选择',
+            position: 'bottom',
+            duration: 1000
+          })
+        }
       }
     },
     data () {
       return {
-        select: '',
+//        今天，用来对比是否不是今天
+        select: JSON.parse(sessionStorage.days)[0],
+//        自主入住隐藏两时间按钮
+        byUserSelf: true,
 //  -------------------------------接待方式popup和picker
         popupReception: false,
         receptionSlots: [
@@ -127,11 +161,12 @@
         ReceiveSlots: [
           {
             values: JSON.parse(sessionStorage.days),
+            defaultIndex: 0,
             className: 'receiveSlots1',
             textAlign: 'left'
           },
           {
-            values: ['08:00-08:30', '08:30-09:00', '09:00-09:30', '09:30-10:00', '10:00-10:30', '10:30-11:00', '11:00-11:30', '11:30-12:00', '12:00-12:30', '12:30-13:00', '13:00-13:30', '13:30-14:00', '14:00-14:30', '14:30-15:00', '15:00-15:30', '15:30-16:00', '16:00-16:30', '16:30-17:00', '17:00-17:30', '17:30-18:00', '18:00-18:30', '18:30-19:00', '19:00-19:30', '19:30-20:00'],
+            values: JSON.parse(sessionStorage.todayTime),
             className: 'receiveSlots2',
             textAlign: 'right'
           }
