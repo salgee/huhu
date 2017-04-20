@@ -1,8 +1,8 @@
 <template>
-      <div class="houseItem">
+      <div class="houseItem" @click="goChangeHouse(houseInfo.id)">
         <img src="../assets/images/vip标识@2x.png" class="vipImg"  v-if="vipIsOrNo">
         <img src="../assets/images/vip灰色@2x.png" class="vipImg" v-else @click.stop="joinVip">
-        <div @click="goChangeHouse(houseInfo.id)" style="padding-top: 30px">
+        <div style="padding-top: 30px">
           <div class="houseAddress">
             <img src="../assets/images/地址@2x.png" class="addressImg">
             <span>{{district}}</span><span>{{houseInfo.address}}</span><span>{{houseInfo.buildingNo}}</span>
@@ -14,9 +14,9 @@
           </div>
         </div>
         <div class="houseBtn">
-          <button class="oneClick" v-if="upAndDown == 'offLine'" @click="goChangeHouse(houseInfo.id)">一键上架</button>
-          <button class="oneClick" v-else @click="pushOrderBefore">一键下单</button>
-          <button class="joinVIP" v-if="!vipIsOrNo" @click="joinVip">加入VIP</button>
+          <button class="oneClick" v-if="upAndDown == 'offLine'" @click.stop="easyUp">一键上架</button>
+          <button class="oneClick" v-else @click.stop="pushOrderBefore">一键下单</button>
+          <button class="joinVIP" v-if="!vipIsOrNo" @click.stop="joinVip">加入VIP</button>
         </div>
       </div>
 </template>
@@ -38,6 +38,27 @@
       }
     },
     methods: {
+      easyUp: function () {
+        let that = this
+        Axios.post('/api/house/online/' + this.houseInfo.id + '/normal', {headers: {
+          'Content-Type': 'application/json',
+          'x-api-token': localStorage.token
+        }}).then(function (data) {
+          console.log(data)
+          if (data.data.message === 'isOk') {
+            that.$indicator.open('上架中')
+            setTimeout(() => {
+              that.$indicator.close()
+              that.upAndDown = ''
+            }, 500)
+          } else {
+            that.$toast({
+              message: '您的登录已过期',
+              position: 'bottom'
+            })
+          }
+        })
+      },
       goChangeHouse: function (key) {
         let that = this
         sessionStorage.huhu_status = that.houseInfo.status

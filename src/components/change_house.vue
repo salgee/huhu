@@ -90,10 +90,6 @@
   import Axios from 'axios'
   import json from '../assets/db/houseInfo.json'
   Axios.defaults.baseURL = 'http://a.com'
-  Axios.defaults.headers = {
-    'Content-Type': 'application/json',
-    'x-api-token': localStorage.token
-  }
   export default {
     name: 'addHouse',
     data () {
@@ -154,6 +150,11 @@
         this.upAndDown = true
       } else {
         this.upAndDown = false
+      }
+//      重新定义亲求头
+      Axios.defaults.headers = {
+        'Content-Type': 'application/json',
+        'x-api-token': localStorage.token
       }
     },
     methods: {

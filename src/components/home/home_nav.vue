@@ -21,10 +21,13 @@
   import {Swipe, SwipeItem, Cell} from 'mint-ui'
   import houseItem from '../house_item.vue'
   import Axios from 'axios'
+  import moment from 'moment'
+  moment.locale('zh-cn')
   Axios.defaults.baseURL = 'http://a.com'
   export default {
     name: 'housenav',
     mounted () {
+      this.getDays()
       this.homeList()
       sessionStorage.overchangeorsave = 'change'
     },
@@ -34,6 +37,14 @@
       }
     },
     methods: {
+      getDays: function () {
+        let days = []
+        for (let i = 1; i <= 60; i++) {
+          let day = moment().add(i, 'd').format('YYYY-MM-DD(ddd)')
+          days.push(day)
+        }
+        sessionStorage.days = JSON.stringify(days)
+      },
       //  whyccup写的
       homeList: function () {
         let that = this

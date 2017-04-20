@@ -64,20 +64,10 @@
   </div>
 </template>
 <script>
-  import moment from 'moment'
   export default{
     mounted () {
-      this.getDays()
     },
     methods: {
-      getDays: function () {
-        let days = []
-        for (let i = 1; i <= 60; i++) {
-          let day = moment().add(i, 'd').format('YYYY-MM-DD(ddd)')
-          days.push(day)
-        }
-        sessionStorage.days = JSON.stringify(days)
-      },
       goHome: function () {
         this.$router.push('/')
       },
@@ -108,15 +98,19 @@
       },
       getReceiveTimeValue: function (picker, values) {
         this.saveReceive = picker.getValues()[0] + picker.getValues()[1]
-//        if (values[0] > values[1]) {
-//          picker.setSlotValue(1, values[0]);
-//        }
-//        console.log()
-//        console.log(values[0])
+        if (this.select === values[0]) {
+          return
+        } else {
+          if (values[0] !== JSON.parse(sessionStorage.days)[0]) {
+            picker.setSlotValue(1, '08:00-08:30')
+          }
+        }
+        values[0] = this.select
       }
     },
     data () {
       return {
+        select: '',
 //  -------------------------------接待方式popup和picker
         popupReception: false,
         receptionSlots: [
