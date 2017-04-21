@@ -44,7 +44,6 @@
           'Content-Type': 'application/json',
           'x-api-token': localStorage.token
         }}).then(function (data) {
-          console.log(data)
           if (data.data.message === 'isOk') {
             that.$indicator.open('上架中')
             setTimeout(() => {
@@ -106,6 +105,7 @@
         sessionStorage.huhu_dcr = this.houseInfo.dcr
         sessionStorage.huhu_wifiProfile = this.houseInfo.wifiName
         sessionStorage.huhu_wifiPwd = this.houseInfo.wifiPwd
+        sessionStorage.huhu_id = this.houseInfo.id
 //        this.$router.push({name: 'changeHouse', params: { houseInfo: this.houseInfo }})
         this.$router.push({name: 'changeHouse'})
       },

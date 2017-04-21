@@ -185,12 +185,15 @@
           return
         }
         Promise.resolve((() => {
+          let path = localStorage.add_address_fromPath || '/home/addHouse'
+          localStorage.removeItem('add_address_fromPath')
           sessionStorage.huhu_No = vm.buldingNo
           sessionStorage.huhu_wholeAddress = sessionStorage.huhu_province + sessionStorage.huhu_address + sessionStorage.huhu_No
+          return path
         })()
         ).then(
-          () => {
-            vm.$router.push({name: 'add'})
+          (path) => {
+            vm.$router.push(path)
           }
         )
       },
