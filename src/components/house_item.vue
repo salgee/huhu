@@ -109,8 +109,16 @@
 //        this.$router.push({name: 'changeHouse', params: { houseInfo: this.houseInfo }})
         this.$router.push({name: 'changeHouse'})
       },
+//      跳转并存储要用的值
       pushOrderBefore: function () {
-        this.$router.push('/home/pushOrderBefore')
+        let that = this
+        Promise.resolve((() => {
+          sessionStorage.orderUseHouesId = that.houseInfo.id
+        })()
+        )
+          .then(
+            this.$router.push('/home/pushOrderBefore')
+          )
       },
       joinVip: function () {
         let vm = this
