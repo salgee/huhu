@@ -5,7 +5,7 @@
       <mt-swipe-item><img src="../../assets/logo.png" alt=""></mt-swipe-item>
       <mt-swipe-item><img src="../../assets/logo.png" alt=""></mt-swipe-item>
     </mt-swipe>
-    <mt-cell title="您没有订单需要确认" >
+    <mt-cell v-if="houseInfos.length!==0" :title="orderNum" to="/home/order/onOrder">
       <img src="../../assets/images/返回@2x.png" alt="" width="8" height="14"  >
       <img slot="icon" src="../../assets/images/布告栏@2x.png" width="14" height="14">
     </mt-cell>
@@ -28,22 +28,61 @@
     name: 'housenav',
     mounted () {
       this.getDays()
+      this.getTodayTime()
       this.homeList()
       sessionStorage.overchangeorsave = 'change'
+      // 查询订单
+      this.getOrder()
     },
     data () {
       return {
-        houseInfos: []
+        houseInfos: [],
+        orderNum: '您没有订单需要确认'
       }
     },
     methods: {
+//      获得今天
       getDays: function () {
         let days = []
-        for (let i = 1; i <= 60; i++) {
+        let m = ''
+        if (moment().get('h') >= 17) {
+          m = 1
+        } else {
+          m = 0
+        }
+        for (let i = m; i <= 60; i++) {
           let day = moment().add(i, 'd').format('YYYY-MM-DD(ddd)')
           days.push(day)
         }
         sessionStorage.days = JSON.stringify(days)
+      },
+//      获得现在时间
+      getTodayTime: function () {
+        let todayTime = []
+        let today = moment().get('h')
+        let a = ''
+        let b = ''
+        if (today >= '5' && today <= '17') {
+          if (moment().add(1800000, 'ms').get('h') === moment().get('h')) {
+            for (let i = 3; i < 20 - today; i++) {
+              a = moment().add(i, 'h').get('h') + ':30-' + moment().add(i + 1, 'h').get('h') + ':00'
+              todayTime.push(a)
+              b = moment().add(i + 1, 'h').get('h') + ':00-' + moment().add(i + 1, 'h').get('h') + ':30'
+              todayTime.push(b)
+            }
+          } else {
+            for (let j = 3; j < 20 - today; j++) {
+              b = moment().add(j + 1, 'h').get('h') + ':00-' + moment().add(j + 1, 'h').get('h') + ':30'
+              todayTime.push(b)
+              a = moment().add(j + 1, 'h').get('h') + ':30-' + moment().add(j + 2, 'h').get('h') + ':00'
+              todayTime.push(a)
+            }
+            todayTime.pop()
+          }
+        } else {
+          todayTime = ['08:00-08:30', '08:30-09:00', '09:00-09:30', '09:30-10:00', '10:00-10:30', '10:30-11:00', '11:00-11:30', '11:30-12:00', '12:00-12:30', '12:30-13:00', '13:00-13:30', '13:30-14:00', '14:00-14:30', '14:30-15:00', '15:00-15:30', '15:30-16:00', '16:00-16:30', '16:30-17:00', '17:00-17:30', '17:30-18:00', '18:00-18:30', '18:30-19:00', '19:00-19:30', '19:30-20:00']
+        }
+        sessionStorage.todayTime = JSON.stringify(todayTime)
       },
       //  whyccup写的
       homeList: function () {
@@ -61,6 +100,22 @@
             })
           }
         })
+      },
+      getOrder () {
+        let that = this
+        Axios.get('/api/order/findOrders/landlord/waitConfirm/0/0', {
+          headers: {
+            'Content-Type': 'application/json',
+            'x-api-token': localStorage.token
+          }
+        })
+          .then(function (data) {
+            const dt = data.data
+            if (dt.message === 'isOk') {
+              if (dt.data.total === 0) return
+              that.orderNum = `您有${dt.data.total}个订单需要确认`
+            }
+          })
       }
     },
     components: {
@@ -98,6 +153,7 @@
 }
 .home-nav .mint-cell-wrapper{
   font-size: 12px;
+  color: rgba(121,172,54,.8)
 }
 .homeBackground {
   position: relative;

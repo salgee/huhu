@@ -9,22 +9,23 @@
         <img src="../assets/images/返回@2x.png" width="8" height="14" v-if="reception==''" @click="openPicker">
         <span v-model="reception" v-else @click="openPicker">{{reception}}</span>
       </mt-cell>
-      <mt-cell title="接引时间">
-        <img slot="icon" src="../assets/images/接引时间@2x.png" width="20" @click="openReceiveTime">
-        <img src="../assets/images/返回@2x.png" width="8" height="14"  v-if="receive==''" @click="openReceiveTime">
-        <span v-model="receive" v-else @click="openReceiveTime">{{receive}}</span>
+      <mt-cell title="接引时间" @click.native="userSelf">
+        <img slot="icon" src="../assets/images/接引时间@2x.png" width="20" @click.stop="openReceiveTime">
+        <img src="../assets/images/返回@2x.png" width="8" height="14"  v-if="receive==''" @click.stop="openReceiveTime" v-show="byUserSelf">
+        <span v-model="receive" v-else @click.stop="openReceiveTime">{{receive}}</span>
       </mt-cell>
       <mt-cell title="清洁时间">
-        <img slot="icon" src="../assets/images/清洁时间@2x.png" width="20" >
-        <img src="../assets/images/返回@2x.png" width="8" height="14">
+        <img slot="icon" src="../assets/images/清洁时间@2x.png" width="20" @click.stop="openClean">
+        <img src="../assets/images/返回@2x.png" width="8" height="14" v-if="clean==''" @click.stop="openClean">
+        <span v-model="receive" v-else @click.stop="openClean">{{clean}}</span>
       </mt-cell>
       <mt-cell title="入住人姓名">
         <img slot="icon" src="../assets/images/入住人姓名@2x.png" width="20" >
-        <input type="text" maxlength="15"  class="guest">
+        <input type="text" maxlength="15"  class="guest" v-model="checkInPerson">
       </mt-cell>
       <mt-cell title="入住人联系方式">
         <img slot="icon" src="../assets/images/入住人联系方式@2x.png" width="20" >
-        <input type="text" maxlength="11"  class="guest">
+        <input type="text" maxlength="11"  class="guest" v-model="checkInPhone">
       </mt-cell>
     </div>
     <div class="serviceCharge">
@@ -41,7 +42,7 @@
 
     <div class="pushOrder">
       <div>合计:￥119</div>
-      <button class="btn">我要下单</button>
+      <button class="btn" @click="goOrder">我要下单</button>
     </div>
     <!--接待方式-->
     <mt-popup v-model="popupReception" position="bottom" >
@@ -61,13 +62,80 @@
         </div>
       </mt-picker>
     </mt-popup>
+    <!--清洁时间-->
+    <mt-popup v-model="popupClean" position="bottom">
+      <mt-picker :slots="cleanSlots" :showToolbar="true" @change="getCleanTime">
+        <div class="pickerTitle">
+          <div style="text-align: left;"><span @click="cleanCancel">取消</span></div>
+          <div style="text-align: right;color:#74a92e"><span @click="cleanGet">确定</span></div>
+        </div>
+      </mt-picker>
+    </mt-popup>
   </div>
 </template>
 <script>
+  import Axios from 'axios'
+  import moment from 'moment'
+  moment.locale('zh-cn')
+  Axios.defaults.baseURL = 'http://a.com'
   export default{
     mounted () {
+      Axios.defaults.headers = {
+        'Content-Type': 'application/json',
+        'x-api-token': localStorage.token
+      }
     },
     methods: {
+//    立即下单接口
+      goOrder: function () {
+        let that = this
+        Axios.post('/api/order/addOrder/' + sessionStorage.orderUseHouesId, {
+//        总金额
+          totalAmount: '240',
+//        押金
+          foregift: '160',
+//        服务费
+          serviceFee: '80',
+//        入住方式
+          receptionType: that.receptionType,
+//          开始打扫时间
+          serviceTimeFrom: that.Unix(that.clean),
+//          结束打扫时间
+          serviceTimeTo: that.UnixEnd(that.clean),
+//          接引开始时间
+          receptionTimeFrom: that.Unix(that.receive),
+//          接引结束时间
+          receptionTimeTo: that.UnixEnd(that.receive),
+          checkInPerson: that.checkInPerson,
+          checkInPhone: that.checkInPhone,
+//           额外服务
+          orderDetailList: []
+        }
+        ).then(function (data) {
+          console.log(data)
+          if (data.data.message === 'isOk') {
+            that.$toast({
+              message: '下单成功',
+              position: 'bottom'
+            })
+            that.$router.push('/home')
+          } else {
+            that.$toast({
+              message: '您的登录已过期',
+              position: 'bottom'
+            })
+          }
+        })
+      },
+//    处理数据成时间戳
+      Unix: function (mmp) {
+        let str = mmp.slice(0, 10) + '-' + mmp.slice(14, 16) + '-' + mmp.slice(17, 19)
+        return moment(str.split('-')).unix()
+      },
+      UnixEnd: function (mmp) {
+        let str = mmp.slice(0, 10) + '-' + mmp.slice(20, 22) + '-' + mmp.slice(23, 25)
+        return moment(str.split('-')).unix()
+      },
       goHome: function () {
         this.$router.push('/')
       },
@@ -81,13 +149,28 @@
       getReception: function () {
         this.popupReception = false
         this.reception = this.saveReception
+        if (this.reception === '自主入住') {
+          this.byUserSelf = false
+          this.receptionType = 'byYourself'
+        } else {
+          this.byUserSelf = true
+          this.receptionType = 'byGuide'
+        }
       },
       getValue: function (picker) {
         this.saveReception = picker.getValues()[0]
       },
 //  -------------------------------接待时间popup和picker
       openReceiveTime: function () {
-        this.popupReceive = true
+        if (this.reception === '') {
+          this.$toast({
+            message: '请先选择接待方式',
+            position: 'bottom',
+            duration: 1000
+          })
+        } else {
+          this.popupReceive = true
+        }
       },
       receiveCancel: function () {
         this.popupReceive = false
@@ -98,20 +181,70 @@
       },
       getReceiveTimeValue: function (picker, values) {
         this.saveReceive = picker.getValues()[0] + picker.getValues()[1]
-        if (this.select === values[0]) {
-          return
+        if (values[0] === JSON.parse(sessionStorage.days)[0]) {
+          picker.setSlotValues(1, JSON.parse(sessionStorage.todayTime))
         } else {
-          if (values[0] !== JSON.parse(sessionStorage.days)[0]) {
-            picker.setSlotValue(1, '08:00-08:30')
+          picker.setSlotValues(1, ['08:00-08:30', '08:30-09:00', '09:00-09:30', '09:30-10:00', '10:00-10:30', '10:30-11:00', '11:00-11:30', '11:30-12:00', '12:00-12:30', '12:30-13:00', '13:00-13:30', '13:30-14:00', '14:00-14:30', '14:30-15:00', '15:00-15:30', '15:30-16:00', '16:00-16:30', '16:30-17:00', '17:00-17:30', '17:30-18:00', '18:00-18:30', '18:30-19:00', '19:00-19:30', '19:30-20:00'])
+          if (picker.getValues()[1] === JSON.parse(sessionStorage.todayTime)[0]) {
+            picker.setSlotValue(1, ['08:00-08:30'])
+          } else {
+            return
           }
         }
-        values[0] = this.select
+      },
+      userSelf: function () {
+        if (this.reception === '自主入住') {
+          this.$toast({
+            message: '自主入住不用选择',
+            position: 'bottom',
+            duration: 1000
+          })
+        }
+      },
+//      -------------------------------------------------------打扫时间的popup和picker
+      openClean: function () {
+        if (this.reception === '') {
+          this.$toast({
+            message: '请先选择接待方式',
+            position: 'bottom',
+            duration: 1000
+          })
+        } else {
+          this.popupClean = true
+        }
+      },
+      getCleanTime: function (picker, values) {
+        this.saveClean = picker.getValues()[0] + picker.getValues()[1]
+        if (values[0] === JSON.parse(sessionStorage.days)[0]) {
+          picker.setSlotValues(1, JSON.parse(sessionStorage.todayTime))
+        } else {
+          picker.setSlotValues(1, ['08:00-08:30', '08:30-09:00', '09:00-09:30', '09:30-10:00', '10:00-10:30', '10:30-11:00', '11:00-11:30', '11:30-12:00', '12:00-12:30', '12:30-13:00', '13:00-13:30', '13:30-14:00', '14:00-14:30', '14:30-15:00', '15:00-15:30', '15:30-16:00', '16:00-16:30', '16:30-17:00', '17:00-17:30', '17:30-18:00', '18:00-18:30', '18:30-19:00', '19:00-19:30', '19:30-20:00'])
+          if (picker.getValues()[1] === JSON.parse(sessionStorage.todayTime)[0]) {
+            picker.setSlotValue(1, ['08:00-08:30'])
+          } else {
+            return
+          }
+        }
+      },
+      cleanCancel: function () {
+        this.popupClean = false
+      },
+      cleanGet: function () {
+        this.popupClean = false
+        this.clean = this.saveClean
       }
     },
     data () {
       return {
-        select: '',
-//  -------------------------------接待方式popup和picker
+//        ---------------------存储接口需要的数据
+        receptionType: '',
+        checkInPerson: '',
+        checkInPhone: '',
+//        ------------------------------今天，用来对比是否不是今天
+        select: JSON.parse(sessionStorage.days)[0],
+//        自主入住隐藏两时间按钮
+        byUserSelf: true,
+//        -------------------------接待方式popup和picker
         popupReception: false,
         receptionSlots: [
           {
@@ -127,17 +260,38 @@
         ReceiveSlots: [
           {
             values: JSON.parse(sessionStorage.days),
+            defaultIndex: 0,
             className: 'receiveSlots1',
             textAlign: 'left'
           },
           {
-            values: ['08:00-08:30', '08:30-09:00', '09:00-09:30', '09:30-10:00', '10:00-10:30', '10:30-11:00', '11:00-11:30', '11:30-12:00', '12:00-12:30', '12:30-13:00', '13:00-13:30', '13:30-14:00', '14:00-14:30', '14:30-15:00', '15:00-15:30', '15:30-16:00', '16:00-16:30', '16:30-17:00', '17:00-17:30', '17:30-18:00', '18:00-18:30', '18:30-19:00', '19:00-19:30', '19:30-20:00'],
+            values: JSON.parse(sessionStorage.todayTime),
+            defaultIndex: 0,
             className: 'receiveSlots2',
             textAlign: 'right'
           }
         ],
         receive: '',
-        saveReceive: ''
+        saveReceive: '',
+//      -------------------------------------------------------打扫时间的popup和picker
+        clean: '',
+        popupClean: false,
+//        暂存数据，避免直接显示选好的时间
+        saveClean: '',
+        cleanSlots: [
+          {
+            values: JSON.parse(sessionStorage.days),
+            defaultIndex: 0,
+            className: 'receiveSlots1',
+            textAlign: 'left'
+          },
+          {
+            values: JSON.parse(sessionStorage.todayTime),
+            defaultIndex: 0,
+            className: 'receiveSlots2',
+            textAlign: 'right'
+          }
+        ]
       }
     }
   }
