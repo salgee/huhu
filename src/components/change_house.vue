@@ -105,7 +105,7 @@
         gateType: sessionStorage.huhu_gateType,
         selected: '',
         selected1: '',
-        dcr: sessionStorage.huhu_dcr === 'true',
+        dcr: sessionStorage.huhu_dcr === '1',
         bedInfo: sessionStorage.huhu_bedNum,
 //        sessionStorage.huhu_bedNum组件中存储的
         wifiProfile: sessionStorage.huhu_wifiProfile || '',
@@ -180,7 +180,6 @@
         let that = this
         Axios.post('/api/house/online/' + sessionStorage.huhu_key + '/normal'
         ).then(function (data) {
-          console.log(data)
           if (data.data.message === 'isOk') {
             that.$indicator.open('上架中')
             setTimeout(() => {
@@ -309,6 +308,7 @@
         json.wifiName = sessionStorage.huhu_wifiProfile
         json.wifiPwd = sessionStorage.huhu_wifiPwd
         json.foregift = 123.67
+        json.id = sessionStorage.huhu_id
         Axios.post('/api/house/update',
           json, {
             headers: {
@@ -343,7 +343,6 @@
       Toast
     },
     beforeRouteEnter (to, from, next) {
-      console.log(from)
       if (localStorage.length === 0) {
         next('/login')
       } else {
