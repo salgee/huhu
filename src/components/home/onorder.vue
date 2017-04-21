@@ -5,10 +5,10 @@
         <mt-button icon="back"></mt-button>
       </router-link>
     </mt-header>
-    <div v-for="infos in houseInfos" class="orderlist">
+    <div v-for="(infos,index) in houseInfos" :key="index" class="orderlist" ref="infos.orderInfo.orderId">
       <section class="order">
         <div class="house-info">
-          <h3>{{infos.houseInfo.address}}</h3>
+          <h3>{{infos.houseInfo.address+infos.houseInfo.buildingNo}}</h3>
           <span>{{infos.houseInfo.orderId}}</span>
 
           <div class="time">{{orderTime(infos.orderInfo.createTime)}}</div>
@@ -20,14 +20,14 @@
             <span>清洁时间：{{infos.orderInfo.serviceTimeFromStr}}</span>
           </p>
           <div class="fee">
-            <span>&yen; {{infos.orderInfo.serviceFee+'.00'}}</span></br>
-            <span v-html="setAward(infos.orderInfo.award)"></span>
+            <span>&yen; {{infos.orderTotalAmount.toFixed(2)}}</span></br>
+            <span>{{'打赏 &yen; '+infos.orderInfo.award+'.00'}}</span>
           </div>
         </div>
         <p class="remark">还没有人抢单哟，要不要打赏管家呢</p>
         <div class="order-handle">
-          <mt-button size="small" @click="award(infos.orderInfo.orderId)">打赏</mt-button>
-          <mt-button size="small">取消</mt-button>
+          <mt-button size="small" @click="award(infos.orderInfo.orderId, index)">打赏</mt-button>
+          <mt-button size="small" @click="cancelOrder(infos.orderInfo.orderId, index)">取消</mt-button>
         </div>
       </section>
       <mt-popup
@@ -77,7 +77,8 @@
         popupVisible: false,
         selected: '',
         selectedId: '',
-        awardFee: 0
+        awardFee: 0,
+        index: ''
       }
     },
     methods: {
@@ -114,17 +115,10 @@
         let timeDis = ((new Date()).getTime() / 1000 - time) / 60
         return '剩余' + parseInt(16 - timeDis) + '分钟'
       },
-      setAward (award) {
+      award (id, index) {
+        console.log(index)
         let vm = this
-        if (vm.awardFee !== 0) {
-          return `打赏 &yen; ${vm.awardFee}.00`
-        }
-        if (award === 0) return
-        vm.awardFee = award
-        return `打赏 &yen; ${award}.00`
-      },
-      award (id) {
-        let vm = this
+        vm.index = index
         vm.slots[0].values = vm.awardList
         vm.popupVisible = true
         vm.selectedId = id
@@ -135,7 +129,7 @@
       // 请求打赏接口
       saveAward () {
         let vm = this
-        Axios.post('/api/order/orderAward/' + vm.selectedId + '/' + vm.selected, {
+        Axios.post('/api/order/orderAward/' + vm.selectedId + '/' + vm.selected, {}, {
           headers: {
             'Content-Type': 'application/json',
             'x-api-token': localStorage.token
@@ -144,7 +138,7 @@
           .then(function (data) {
             const dt = data.data
             if (dt.message === 'isOk') {
-              vm.awardFee += parseInt(vm.selected)
+              vm.houseInfos[vm.index].orderInfo.award = vm.selected
             } else {
               Toast({
                 message: dt.message,
@@ -161,6 +155,36 @@
             })
           })
         vm.popupVisible = false
+      },
+      // 取消订单
+      cancelOrder (orderId, index) {
+        let vm = this
+        Axios.post('/api/order/landlordCancelOrder/' + orderId, {}, {
+          headers: {
+            'Content-Type': 'application/json',
+            'x-api-token': localStorage.token
+          }
+        })
+          .then(function (data) {
+            const dt = data.data
+            if (dt.message === 'isOk') {
+              console.log(index)
+              vm.houseInfos.splice(index, index)
+            } else {
+              Toast({
+                message: dt.message,
+                position: 'bottom',
+                duration: 2000
+              })
+            }
+          })
+          .catch(function (error) {
+            Toast({
+              message: error,
+              position: 'bottom',
+              duration: 2000
+            })
+          })
       }
     },
     computed: {
@@ -169,7 +193,6 @@
         for (let i = 1; i < 34; i++) {
           arr.push(i * 3)
         }
-        console.log(arr)
         return arr
       }
     },

@@ -76,7 +76,7 @@
           .then(function (data) {
             const dt = data.data
             if (dt.message === 'isOk') {
-              console.log(dt.data.total)
+              if (dt.data.total === 0) return
               that.orderNum = `您有${dt.data.total}个订单需要确认`
             }
           })
