@@ -21,7 +21,7 @@
           </p>
           <div class="fee">
             <span>&yen; {{infos.orderTotalAmount.toFixed(2)}}</span></br>
-            <span>{{'打赏 &yen; '+infos.orderInfo.award+'.00'}}</span>
+            <span v-if="infos.orderInfo.award!==0">{{'打赏 &yen; '+infos.orderInfo.award+'.00'}}</span>
           </div>
         </div>
         <p class="remark">还没有人抢单哟，要不要打赏管家呢</p>
@@ -51,7 +51,7 @@
 
   import Axios from 'axios'
   Axios.defaults.baseURL = 'http://a.com'
-  import {Header, Button, Toast, Picker, Popup} from 'mint-ui'
+  import {Header, Button, Toast, Picker, Popup, MessageBox} from 'mint-ui'
   export default {
     name: 'onorder',
     mounted () {
@@ -138,7 +138,13 @@
           .then(function (data) {
             const dt = data.data
             if (dt.message === 'isOk') {
-              vm.houseInfos[vm.index].orderInfo.award = vm.selected
+              vm.houseInfos[vm.index].orderInfo.award += vm.selected
+              vm.houseInfos[vm.index].orderTotalAmount += vm.selected
+              Toast({
+                message: '打赏成功',
+                position: 'bottom',
+                duration: 2000
+              })
             } else {
               Toast({
                 message: dt.message,
@@ -158,33 +164,39 @@
       },
       // 取消订单
       cancelOrder (orderId, index) {
-        let vm = this
-        Axios.post('/api/order/landlordCancelOrder/' + orderId, {}, {
-          headers: {
-            'Content-Type': 'application/json',
-            'x-api-token': localStorage.token
-          }
-        })
-          .then(function (data) {
-            const dt = data.data
-            if (dt.message === 'isOk') {
-              console.log(index)
-              vm.houseInfos.splice(index, index)
-            } else {
+        MessageBox.confirm('确定执行此操作?', '').then(action => {
+          let vm = this
+          Axios.post('/api/order/landlordCancelOrder/' + orderId, {}, {
+            headers: {
+              'Content-Type': 'application/json',
+              'x-api-token': localStorage.token
+            }
+          })
+            .then(function (data) {
+              const dt = data.data
+              if (dt.message === 'isOk') {
+                vm.houseInfos.splice(index, 1)
+                Toast({
+                  message: '订单已取消',
+                  position: 'bottom',
+                  duration: 2000
+                })
+              } else {
+                Toast({
+                  message: dt.message,
+                  position: 'bottom',
+                  duration: 2000
+                })
+              }
+            })
+            .catch(function (error) {
               Toast({
-                message: dt.message,
+                message: error,
                 position: 'bottom',
                 duration: 2000
               })
-            }
-          })
-          .catch(function (error) {
-            Toast({
-              message: error,
-              position: 'bottom',
-              duration: 2000
             })
-          })
+        })
       }
     },
     computed: {
@@ -200,7 +212,8 @@
       mtHeader: Header,
       mtButton: Button,
       Picker,
-      Popup
+      Popup,
+      MessageBox
     }
   }
 </script>
@@ -278,10 +291,10 @@
   }
   #onorder .remark {
     color: #74a92e;
+    margin-bottom: 25px;
   }
   #onorder .order-handle{
    text-align: right;
-    margin-top: 25px;
   }
   #onorder .order-handle button{
     font-size: 12px;
