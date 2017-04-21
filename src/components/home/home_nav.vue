@@ -5,7 +5,7 @@
       <mt-swipe-item><img src="../../assets/logo.png" alt=""></mt-swipe-item>
       <mt-swipe-item><img src="../../assets/logo.png" alt=""></mt-swipe-item>
     </mt-swipe>
-    <mt-cell title="您没有订单需要确认" >
+    <mt-cell v-if="houseInfos.length!==0" :title="orderNum" to="/home/order/onOrder">
       <img src="../../assets/images/返回@2x.png" alt="" width="8" height="14"  >
       <img slot="icon" src="../../assets/images/布告栏@2x.png" width="14" height="14">
     </mt-cell>
@@ -30,10 +30,13 @@
       this.getDays()
       this.homeList()
       sessionStorage.overchangeorsave = 'change'
+      // 查询订单
+      this.getOrder()
     },
     data () {
       return {
-        houseInfos: []
+        houseInfos: [],
+        orderNum: '您没有订单需要确认'
       }
     },
     methods: {
@@ -61,6 +64,22 @@
             })
           }
         })
+      },
+      getOrder () {
+        let that = this
+        Axios.get('/api/order/findOrders/landlord/waitConfirm/0/0', {
+          headers: {
+            'Content-Type': 'application/json',
+            'x-api-token': localStorage.token
+          }
+        })
+          .then(function (data) {
+            const dt = data.data
+            if (dt.message === 'isOk') {
+              console.log(dt.data.total)
+              that.orderNum = `您有${dt.data.total}个订单需要确认`
+            }
+          })
       }
     },
     components: {
@@ -98,6 +117,7 @@
 }
 .home-nav .mint-cell-wrapper{
   font-size: 12px;
+  color: rgba(121,172,54,.8)
 }
 .homeBackground {
   position: relative;
