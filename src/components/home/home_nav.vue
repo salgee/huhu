@@ -41,16 +41,15 @@
 //      获得今天
       getDays: function () {
         let days = []
+        let m = ''
         if (moment().get('h') >= 17) {
-          for (let i = 1; i <= 60; i++) {
-            let day = moment().add(i, 'd').format('YYYY-MM-DD(ddd)')
-            days.push(day)
-          }
+          m = 1
         } else {
-          for (let i = 0; i <= 60; i++) {
-            let day = moment().add(i, 'd').format('YYYY-MM-DD(ddd)')
-            days.push(day)
-          }
+          m = 0
+        }
+        for (let i = m; i <= 60; i++) {
+          let day = moment().add(i, 'd').format('YYYY-MM-DD(ddd)')
+          days.push(day)
         }
         sessionStorage.days = JSON.stringify(days)
       },
@@ -61,18 +60,18 @@
         let a = ''
         let b = ''
         if (today >= '5' && today <= '17') {
-          if (moment().add(30, 'm').get('h') === moment().get('h')) {
+          if (moment().add(1800000, 'ms').get('h') === moment().get('h')) {
             for (let i = 3; i < 20 - today; i++) {
-              a = moment().add(i, 'h').get('h') + ':00-' + moment().add(i, 'h').get('h') + ':30'
+              a = moment().add(i, 'h').get('h') + ':30-' + moment().add(i + 1, 'h').get('h') + ':00'
               todayTime.push(a)
-              b = moment().add(i, 'h').get('h') + ':30-' + moment().add(1 + i, 'h').get('h') + ':00'
+              b = moment().add(i + 1, 'h').get('h') + ':00-' + moment().add(i + 1, 'h').get('h') + ':30'
               todayTime.push(b)
             }
           } else {
             for (let j = 3; j < 20 - today; j++) {
-              b = moment().add(j, 'h').get('h') + ':30-' + moment().add(1 + j, 'h').get('h') + ':00'
+              b = moment().add(j + 1, 'h').get('h') + ':00-' + moment().add(j + 1, 'h').get('h') + ':30'
               todayTime.push(b)
-              a = moment().add(1 + j, 'h').get('h') + ':00-' + moment().add(1 + j, 'h').get('h') + ':30'
+              a = moment().add(j + 1, 'h').get('h') + ':30-' + moment().add(j + 2, 'h').get('h') + ':00'
               todayTime.push(a)
             }
             todayTime.pop()
