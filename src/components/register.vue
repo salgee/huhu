@@ -76,7 +76,7 @@
           })
           .then(function (response) {
             if (response.data.result === 1) {
-              _this.$router.go(-1)
+              _this.$router.push({path: 'login'})
             } else {
               _this.$toast({
                 message: response.data.message,

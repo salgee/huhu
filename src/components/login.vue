@@ -44,17 +44,12 @@
           })
           .then(function (response) {
             if (response.data.result === 1) {
-              _this.$toast(response.data.message)
               localStorage.name = response.data.data.user.account
               localStorage.token = response.data.data.token
               localStorage.accountType = response.data.data.accountType
               _this.$router.go(-1)
             } else {
-              _this.$toast({
-                message: response.data.message,
-                position: 'bottom',
-                duration: 5000
-              })
+
             }
           })
       }
