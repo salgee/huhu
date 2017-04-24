@@ -1,7 +1,7 @@
 <template>
   <div id="pushOrderBefore">
     <mt-header title="填写信息">
-      <mt-button icon="back" slot="left" @click="goHome"></mt-button>
+      <mt-button icon="back" slot="left" @click="clearAdData"></mt-button>
     </mt-header>
     <div class="pushInfo">
       <mt-cell title="接待方式">
@@ -28,20 +28,29 @@
         <input type="text" maxlength="11"  class="guest" v-model="checkInPhone">
       </mt-cell>
     </div>
+    <div class="vipGoods" v-if="vip === '1'">
+      <img src="../assets/images/额外服务@2x.png" width="20">
+      <div class="vipGoodsTitle">额外服务<span>(当前城市可提供布草服务)</span></div>
+      <div style="float: right"><img src="../assets/images/返回@2x.png" width="8" height="14"></div>
+    </div>
     <div class="serviceCharge">
       <div class="serviceLeft">
         <img src="../assets/images/服务费@2x.png">
         <span>服务费</span>
       </div>
-      <div class="serviceRight">
-        <span class="vipPrice">(VIP价￥118)</span>
-        <span>￥119</span>
+      <div class="serviceRight" v-if="vip === '0'">
+        <span class="vipPrice">(VIP价￥{{vipPrice}})</span>
+        <span>￥{{price}}</span>
         <div><router-link tag="span" class="joinVip" to="/user/vip/joinVip">申请VIP</router-link></div>
       </div>
+      <div class="serviceRight" v-else>
+        <span class="vipPrice">(非VIP价￥{{price}})</span>
+        <span>￥{{vipPrice}}</span>
+      </div>
     </div>
-
     <div class="pushOrder">
-      <div>合计:￥119</div>
+      <div v-if="vip === '0'">合计:￥{{price}}</div>
+      <div v-else>合计:￥{{vipPrice}}</div>
       <button class="btn" @click="goOrder">我要下单</button>
     </div>
     <!--接待方式-->
@@ -84,48 +93,135 @@
         'Content-Type': 'application/json',
         'x-api-token': localStorage.token
       }
+      this.howPrice()
     },
     methods: {
-//    立即下单接口
-      goOrder: function () {
+//      根据省市获取服务费
+      howPrice: function () {
         let that = this
-        Axios.post('/api/order/addOrder/' + sessionStorage.orderUseHouesId, {
-//        总金额
-          totalAmount: '240',
-//        押金
-          foregift: '160',
-//        服务费
-          serviceFee: '80',
-//        入住方式
-          receptionType: that.receptionType,
-//          开始打扫时间
-          serviceTimeFrom: that.Unix(that.clean),
-//          结束打扫时间
-          serviceTimeTo: that.UnixEnd(that.clean),
-//          接引开始时间
-          receptionTimeFrom: that.Unix(that.receive),
-//          接引结束时间
-          receptionTimeTo: that.UnixEnd(that.receive),
-          checkInPerson: that.checkInPerson,
-          checkInPhone: that.checkInPhone,
-//           额外服务
-          orderDetailList: []
+        Axios.post('/api/manage/houseFeeConfig/houseFeeConfigDetailsByProvince', {
+          province: sessionStorage.orderUseHouesProvince,
+          city: sessionStorage.orderUseHouesCity
         }
         ).then(function (data) {
-          console.log(data)
-          if (data.data.message === 'isOk') {
-            that.$toast({
-              message: '下单成功',
-              position: 'bottom'
-            })
-            that.$router.push('/home')
-          } else {
-            that.$toast({
-              message: '您的登录已过期',
-              position: 'bottom'
-            })
+          if (sessionStorage.orderUseHouesRoom === '1') {
+            that.vipPrice = data.data.data[0].vipPrice
+            that.price = data.data.data[0].price
+          } else if (sessionStorage.orderUseHouesRoom === '2') {
+            that.vipPrice = data.data.data[1].vipPrice
+            that.price = data.data.data[1].price
+          } else if (sessionStorage.orderUseHouesRoom === '3') {
+            that.vipPrice = data.data.data[2].vipPrice
+            that.price = data.data.data[2].price
+          } else if (sessionStorage.orderUseHouesRoom === '4') {
+            that.vipPrice = data.data.data[3].vipPrice
+            that.price = data.data.data[3].price
           }
         })
+      },
+//    获取服务费
+      getServiceFee: function () {
+        if (this.vip === '0') {
+          return this.price
+        } else {
+          return this.vipPrice
+        }
+      },
+//      获取总金额
+      getTotalAmount: function () {
+        if (this.vip === '0') {
+          return Number(Number(this.price) + Number(sessionStorage.orderUseHouesforegift)).toFixed(2)
+        } else {
+//          额外收费项目
+          return Number(Number(this.vipPrice) + Number(sessionStorage.orderUseHouesforegift)).toFixed(2)
+        }
+      },
+//    立即下单接口
+      goOrder: function () {
+        if (this.receptionType === '') {
+          this.$toast({
+            message: '请选择接待方式',
+            position: 'bottom'
+          })
+          return
+        } else {
+          if (this.reception === '接引客户' && this.receive === '') {
+            this.$toast({
+              message: '请选择接引时间',
+              position: 'bottom'
+            })
+            return
+          } else {
+            if (this.clean === '') {
+              this.$toast({
+                message: '请选择清洁时间',
+                position: 'bottom'
+              })
+              return
+            } else {
+              if (this.checkInPerson === '') {
+                this.$toast({
+                  message: '请输入入住人姓名',
+                  position: 'bottom'
+                })
+                return
+              } else {
+                if (this.checkInPhone === '') {
+                  this.$toast({
+                    message: '请输入入住人联系方式',
+                    position: 'bottom'
+                  })
+                  return
+                } else if (!/^1[34578]\d{9}$/.test(this.checkInPhone)) {
+                  this.$toast({
+                    message: '请输入正确的手机号码',
+                    position: 'bottom'
+                  })
+                  return
+                } else {
+                  let that = this
+                  Axios.post('/api/order/addOrder/' + sessionStorage.orderUseHouesId, {
+//                  总金额
+                    totalAmount: that.getTotalAmount(),
+//                  押金
+                    foregift: sessionStorage.orderUseHouesforegift,
+//                  服务费
+                    serviceFee: that.getServiceFee(),
+//                  入住方式
+                    receptionType: that.receptionType,
+//                  开始打扫时间
+                    serviceTimeFrom: that.Unix(that.clean),
+//                  结束打扫时间
+                    serviceTimeTo: that.UnixEnd(that.clean),
+//                  接引开始时间
+                    receptionTimeFrom: that.Unix(that.receive),
+//                  接引结束时间
+                    receptionTimeTo: that.UnixEnd(that.receive),
+                    checkInPerson: that.checkInPerson,
+                    checkInPhone: that.checkInPhone,
+//                  额外服务
+                    orderDetailList: []
+                  }
+                  ).then(function (data) {
+                    console.log(data)
+                    if (data.data.message === 'isOk') {
+                      that.$toast({
+                        message: '下单成功',
+                        position: 'bottom'
+                      })
+                      that.$router.push('/home')
+                    } else {
+                      that.$toast({
+                        message: '请勿同时段重复下单',
+                        position: 'bottom'
+                      })
+                    }
+                  })
+                }
+              }
+            }
+          }
+        }
       },
 //    处理数据成时间戳
       Unix: function (mmp) {
@@ -136,8 +232,15 @@
         let str = mmp.slice(0, 10) + '-' + mmp.slice(20, 22) + '-' + mmp.slice(23, 25)
         return moment(str.split('-')).unix()
       },
-      goHome: function () {
-        this.$router.push('/')
+      clearAdData () {
+        let vm = this
+        Promise.resolve(
+          sessionStorage.clear()
+        ).then(
+          () => {
+            vm.$router.push('/home')
+          }
+        )
       },
 //  -------------------------------接待方式popup和picker
       openPicker: function () {
@@ -236,6 +339,9 @@
     },
     data () {
       return {
+        vip: sessionStorage.orderUseHouesVip,
+        vipPrice: '',
+        price: '',
 //        ---------------------存储接口需要的数据
         receptionType: '',
         checkInPerson: '',
@@ -409,7 +515,30 @@
     padding: 0 10px;
     box-sizing: border-box;
   }
-
+  .vipGoods{
+    width: 100%;
+    background: #fff;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    padding: 14px 10px;
+    box-sizing: border-box;
+  }
+  .vipGoods img, .vipGoods div{
+    vertical-align: middle;
+    display: inline-block;
+  }
+  .vipGoods span{
+    vertical-align: text-bottom;
+  }
+  .vipGoods .vipGoodsTitle{
+    color: #8c8c8c;
+    font-size: 15px;
+    padding-left: 10px;
+  }
+  .vipGoods .vipGoodsTitle span{
+    color: #bbbbbb;
+    font-size: 12px;
+  }
 
 </style>
 <style>

@@ -1,5 +1,6 @@
 <template>
   <div id="changeHouse">
+    <div class="notTouchByVip" v-if="vip === '1'" @click="toastVip"></div>
     <mt-header title="修改房源" style="background: #79ac36;">
       <mt-button icon="back" slot="left" @click="clearAdData"></mt-button>
       <span slot="right" v-if="changeOrSave === 'change'" @click="change">编辑</span>
@@ -52,8 +53,8 @@
       <div class="notTouch" v-if="changeOrSave === 'change'" @click="toastB"></div>
     </div>
     <div class="submit">
-      <mt-button type="danger" size="large" @click="goDown" v-if="upAndDown">下架</mt-button>
-      <mt-button type="danger" size="large" @click="goUp" v-else>上架</mt-button>
+      <mt-button type="danger" size="large" @click="goDown" v-if="upAndDown" style="z-index: 102">下架</mt-button>
+      <mt-button type="danger" size="large" @click="goUp" v-else style="z-index: 102">上架</mt-button>
     </div>
     <mt-popup
       v-model="popupVisible"
@@ -94,6 +95,8 @@
     name: 'addHouse',
     data () {
       return {
+//        vip房源不能编辑
+        vip: '0',
         upAndDown: true,
         changeOrSave: sessionStorage.overchangeorsave,
 //        OriginalInfo: this.$route.params.houseInfo,
@@ -145,6 +148,8 @@
       }
     },
     mounted: function () {
+//      判断是不是vip
+      this.itIsVip()
 //      判断是上架还是下架
       if (sessionStorage.huhu_status === 'normal') {
         this.upAndDown = true
@@ -160,7 +165,7 @@
     methods: {
       goDown: function () {
         let that = this
-        Axios.post('/api/house/online/' + sessionStorage.huhu_key + '/offLine'
+        Axios.post('/api/house/online/' + sessionStorage.huhu_id + '/offLine'
         ).then(function (data) {
           if (data.data.message === 'isOk') {
             that.$indicator.open('下架中')
@@ -178,7 +183,7 @@
       },
       goUp: function () {
         let that = this
-        Axios.post('/api/house/online/' + sessionStorage.huhu_key + '/normal'
+        Axios.post('/api/house/online/' + sessionStorage.huhu_id + '/normal'
         ).then(function (data) {
           if (data.data.message === 'isOk') {
             that.$indicator.open('上架中')
@@ -203,6 +208,26 @@
       toastB: function () {
         this.$toast({
           message: '请点击编辑进行修改',
+          position: 'bottom',
+          duration: 2000
+        })
+      },
+//      判断是否为VIP房源
+      itIsVip: function () {
+        if (sessionStorage.huhu_vip === '0') {
+          this.vip = '0'
+        } else {
+          this.vip = '1'
+          this.$toast({
+            message: 'Vip房源不能修改',
+            position: 'bottom',
+            duration: 2000
+          })
+        }
+      },
+      toastVip: function () {
+        this.$toast({
+          message: 'Vip房源不能修改',
           position: 'bottom',
           duration: 2000
         })
@@ -360,6 +385,7 @@
     width: 100vw;
     height: 100vh;
     background-color: #ededed;
+    position: relative;
   }
   #changeHouse .mint-cell-value{
     max-width: 70%;
@@ -396,7 +422,15 @@
     left: 0;
     bottom: 0;
     right: 0;
-    z-index: 9999;
+    z-index: 100;
+  }
+  .notTouchByVip{
+    position: absolute;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    z-index: 101;
   }
   #changeHouse .wifi{
     border: none;
@@ -440,5 +474,8 @@
   }
   #changeHouse .title span:last-child{
     float: right;
+  }
+  .mint-header-button.is-left{
+    z-index: 9999;
   }
 </style>
