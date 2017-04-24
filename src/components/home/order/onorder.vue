@@ -7,7 +7,9 @@
     </mt-header>
     <div v-for="(infos,index) in houseInfos" :key="index" class="orderlist" ref="infos.orderInfo.orderId">
       <section class="order">
-        <div class="order-info">
+        <router-link tag="div"
+                     :to="{name: 'orderInfo', params: {orderType: 'onOrder', orderId: infos.houseInfo.orderId}}"
+                     class="order-info" >
           <div class="house-info">
             <h3>{{infos.houseInfo.address+infos.houseInfo.buildingNo}}</h3>
             <span>{{infos.houseInfo.orderId}}</span>
@@ -26,10 +28,10 @@
           </div>
           <p v-if="!infos.housekeepers" class="remark">还没有人抢单哟，要不要打赏管家呢</p>
           <div class="order-handle">
-            <mt-button v-if="!infos.housekeepers" size="small" @click="award(infos.orderInfo.orderId, index)">打赏</mt-button>
-            <mt-button size="small" @click="cancelOrder(infos.orderInfo.orderId, index)">取消</mt-button>
+            <mt-button v-if="!infos.housekeepers" size="small" @click.stop="award(infos.orderInfo.orderId, index)">打赏</mt-button>
+            <mt-button size="small" @click.stop="cancelOrder(infos.orderInfo.orderId, index)">取消</mt-button>
           </div>
-        </div>
+        </router-link>
         <div v-for="customer in infos.housekeepers" class="customer">
           <img :src="'http://139.224.238.161:9999'+customer.avatar" alt="avator">
           <span class="name">{{customer.name}}</span>
@@ -297,7 +299,7 @@
   }
   #onorder .order-info {
     padding: 20px 10px 20px;
-    background: url('../../assets/images/待确认背景图@2x.png') no-repeat top center;
+    background: url('../../../assets/images/待确认背景图@2x.png') no-repeat top center;
     background-size: 100% 120%;
   }
   #onorder .order .time{
@@ -305,7 +307,7 @@
     top: 0;
     right: 0;
     padding-top: 25px;
-    background: url('../../assets/images/时间@2x.png') no-repeat top right;
+    background: url('../../../assets/images/时间@2x.png') no-repeat top right;
     background-size: 20px;
     color: #74a92e;
     transform: scale(.8);
@@ -352,7 +354,7 @@
   }
   #onorder .customer {
     padding: 10px;
-    background: url("../../assets/images/待确认背景图2@2x.png");
+    background: url("../../../assets/images/待确认背景图2@2x.png");
   }
   #onorder .customer img{
     width: 40px;

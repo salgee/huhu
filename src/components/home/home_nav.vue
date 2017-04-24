@@ -160,7 +160,7 @@
   padding-top: 100%;
   font-size: 13px;
   text-align: center;
-    background: url(../../assets/images/activity_one_house.png) no-repeat center;
+  background: url(../../assets/images/activity_one_house.png) no-repeat center;
   background-size: 40%;
 }
 .homeBackground p {
@@ -170,5 +170,16 @@
   right: 0;
   color: #bdbdbd;
   letter-spacing: 2px;
+}
+.homeBackground p:after{
+  position: absolute;
+  top: -35px;
+  right: 100px;
+  width: 20px;
+  height: 30px;
+  content: '';
+  background:url('../../assets/images/解释符号.png') no-repeat center;
+  background-size: 100%;
+
 }
 </style>
