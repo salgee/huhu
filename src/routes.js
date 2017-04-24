@@ -24,7 +24,9 @@ import shezhi from './components/wode/shezhi'
 import changeHouse from './components/change_house.vue'
 import pushList from './components/push_list.vue'
 import bedInfo from './components/add_house_info/bed_info.vue'
-import onOrder from './components/home/onorder.vue'
+import onOrder from './components/home/order/onorder.vue'
+import orderInfo from './components/home/order/order_info.vue'
+import orderToConfirm from './components/home/order/orderToConfirm.vue'
 // 定义路由集合
 const routes = [
   {
@@ -146,6 +148,16 @@ const routes = [
     name: 'onOrder',
     path: '/home/order/onOrder',
     component: onOrder
+  },
+  {
+    name: 'orderInfo',
+    path: '/home/order/:orderType/orderInfo/:orderId',
+    component: orderInfo
+  },
+  {
+    name: 'orderToConfirm',
+    path: '/home/order/onOrder/orderToConfirm/:orderId/:id',
+    component: orderToConfirm
   }
 ]
 export default routes

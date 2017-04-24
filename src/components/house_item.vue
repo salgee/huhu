@@ -49,6 +49,7 @@
             setTimeout(() => {
               that.$indicator.close()
               that.upAndDown = ''
+              that.$router.go(0)
             }, 500)
           } else {
             that.$toast({
@@ -106,6 +107,7 @@
         sessionStorage.huhu_wifiProfile = this.houseInfo.wifiName
         sessionStorage.huhu_wifiPwd = this.houseInfo.wifiPwd
         sessionStorage.huhu_id = this.houseInfo.id
+        sessionStorage.huhu_vip = this.houseInfo.vip
 //        this.$router.push({name: 'changeHouse', params: { houseInfo: this.houseInfo }})
         this.$router.push({name: 'changeHouse'})
       },
@@ -114,6 +116,15 @@
         let that = this
         Promise.resolve((() => {
           sessionStorage.orderUseHouesId = that.houseInfo.id
+          sessionStorage.orderUseHouesProvince = that.houseInfo.province
+          sessionStorage.orderUseHouesCity = that.houseInfo.city
+          sessionStorage.orderUseHouesRoom = that.houseInfo.bedRoom
+          sessionStorage.orderUseHouesVip = that.houseInfo.vip
+          sessionStorage.orderUseHouesforegift = that.houseInfo.foregift
+          sessionStorage.huhu_bedNum = that.bedNum
+          sessionStorage.huhu_province = that.houseInfo.province
+          sessionStorage.huhu_city = that.houseInfo.city
+          sessionStorage.huhu_key = that.houseInfo.id
         })()
         )
           .then(
@@ -123,7 +134,7 @@
       joinVip: function () {
         let vm = this
         Promise.resolve((() => {
-          sessionStorage.huhu_bedNum = this.bedNum
+          sessionStorage.huhu_bedNum = vm.bedNum
           sessionStorage.huhu_province = vm.houseInfo.province
           sessionStorage.huhu_city = vm.houseInfo.city
           sessionStorage.huhu_key = vm.houseInfo.id
@@ -133,6 +144,7 @@
             this.$router.push('/user/vip/joinVip')
           )
       },
+//      计算有几张床
       howBed: function () {
         let array = this.houseInfo.bedAmount.split(',').join(':').split(':')
         let evens = _.filter(array, function (n, i) {
@@ -171,28 +183,13 @@
     display: block;
   }
   .houseItem{
-    margin:10px;
-    margin-bottom: 40px;
-    border: 1px solid #edf3e6;
-    padding-bottom: 20px;
+    margin-bottom: 15px;
     padding-left: 25px;
+    padding-bottom: 25px;
     border-radius: 5px;
-    background: #fff;
+    background: url("../assets/images/房东首页框2@2x.png") center no-repeat;
+    background-size: 100% 100%;
     position: relative;
-  }
-  .houseItem::after{
-    width: 100%;
-    border-radius: 5px;
-    background: #c8dcaf;
-    content: '';
-    overflow: hidden;
-    position: absolute;
-    z-index: -1;
-    top: 0;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    transform:rotate(-4deg) scale(1.015,0.98);
   }
   .houseAddress{
     font-size: 15px;
