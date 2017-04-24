@@ -5,8 +5,8 @@
         <mt-button icon="back"></mt-button>
       </router-link>
     </mt-header>
-    <div v-for="(infos,index) in houseInfos" :key="index" class="orderlist" ref="infos.orderInfo.orderId">
-      <section class="order">
+    <div class="orderlist" >
+      <section v-for="(infos,index) in houseInfos" :key="index" ref="infos.orderInfo.orderId" class="order">
         <router-link tag="div"
                      :to="{name: 'orderInfo', params: {orderType: 'onOrder', orderId: infos.houseInfo.orderId}}"
                      class="order-info" >
@@ -41,9 +41,10 @@
             <span>拒单率: {{customer.rejectRate + '%'}}</span>
           </p>
           <div class="order-handle">
-            <mt-button size="small" @click="deal(customer.orderId, customer.id)">确定</mt-button>
+            <mt-button size="small" @click="confirm(infos.orderInfo.orderId, customer.id)">确定</mt-button>
           </div>
         </div>
+        <mt-button size="small" @click="confirm(infos.orderInfo.orderId, 2)">确定</mt-button>
       </section>
       <mt-popup
         v-model="popupVisible"
@@ -62,8 +63,8 @@
     </div>
   </div>
 </template>
-<script>
 
+<script>
   import Axios from 'axios'
   Axios.defaults.baseURL = 'http://a.com'
   import {Header, Button, Toast, Picker, Popup, MessageBox} from 'mint-ui'
@@ -213,32 +214,9 @@
             })
         })
       },
-      deal (orderId, id) {
-        Axios(`/api/order/landlordConfirmOrder/${orderId}/${id}`)
-          .then(function (data) {
-            const dt = data.data
-            if (dt.message === 'isOk') {
-              Toast({
-                message: '下单成功',
-                position: 'bottom',
-                duration: 2000
-              })
-            } else {
-              Toast({
-                message: dt.message,
-                position: 'bottom',
-                duration: 2000
-              })
-            }
-          }
-            .catch(function (err) {
-              Toast({
-                message: err,
-                position: 'bottom',
-                duration: 2000
-              })
-            })
-          )
+      confirm (orderId, id) {
+        console.log(orderId, id)
+        this.$router.push({name: 'orderToConfirm', params: {orderId: orderId, id: id}})
       }
     },
     computed: {
@@ -353,7 +331,8 @@
     color: #fff;
   }
   #onorder .customer {
-    padding: 10px;
+    margin: 8px 0 4px;
+    padding: 20px 10px;
     background: url("../../../assets/images/待确认背景图2@2x.png");
   }
   #onorder .customer img{

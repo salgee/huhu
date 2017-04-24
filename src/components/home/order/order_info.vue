@@ -1,38 +1,44 @@
 <template>
-  <div v-if="orderInfo.orderInfo !==undefined" id="order-info">
-    <mt-cell to="/home">
-      <p slot="title" class="order-status">
-        <span>订单状态</span>
-        <span style="color: #74a92e;">{{orderStatus[orderInfo.orderInfo.orderStatus]}}</span>
+  <div id="order-info">
+    <mt-header title="订单详情" style="background: #79ac36;">
+      <mt-button icon="back" slot="left"></mt-button>
+    </mt-header>
+    <div v-if="orderInfo.orderInfo !==undefined">
+      <mt-cell to="/home">
+        <p slot="title" class="order-status">
+          <span>订单状态</span>
+          <span style="color: #74a92e;">{{orderStatus[orderInfo.orderInfo.orderStatus]}}</span>
+        </p>
+        <span>订单跟踪</span>
+        <img src="../../../assets/images/返回@2x.png" width="8" height="14">
+      </mt-cell>
+      <p class="address">
+        <span>{{orderInfo.houseInfo.address+orderInfo.houseInfo.buildingNo}}</span></br>
+        <span>订单编号： {{orderInfo.orderInfo.orderId}}</span>
       </p>
-      <span>订单跟踪</span>
-      <img src="../../../assets/images/返回@2x.png" width="8" height="14">
-    </mt-cell>
-    <p class="address">
-      <span>{{orderInfo.houseInfo.address+orderInfo.houseInfo.buildingNo}}</span></br>
-      <span>订单编号： {{orderInfo.orderInfo.orderId}}</span>
-    </p>
-    <section class="customer-info">
-      <p>
-        <span>入住人姓名</span><span>{{orderInfo.orderInfo.checkInPerson}}</span>
-        <span>入住人电话</span><span>{{orderInfo.orderInfo.checkInPhone}}</span>
-        <span>接待方式</span><span>{{receptionType[orderInfo.orderInfo.receptionType]}}</span></br>
+      <section class="customer-info">
+        <p>
+          <span>入住人姓名</span><span>{{orderInfo.orderInfo.checkInPerson}}</span>
+          <span>入住人电话</span><span>{{orderInfo.orderInfo.checkInPhone}}</span>
+          <span>接待方式</span><span>{{receptionType[orderInfo.orderInfo.receptionType]}}</span></br>
+        </p>
+        <p>
+          <span>清洁时间</span><span>{{orderInfo.orderInfo.serviceTimeFromStr}}</span>
+        </p>
+      </section>
+      <section class="order-fee">
+        <p>
+          <span style="color: #888">服务费</span>
+          <span style="color: #888">{{orderInfo.orderInfo.serviceFee}}</span>
+          <span>实付款</span>
+          <span style="color: red">{{orderInfo.orderInfo.totalAmount}}</span>
+        </p>
+      </section>
+      <p class="order-time">
+        <span>下单时间： {{orderInfo.orderInfo.createTimeStr}}</span>
       </p>
-      <p>
-        <span>清洁时间</span><span>{{orderInfo.orderInfo.serviceTimeFromStr}}</span>
-      </p>
-    </section>
-    <section class="order-fee">
-      <p>
-        <span style="color: #888">服务费</span>
-        <span style="color: #888">{{orderInfo.orderInfo.serviceFee}}</span>
-        <span>实付款</span>
-        <span style="color: red">{{orderInfo.orderInfo.totalAmount}}</span>
-      </p>
-    </section>
-    <p class="order-time">
-      <span>下单时间： {{orderInfo.orderInfo.createTimeStr}}</span>
-    </p>
+    </div>
+    <div v-else></div>
   </div>
 </template>
 
@@ -92,6 +98,9 @@
 </script>
 
 <style scoped>
+  #order-info {
+    width: 100vw;
+  }
   #order-info .mint-cell-value span{
     margin-right: 30px;
     font-size: 12px;
