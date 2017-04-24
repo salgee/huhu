@@ -7,27 +7,40 @@
     </mt-header>
     <div v-for="(infos,index) in houseInfos" :key="index" class="orderlist" ref="infos.orderInfo.orderId">
       <section class="order">
-        <div class="house-info">
-          <h3>{{infos.houseInfo.address+infos.houseInfo.buildingNo}}</h3>
-          <span>{{infos.houseInfo.orderId}}</span>
-
-          <div class="time">{{orderTime(infos.orderInfo.createTime)}}</div>
-        </div>
-        <div class="info">
-          <p>
-            <span>接待方式：{{receptionType[infos.orderInfo.receptionType]}}</br></span>
-            <span v-if="infos.orderInfo.receptionType === 'byGuide'">接引时间：{{infos.orderInfo.receptionTimeFromStr}}</br></span>
-            <span>清洁时间：{{infos.orderInfo.serviceTimeFromStr}}</span>
-          </p>
-          <div class="fee">
-            <span>&yen; {{infos.orderTotalAmount.toFixed(2)}}</span></br>
-            <span v-if="infos.orderInfo.award!==0">{{'打赏 &yen; '+infos.orderInfo.award+'.00'}}</span>
+        <div class="order-info">
+          <div class="house-info">
+            <h3>{{infos.houseInfo.address+infos.houseInfo.buildingNo}}</h3>
+            <span>{{infos.houseInfo.orderId}}</span>
+            <div class="time">{{orderTime(infos.orderInfo.createTime)}}</div>
+          </div>
+          <div class="info">
+            <p>
+              <span>接待方式：{{receptionType[infos.orderInfo.receptionType]}}</br></span>
+              <span v-if="infos.orderInfo.receptionType === 'byGuide'">接引时间：{{infos.orderInfo.receptionTimeFromStr}}</br></span>
+              <span>清洁时间：{{infos.orderInfo.serviceTimeFromStr}}</span>
+            </p>
+            <div class="fee">
+              <span>&yen; {{infos.orderTotalAmount.toFixed(2)}}</span></br>
+              <span v-if="infos.orderInfo.award!==0">{{'打赏 &yen; '+infos.orderInfo.award+'.00'}}</span>
+            </div>
+          </div>
+          <p v-if="!infos.housekeepers" class="remark">还没有人抢单哟，要不要打赏管家呢</p>
+          <div class="order-handle">
+            <mt-button v-if="!infos.housekeepers" size="small" @click="award(infos.orderInfo.orderId, index)">打赏</mt-button>
+            <mt-button size="small" @click="cancelOrder(infos.orderInfo.orderId, index)">取消</mt-button>
           </div>
         </div>
-        <p class="remark">还没有人抢单哟，要不要打赏管家呢</p>
-        <div class="order-handle">
-          <mt-button size="small" @click="award(infos.orderInfo.orderId, index)">打赏</mt-button>
-          <mt-button size="small" @click="cancelOrder(infos.orderInfo.orderId, index)">取消</mt-button>
+        <div v-for="customer in infos.housekeepers" class="customer">
+          <img :src="'http://139.224.238.161:9999'+customer.avatar" alt="avator">
+          <span class="name">{{customer.name}}</span>
+          <p>
+            <span>星级: {{customer.starLevel}}</span>
+            <span>服务次数: {{customer.serviceTimes}}</span>
+            <span>拒单率: {{customer.rejectRate + '%'}}</span>
+          </p>
+          <div class="order-handle">
+            <mt-button size="small" @click="deal(customer.orderId, customer.id)">确定</mt-button>
+          </div>
         </div>
       </section>
       <mt-popup
@@ -113,7 +126,7 @@
       // 计算订单有效时间
       orderTime (time) {
         let timeDis = ((new Date()).getTime() / 1000 - time) / 60
-        return '剩余' + parseInt(16 - timeDis) + '分钟'
+        return '剩余' + parseInt(15 - timeDis) + '分钟'
       },
       award (id, index) {
         console.log(index)
@@ -197,6 +210,33 @@
               })
             })
         })
+      },
+      deal (orderId, id) {
+        Axios(`/api/order/landlordConfirmOrder/${orderId}/${id}`)
+          .then(function (data) {
+            const dt = data.data
+            if (dt.message === 'isOk') {
+              Toast({
+                message: '下单成功',
+                position: 'bottom',
+                duration: 2000
+              })
+            } else {
+              Toast({
+                message: dt.message,
+                position: 'bottom',
+                duration: 2000
+              })
+            }
+          }
+            .catch(function (err) {
+              Toast({
+                message: err,
+                position: 'bottom',
+                duration: 2000
+              })
+            })
+          )
       }
     },
     computed: {
@@ -255,7 +295,7 @@
   #onorder .house-info span{
    color: #adadad;
   }
-  #onorder .order {
+  #onorder .order-info {
     padding: 20px 10px 20px;
     background: url('../../assets/images/待确认背景图@2x.png') no-repeat top center;
     background-size: 100% 120%;
@@ -310,5 +350,21 @@
     background-color: #74a92e;
     color: #fff;
   }
-
+  #onorder .customer {
+    padding: 10px;
+    background: url("../../assets/images/待确认背景图2@2x.png");
+  }
+  #onorder .customer img{
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    margin-right: 20px;
+    vertical-align: middle;
+  }
+  #onorder .customer span{
+    display: inline-block;
+    width: 30%;
+    vertical-align: middle;
+    font-size: 14px;
+  }
 </style>
