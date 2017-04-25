@@ -10,26 +10,14 @@
         <router-link tag="div"
                      :to="{name: 'orderInfo', params: {orderType: 'onOrder', orderId: infos.houseInfo.orderId}}"
                      class="order-info" >
-          <div class="house-info">
-            <h3>{{infos.houseInfo.address+infos.houseInfo.buildingNo}}</h3>
-            <span>{{infos.houseInfo.orderId}}</span>
-            <div class="time">{{orderTime(infos.orderInfo.createTime)}}</div>
-          </div>
-          <div class="info">
-            <p>
-              <span>接待方式：{{receptionType[infos.orderInfo.receptionType]}}</br></span>
-              <span v-if="infos.orderInfo.receptionType === 'byGuide'">接引时间：{{infos.orderInfo.receptionTimeFromStr}}</br></span>
-              <span>清洁时间：{{infos.orderInfo.serviceTimeFromStr}}</span>
-            </p>
-            <div class="fee">
-              <span>&yen; {{infos.orderTotalAmount.toFixed(2)}}</span></br>
-              <span v-if="infos.orderInfo.award!==0">{{'打赏 &yen; '+infos.orderInfo.award+'.00'}}</span>
-            </div>
-          </div>
+          <order-main :infos="infos"></order-main>
           <p v-if="!infos.housekeepers" class="remark">还没有人抢单哟，要不要打赏管家呢</p>
           <div class="order-handle">
-            <mt-button v-if="!infos.housekeepers" size="small" @click.stop="award(infos.orderInfo.orderId, index)">打赏</mt-button>
-            <mt-button size="small" @click.stop="cancelOrder(infos.orderInfo.orderId, index)">取消</mt-button>
+            <mt-button v-if="!infos.housekeepers" size="small"
+                       @click.stop="award(infos.orderInfo.orderId, index)">
+              打赏</mt-button>
+            <mt-button size="small"
+                       @click.stop="cancelOrder(infos.orderInfo.orderId, index)">取消</mt-button>
           </div>
         </router-link>
         <div v-for="customer in infos.housekeepers" class="customer">
@@ -41,10 +29,11 @@
             <span>拒单率: {{customer.rejectRate + '%'}}</span>
           </p>
           <div class="order-handle">
-            <mt-button size="small" @click="confirm(infos.orderInfo.orderId, customer.id)">确定</mt-button>
+            <mt-button size="small"
+                       @click="confirm(infos.orderInfo.orderId, customer.id)">
+              确定</mt-button>
           </div>
         </div>
-        <mt-button size="small" @click="confirm(infos.orderInfo.orderId, 2)">确定</mt-button>
       </section>
       <mt-popup
         v-model="popupVisible"
@@ -68,6 +57,7 @@
   import Axios from 'axios'
   Axios.defaults.baseURL = 'http://a.com'
   import {Header, Button, Toast, Picker, Popup, MessageBox} from 'mint-ui'
+  import orderMain from './order-main.vue'
   export default {
     name: 'onorder',
     mounted () {
@@ -77,10 +67,6 @@
       return {
         page: 1,
         houseInfos: [],
-        receptionType: {
-          byYourself: '自主入住',
-          byGuide: '接引用户'
-        },
         slots: [
           {
             flex: 1,
@@ -125,11 +111,6 @@
               duration: 2000
             })
           })
-      },
-      // 计算订单有效时间
-      orderTime (time) {
-        let timeDis = ((new Date()).getTime() / 1000 - time) / 60
-        return '剩余' + parseInt(15 - timeDis) + '分钟'
       },
       award (id, index) {
         console.log(index)
@@ -180,7 +161,7 @@
       },
       // 取消订单
       cancelOrder (orderId, index) {
-        MessageBox.confirm('确定执行此操作?', '').then(action => {
+        MessageBox.confirm('确定取消订单?', '').then(action => {
           let vm = this
           Axios.post('/api/order/landlordCancelOrder/' + orderId, {}, {
             headers: {
@@ -233,7 +214,8 @@
       mtButton: Button,
       Picker,
       Popup,
-      MessageBox
+      MessageBox,
+      orderMain
     }
   }
 </script>
@@ -263,51 +245,10 @@
     padding: 10px;
     font-size: 12px;
   }
-  #onorder .orderlist h3{
-   font-size: 12px;
-   font-weight: normal;
-   margin: 0;
-   margin-bottom: 10px;
-  }
-  #onorder .house-info {
-   position: relative;
-  }
-  #onorder .house-info span{
-   color: #adadad;
-  }
   #onorder .order-info {
     padding: 20px 10px 20px;
     background: url('../../../assets/images/待确认背景图@2x.png') no-repeat top center;
     background-size: 100% 120%;
-  }
-  #onorder .order .time{
-    position: absolute;
-    top: 0;
-    right: 0;
-    padding-top: 25px;
-    background: url('../../../assets/images/时间@2x.png') no-repeat top right;
-    background-size: 20px;
-    color: #74a92e;
-    transform: scale(.8);
-  }
-  #onorder .info {
-   position: relative;
-   margin: 16px 0;
-  }
-  #onorder .info p {
-   margin: 0;
-   line-height: 25px;
-  }
-  #onorder .info .fee{
-   position: absolute;
-   top: 0;
-   right: 0;
-   line-height: 22px;
-   text-align: right;
-  }
-  #onorder .info .fee span{
-   font-size: 14px;
-   color: red;
   }
   #onorder .remark {
     color: #74a92e;
