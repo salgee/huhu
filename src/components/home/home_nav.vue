@@ -128,12 +128,12 @@
 <style>
 .home-nav{
   width:100vw;
-  height: 100vh;
+  min-height: 100vh;
   font-size: 0;
 }
 .home-nav .mint-swipe{
   width: 100%;
-  height: 30%;
+  height: 200px;
   background-color: #000;
 }
 .home-nav .mint-cell-title img{
