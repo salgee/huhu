@@ -1,22 +1,25 @@
 <template>
   <div id="processing">
     <div class="wrapper" v-if="orderInfos.length !== 0">
-      <section v-for="(infos, index) in orderInfos" class="processing-order">
+      <section v-for="(infos, index) in orderInfos" :key="infos.orderInfo.id" class="processing-order"
+        @click=pushDetails(infos.housekeeper.avatar,infos.houseInfo.orderId)>
         <p class="customer">
           <img :src="'http://139.224.238.161:9999'+infos.housekeeper.avatar" alt="avatar">
           <span>{{infos.housekeeper.name}}</span>
-          <span class="time">{{orderTime(infos.orderInfo.createTime)}}</span>
+          <span class="time"
+                v-if="infos.orderInfo.orderStatus === 'waitPay'">
+            {{orderTime(infos.orderInfo.createTime)}}</span>
         </p>
         <order-main :infos="infos"></order-main>
         <div class="order-handle">
           <mt-button size="small"
                      v-if="infos.orderInfo.orderStatus === 'paid'"
-                     @click="cancel(infos.orderInfo.orderId, index)">取消</mt-button>
+                     @click.stop="cancel(infos.orderInfo.orderId, index)">取消</mt-button>
           <mt-button size="small"
                      v-else-if="infos.orderInfo.orderStatus === 'waitPay'"
-                     @click="confirm(infos.orderInfo.orderId, 2)">支付</mt-button>
+                     @click.stop="confirm(infos.orderInfo.orderId, 2)">支付</mt-button>
           <mt-button size="small" v-else
-                     @click="confirm(infos.orderInfo.orderId, 2)">确定</mt-button>
+                     @click.stop="confirm(infos.orderInfo.orderId, 2)">确定</mt-button>
         </div>
       </section>
     </div>
@@ -115,6 +118,10 @@
               })
             })
         })
+      },
+      pushDetails (src, id) {
+        sessionStorage.huhu_avatar = 'http://139.224.238.161:9999' + src
+        this.$router.push({name: 'orderInfo', params: {orderType: 'processing', orderId: id}})
       }
     }
   }
@@ -127,7 +134,7 @@
   #processing .processing-order {
     padding:10px 15px 20px;
     margin: 10px 15px;
-    border: 1px solid #ededed;
+    border: 1px solid rgba(116,169,46,.4);
     border-radius: 4px;
     font-size: 12px;
   }

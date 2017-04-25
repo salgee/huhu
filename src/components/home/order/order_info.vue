@@ -1,7 +1,7 @@
 <template>
   <div id="order-info">
     <mt-header title="订单详情" style="background: #79ac36;">
-      <mt-button icon="back" slot="left"></mt-button>
+      <mt-button icon="back" slot="left" @click="$router.go(-1)"></mt-button>
     </mt-header>
     <div v-if="orderInfo.orderInfo !==undefined">
       <mt-cell to="/home">
@@ -13,9 +13,18 @@
         <img src="../../../assets/images/返回@2x.png" width="8" height="14">
       </mt-cell>
       <p class="address">
+        <img class="vip" v-if="orderInfo.houseInfo.vip === 1" src="../../../assets/images/VIP@2x.png" alt="">
         <span>{{orderInfo.houseInfo.address+orderInfo.houseInfo.buildingNo}}</span></br>
         <span>订单编号： {{orderInfo.orderInfo.orderId}}</span>
       </p>
+      <section v-if="orderInfo.orderInfo.orderStatus === 'paid'" class="manager">
+        <img :src="avatar" alt="avatar">
+        <p>
+          <span>gz</span></br>
+          <span>服务次数：7次</span>
+          <span>拒单率：1%</span>
+        </p>
+      </section>
       <section class="customer-info">
         <p>
           <span>入住人姓名</span><span>{{orderInfo.orderInfo.checkInPerson}}</span>
@@ -29,13 +38,14 @@
       <section class="order-fee">
         <p>
           <span style="color: #888">服务费</span>
-          <span style="color: #888">{{orderInfo.orderInfo.serviceFee}}</span>
+          <span style="color: #888">&yen; {{orderInfo.orderInfo.serviceFee.toFixed(2)}}</span>
           <span>实付款</span>
-          <span style="color: red">{{orderInfo.orderInfo.totalAmount}}</span>
+          <span style="color: red">&yen; {{orderInfo.orderInfo.totalAmount.toFixed(2)}}</span>
         </p>
       </section>
       <p class="order-time">
-        <span>下单时间： {{orderInfo.orderInfo.createTimeStr}}</span>
+        <span>下单时间： {{orderInfo.orderInfo.createTimeStr}}</span></br>
+        <span v-if="orderInfo.orderInfo.confirmTimeStr">确定时间： {{orderInfo.orderInfo.confirmTimeStr}}</span>
       </p>
     </div>
     <div v-else></div>
@@ -52,12 +62,14 @@
         orderInfo: {},
         orderStatus: {
           noPayCancel: '已取消',
-          news: '待确认'
+          news: '待确认',
+          paid: '已支付'
         },
         receptionType: {
           byYourself: '自主入住',
           byGuide: '接引用户'
-        }
+        },
+        avatar: sessionStorage.huhu_avatar || ''
       }
     },
     created () {
@@ -66,7 +78,12 @@
     methods: {
       getOrderInfo (id) {
         let vm = this
-        Axios('http://a.com/api/order/findOrder/' + id)
+        Axios.get('http://a.com/api/order/findOrder/' + id, {
+          headers: {
+            'Content-Type': 'application/json',
+            'x-api-token': localStorage.token
+          }
+        })
           .then(function (data) {
             const dt = data.data
             if (dt.message === 'isOk') {
@@ -155,5 +172,28 @@
     line-height: 25px;
     color: #888;
     border-bottom: 1px solid #ddd;
+  }
+  #order-info .manager {
+    padding: 15px 30px;
+    border-bottom: 1px solid #ddd;
+  }
+  #order-info .manager img {
+    float: left;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    margin-right: 20px;
+    /*vertical-align: middle;*/
+  }
+  #order-info .manager p {
+    display: table-cell;
+    line-height: 40px;
+    font-size: 12px;
+    word-spacing: 30px;
+  }
+  #order-info .vip {
+    margin-right: 3px;
+    width: 13px;
+    height: 12px;
   }
 </style>

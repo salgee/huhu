@@ -1,6 +1,7 @@
 <template>
   <div>
     <div class="house-info">
+      <img class="vip" v-if="infos.houseInfo.vip === 1" src="../../../assets/images/VIP@2x.png" alt="">
       <h3>{{infos.houseInfo.address+infos.houseInfo.buildingNo}}</h3>
       <span>{{infos.houseInfo.orderId}}</span>
       <div class="time">{{orderTime(infos.orderInfo.createTime)}}</div>
@@ -44,6 +45,7 @@ export default {
 
 <style scoped>
   .house-info h3{
+    display: inline-block;
     font-size: 12px;
     font-weight: normal;
     margin: 0;
@@ -83,5 +85,11 @@ export default {
    .info .fee span{
     font-size: 14px;
     color: red;
+  }
+  .vip {
+    margin-right: 3px;
+    width: 13px;
+    height: 12px;
+    vertical-align: top;
   }
 </style>
