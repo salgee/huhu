@@ -45,7 +45,7 @@
       getDays: function () {
         let days = []
         let m = ''
-        if (moment().get('h') >= 17) {
+        if (moment().add(1800000, 'ms').get('h') >= 17) {
           m = 1
 //          不要今天
         } else {
@@ -60,12 +60,12 @@
 //      获得现在时间
       getTodayTime: function () {
         let todayTime = []
-        let today = moment().get('h')
+        let todayT = moment().add(1800000, 'ms').get('h')
         let a = ''
         let b = ''
-        if (today >= '5' && today < '17') {
+        if (todayT >= '5' && todayT < '17') {
           if (moment().add(1800000, 'ms').get('h') === moment().get('h')) {
-            for (let i = 3; i < 20 - today; i++) {
+            for (let i = 3; i < 20 - todayT; i++) {
               a = moment().add(i, 'h').get('h') + ':30-' + moment().add(i + 1, 'h').get('h') + ':00'
               todayTime.push(a)
               b = moment().add(i + 1, 'h').get('h') + ':00-' + moment().add(i + 1, 'h').get('h') + ':30'
@@ -73,7 +73,7 @@
             }
             todayTime.pop()
           } else {
-            for (let j = 3; j < 19 - today; j++) {
+            for (let j = 3; j < 19 - todayT; j++) {
               b = moment().add(j + 1, 'h').get('h') + ':00-' + moment().add(j + 1, 'h').get('h') + ':30'
               todayTime.push(b)
               a = moment().add(j + 1, 'h').get('h') + ':30-' + moment().add(j + 2, 'h').get('h') + ':00'
