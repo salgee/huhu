@@ -28,6 +28,9 @@ import onOrder from './components/home/order/onorder.vue'
 import orderInfo from './components/home/order/order_info.vue'
 import orderToConfirm from './components/home/order/orderToConfirm.vue'
 import pushOrderVipGoods from './components/push_order_before_vip_goods.vue'
+// 四个订单状态
+import processing from './components/home/order/processing_order.vue'
+import cancel from './components/home/order/cancel_order.vue'
 // 定义路由集合
 const routes = [
   {
@@ -48,7 +51,20 @@ const routes = [
       {
         name: 'order',
         path: 'order',
-        component: order
+        component: order,
+        children: [
+          {
+            name: 'processing',
+            path: 'processing',
+            alias: '',
+            component: processing
+          },
+          {
+            name: 'cancel',
+            path: 'cancel',
+            component: cancel
+          }
+        ]
       },
       {
         name: 'user',

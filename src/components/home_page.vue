@@ -83,7 +83,7 @@ export default {
 <style>
  #homePage{
   width:100vw;
-  height: 100vh;
+  min-height: 100vh;
   font-size: 0;
  }
  #homePage .mint-tabbar{
