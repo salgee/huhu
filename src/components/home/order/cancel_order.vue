@@ -117,6 +117,7 @@
 <style>
   #cancel {
     width: 100%;
+    margin-top: 80px;
   }
   #cancel .cancel-order {
     padding:20px 15px 25px;
