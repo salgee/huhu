@@ -41,12 +41,13 @@
       }
     },
     methods: {
-//      获得今天
+//      获得日期
       getDays: function () {
         let days = []
         let m = ''
         if (moment().get('h') >= 17) {
           m = 1
+//          不要今天
         } else {
           m = 0
         }
@@ -62,7 +63,7 @@
         let today = moment().get('h')
         let a = ''
         let b = ''
-        if (today >= '5' && today <= '17') {
+        if (today >= '5' && today < '17') {
           if (moment().add(1800000, 'ms').get('h') === moment().get('h')) {
             for (let i = 3; i < 20 - today; i++) {
               a = moment().add(i, 'h').get('h') + ':30-' + moment().add(i + 1, 'h').get('h') + ':00'
@@ -70,14 +71,14 @@
               b = moment().add(i + 1, 'h').get('h') + ':00-' + moment().add(i + 1, 'h').get('h') + ':30'
               todayTime.push(b)
             }
+            todayTime.pop()
           } else {
-            for (let j = 3; j < 20 - today; j++) {
+            for (let j = 3; j < 19 - today; j++) {
               b = moment().add(j + 1, 'h').get('h') + ':00-' + moment().add(j + 1, 'h').get('h') + ':30'
               todayTime.push(b)
               a = moment().add(j + 1, 'h').get('h') + ':30-' + moment().add(j + 2, 'h').get('h') + ':00'
               todayTime.push(a)
             }
-            todayTime.pop()
           }
         } else {
           todayTime = ['08:00-08:30', '08:30-09:00', '09:00-09:30', '09:30-10:00', '10:00-10:30', '10:30-11:00', '11:00-11:30', '11:30-12:00', '12:00-12:30', '12:30-13:00', '13:00-13:30', '13:30-14:00', '14:00-14:30', '14:30-15:00', '15:00-15:30', '15:30-16:00', '16:00-16:30', '16:30-17:00', '17:00-17:30', '17:30-18:00', '18:00-18:30', '18:30-19:00', '19:00-19:30', '19:30-20:00']
