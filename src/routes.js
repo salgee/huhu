@@ -27,6 +27,8 @@ import bedInfo from './components/add_house_info/bed_info.vue'
 import onOrder from './components/home/order/onorder.vue'
 import orderInfo from './components/home/order/order_info.vue'
 import orderToConfirm from './components/home/order/orderToConfirm.vue'
+// 四个订单状态
+import processing from './components/home/order/processing_order.vue'
 // 定义路由集合
 const routes = [
   {
@@ -47,7 +49,15 @@ const routes = [
       {
         name: 'order',
         path: 'order',
-        component: order
+        component: order,
+        children: [
+          {
+            name: 'processing',
+            path: 'processing',
+            alias: '',
+            component: processing
+          }
+        ]
       },
       {
         name: 'user',

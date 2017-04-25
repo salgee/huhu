@@ -36,6 +36,9 @@ body{
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
+p {
+  margin: 0;
+}
 a{
   text-decoration: none;
   color: #000;
