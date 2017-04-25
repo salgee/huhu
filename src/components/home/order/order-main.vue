@@ -1,10 +1,11 @@
 <template>
   <div>
     <div class="house-info">
-      <img class="vip" v-if="infos.houseInfo.vip === 1" src="../../../assets/images/VIP@2x.png" alt="">
-      <h3>{{infos.houseInfo.address+infos.houseInfo.buildingNo}}</h3>
-      <span>{{infos.houseInfo.orderId}}</span>
+      <h3><img class="vip" v-if="infos.houseInfo.vip === 1" src="../../../assets/images/VIP@2x.png" alt="">
+        {{infos.houseInfo.address+infos.houseInfo.buildingNo}}</h3>
+      <span>订单编号：{{infos.houseInfo.orderId}}</span>
       <div class="time">{{orderTime(infos.orderInfo.createTime)}}</div>
+      <slot name="delete"></slot>
     </div>
     <div class="info">
       <p>
@@ -45,7 +46,6 @@ export default {
 
 <style scoped>
   .house-info h3{
-    display: inline-block;
     font-size: 12px;
     font-weight: normal;
     margin: 0;
@@ -57,7 +57,7 @@ export default {
    .house-info span{
     color: #adadad;
   }
-   .order .time{
+   .time, .delete{
     position: absolute;
     top: 0;
     right: 0;
@@ -66,6 +66,11 @@ export default {
     background-size: 20px;
     color: #74a92e;
     transform: scale(.8);
+  }
+  .delete {
+    background: url('../../../assets/images/垃圾桶.png') no-repeat center;
+    width: 15px;
+    margin-right: 10px;
   }
    .info {
     position: relative;
@@ -87,6 +92,7 @@ export default {
     color: red;
   }
   .vip {
+    float: left;
     margin-right: 3px;
     width: 13px;
     height: 12px;

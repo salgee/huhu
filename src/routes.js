@@ -29,6 +29,7 @@ import orderInfo from './components/home/order/order_info.vue'
 import orderToConfirm from './components/home/order/orderToConfirm.vue'
 // 四个订单状态
 import processing from './components/home/order/processing_order.vue'
+import cancel from './components/home/order/cancel_order.vue'
 // 定义路由集合
 const routes = [
   {
@@ -56,6 +57,11 @@ const routes = [
             path: 'processing',
             alias: '',
             component: processing
+          },
+          {
+            name: 'cancel',
+            path: 'cancel',
+            component: cancel
           }
         ]
       },

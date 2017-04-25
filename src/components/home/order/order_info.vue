@@ -1,6 +1,6 @@
 <template>
   <div id="order-info">
-    <mt-header title="订单详情" style="background: #79ac36;">
+    <mt-header title="订单详情" style="background: #79ac36;" >
       <mt-button icon="back" slot="left" @click="$router.go(-1)"></mt-button>
     </mt-header>
     <div v-if="orderInfo.orderInfo !==undefined">
@@ -17,7 +17,7 @@
         <span>{{orderInfo.houseInfo.address+orderInfo.houseInfo.buildingNo}}</span></br>
         <span>订单编号： {{orderInfo.orderInfo.orderId}}</span>
       </p>
-      <section v-if="orderInfo.orderInfo.orderStatus === 'paid'" class="manager">
+      <section v-if="avatar !== ''" class="manager">
         <img :src="avatar" alt="avatar">
         <p>
           <span>gz</span></br>
@@ -44,9 +44,13 @@
         </p>
       </section>
       <p class="order-time">
-        <span>下单时间： {{orderInfo.orderInfo.createTimeStr}}</span></br>
-        <span v-if="orderInfo.orderInfo.confirmTimeStr">确定时间： {{orderInfo.orderInfo.confirmTimeStr}}</span>
+        <span>下单时间： {{orderInfo.orderInfo.createTimeStr}}</br></span>
+        <span v-if="this.$route.params.orderType === 'cancel'">取消时间： {{orderInfo.orderInfo.cancelTimeStr}}</br></span>
+        <span v-if="this.$route.params.orderType === 'processing'">确定时间： {{orderInfo.orderInfo.confirmTimeStr}}</span>
       </p>
+      <button v-if="this.$route.params.orderType === 'cancel'" class="remake-order" @click="remakeOrder">
+        再次派单
+      </button>
     </div>
     <div v-else></div>
   </div>
@@ -103,6 +107,8 @@
               duration: 2000
             })
           })
+      },
+      remakeOrder () {
       }
     },
     components: {
@@ -117,6 +123,7 @@
 <style scoped>
   #order-info {
     width: 100vw;
+    height: 100vh;
   }
   #order-info .mint-cell-value span{
     margin-right: 30px;
@@ -171,10 +178,9 @@
     font-size: 12px;
     line-height: 25px;
     color: #888;
-    border-bottom: 1px solid #ddd;
   }
   #order-info .manager {
-    padding: 15px 30px;
+    padding: 10px 30px 0;
     border-bottom: 1px solid #ddd;
   }
   #order-info .manager img {
@@ -183,7 +189,6 @@
     height: 40px;
     border-radius: 50%;
     margin-right: 20px;
-    /*vertical-align: middle;*/
   }
   #order-info .manager p {
     display: table-cell;
@@ -195,5 +200,16 @@
     margin-right: 3px;
     width: 13px;
     height: 12px;
+  }
+  #order-info .remake-order {
+    outline: none;
+    border: none;
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    height: 40px;
+    font-size: 13px;
+    background-color: #74a92e;
+    color: #fff;
   }
 </style>
