@@ -283,6 +283,9 @@
     margin-right: 20px;
     vertical-align: middle;
   }
+  #onorder .customer p {
+    margin: 15px 0;
+  }
   #onorder .customer span{
     display: inline-block;
     width: 30%;

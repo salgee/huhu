@@ -1,6 +1,6 @@
 <template>
   <div class="home-nav">
-    <mt-swipe :auto="0">
+    <mt-swipe :auto="0" style="position: fixed; top: 0;">
       <mt-swipe-item name="1"><img src="../../assets/logo.png" alt=""></mt-swipe-item>
       <mt-swipe-item><img src="../../assets/logo.png" alt=""></mt-swipe-item>
       <mt-swipe-item><img src="../../assets/logo.png" alt=""></mt-swipe-item>
@@ -9,7 +9,7 @@
       <img src="../../assets/images/返回@2x.png" alt="" width="8" height="14"  >
       <img slot="icon" src="../../assets/images/布告栏@2x.png" width="14" height="14">
     </mt-cell>
-      <div class="houseList" style="padding-bottom: 40px;padding-top: 5px;" >
+      <div class="houseList">
         <div class="homeBackground" v-if="houseInfos.length === 0" >
           <p>您还没有添加房源哦，赶快去添加吧</p>
         </div>
@@ -136,6 +136,14 @@
   height: 200px;
   background-color: #000;
 }
+.houseList {
+  position:fixed;
+  top:200px;
+  padding-top: 25px;
+  bottom: 56px;
+  width: 100%;
+  overflow: scroll;
+}
 .home-nav .mint-cell-title img{
   margin-right: 12px;
 }
@@ -144,11 +152,14 @@
   height: 100%;
 }
 .home-nav .mint-cell {
-  position: relative;
-  top: -15px;
+  position: absolute;
+  top: 185px;
+  left: 0;
+  right: 0;
   margin: 0 auto;
   width: 90%;
-  min-height: 30px;;
+  min-height: 30px;
+  z-index: 2;
   background-color: #fff;
   box-shadow: 0 12px 12px -8px rgba(121,172,54,.8);
 }

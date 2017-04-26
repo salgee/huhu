@@ -15,15 +15,17 @@
         </P>
       </section>
       <p class="price">
-        服务价格：<span>{{orderInfo.orderInfo.serviceFee.toFixed(2)}}</span>
+        服务价格：<span>&yen;&nbsp;&nbsp;{{orderInfo.orderInfo.serviceFee.toFixed(2)}}</span>
       </p>
-      <p class="award"></p>
+      <p class="award">
+        打赏：<span>&yen;&nbsp;&nbsp;{{orderInfo.orderInfo.award.toFixed(2)}}</span>
+      </p>
       <h3>给管家捎句话</h3>
       <textarea v-model="message"></textarea>
       <div class="confirm">
         <p>
           <span>合计：</span><span style="color: red;">&yen;{{orderInfo.orderInfo.totalAmount.toFixed(2)}}</span>
-          <button>支付</button>
+          <button @click="deal">支付</button>
         </p>
       </div>
     </div>
@@ -34,7 +36,7 @@
 <script>
   import Axios from 'axios'
   Axios.defaults.baseURL = 'http://a.com'
-  import {Header, Toast} from 'mint-ui'
+  import {Header, Toast, Indicator} from 'mint-ui'
   export default {
     name: 'app',
     data () {
@@ -53,7 +55,12 @@
     methods: {
       getOrderInfo (id) {
         let vm = this
-        Axios('http://a.com/api/order/findOrder/' + id)
+        Axios.get('http://a.com/api/order/findOrder/' + id, {
+          headers: {
+            'Content-Type': 'application/json',
+            'x-api-token': localStorage.token
+          }
+        })
           .then(function (data) {
             const dt = data.data
             if (dt.message === 'isOk') {
@@ -75,14 +82,53 @@
           })
       },
       deal () {
+        Indicator.open()
         let vm = this
         const orderId = vm.$route.params.orderId
         const id = vm.$route.params.id
-        Axios.post(`/api/order/landlordConfirmOrder/${orderId}/${id}`)
+        Axios.post(`/api/order/landlordConfirmOrder/${orderId}/${id}`, {}, {
+          headers: {
+            'Content-Type': 'application/json',
+            'x-api-token': localStorage.token
+          }
+        })
           .then(function (data) {
             const dt = data.data
             if (dt.message === 'isOk') {
-              vm.$router.push({name: '/home'})
+              vm.placeOrder(orderId, 1)
+            } else {
+              Toast({
+                message: dt.message,
+                position: 'bottom',
+                duration: 2000
+              })
+            }
+          })
+          .catch(function (err) {
+            Toast({
+              message: err,
+              position: 'bottom',
+              duration: 2000
+            })
+          })
+      },
+      placeOrder (orderId, price) {
+        let vm = this
+        Axios.post('/api/pay/weixin/pay-order', {
+          price: price,
+          orderId: orderId,
+          remark: vm.message
+        }, {
+          headers: {
+            'Content-Type': 'application/json',
+            'x-api-token': localStorage.token
+          }
+        })
+          .then(function (data) {
+            const dt = data.data
+            if (dt.message === 'isOk') {
+              Indicator.close()
+              vm.$router.push('/home')
             } else {
               Toast({
                 message: dt.message,
@@ -102,7 +148,8 @@
     },
     components: {
       mtHeader: Header,
-      Toast
+      Toast,
+      Indicator
     }
   }
 </script>
@@ -138,8 +185,14 @@
     font-size: 12px;
     background-color: #fff;
   }
-  #order-confirm .price span{
+  #order-confirm .price span, .award span{
     color: red;
+  }
+  #order-confirm .award{
+    margin-top: 10px;
+    padding: 10px 15px;
+    font-size: 12px;
+    background-color: #fff;
   }
   #order-confirm h3 {
     font-size: 13px;

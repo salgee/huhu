@@ -4,7 +4,7 @@
       <h3><img class="vip" v-if="infos.houseInfo.vip === 1" src="../../../assets/images/VIP@2x.png" alt="">
         {{infos.houseInfo.address+infos.houseInfo.buildingNo}}</h3>
       <span>订单编号：{{infos.houseInfo.orderId}}</span>
-      <div class="time">{{orderTime(infos.orderInfo.createTime)}}</div>
+      <div v-if="infos.orderInfo.orderStatus !== 'waitPay'" class="time">{{orderTime(infos.orderInfo.createTime)}}</div>
       <slot name="delete"></slot>
     </div>
     <div class="info">
@@ -38,7 +38,7 @@ export default {
     orderTime (time) {
       let timeDis = ((new Date()).getTime() / 1000 - time) / 60
       if (timeDis > 15) return
-      return '剩余' + parseInt(15 - timeDis) + '分钟'
+      return '剩余' + Math.ceil(15 - timeDis) + '分钟'
     }
   }
 }

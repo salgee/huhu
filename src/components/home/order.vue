@@ -1,9 +1,9 @@
 <template>
   <div id="order">
-    <mt-header title="订单" fixed>
+    <mt-header title="订单">
       <img src="../../assets/images/信封@2x.png" slot="right" @click="goPushList" style="width: 20px;font-size: 0;">
     </mt-header>
-    <mt-navbar v-model="selected" fixed>
+    <mt-navbar v-model="selected">
       <mt-tab-item id="processing">进行中</mt-tab-item>
       <mt-tab-item id="cancel">已取消</mt-tab-item>
       <mt-tab-item id="3">待处理</mt-tab-item>
@@ -82,7 +82,7 @@
   }
   #order{
     width: 100vw;
-    height: 100vh;
+    min-height: 100vh;
   }
   #order .order-handle{
     text-align: right;
@@ -105,9 +105,6 @@
   }
   #order .mint-tab-item-label {
     color: #fff;
-  }
-  #order .mint-tab-container {
-    margin-bottom: 50px;
   }
   #order .is-selected {
     position: relative;
