@@ -27,6 +27,7 @@ import bedInfo from './components/add_house_info/bed_info.vue'
 import onOrder from './components/home/order/onorder.vue'
 import orderInfo from './components/home/order/order_info.vue'
 import orderToConfirm from './components/home/order/orderToConfirm.vue'
+import pushOrderVipGoods from './components/push_order_before_vip_goods.vue'
 // 四个订单状态
 import processing from './components/home/order/processing_order.vue'
 import cancel from './components/home/order/cancel_order.vue'
@@ -174,6 +175,11 @@ const routes = [
     name: 'orderToConfirm',
     path: '/home/order/onOrder/orderToConfirm/:orderId/:id',
     component: orderToConfirm
+  },
+  {
+    name: 'pushOrderVipGoods',
+    path: '/home/pushOrderBefore/vipGoods',
+    component: pushOrderVipGoods
   }
 ]
 export default routes

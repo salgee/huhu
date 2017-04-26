@@ -28,10 +28,20 @@
         <input type="text" maxlength="11"  class="guest" v-model="checkInPhone">
       </mt-cell>
     </div>
-    <div class="vipGoods" v-if="vip === '1'">
+    <div class="vipGoods" v-if="vip === '1'" @click="goGoods">
       <img src="../assets/images/额外服务@2x.png" width="20">
       <div class="vipGoodsTitle">额外服务<span>(当前城市可提供布草服务)</span></div>
       <div style="float: right"><img src="../assets/images/返回@2x.png" width="8" height="14"></div>
+    </div>
+    <div class="showVipGoods" v-if="oneGoods !== ''">
+      <table>
+        <tr>
+          <td>{{oneGoods}}x{{oneGoodsNum}}</td>
+          <td>￥:{{oneGoodsAllPrice}}</td>
+          <td>总押金:{{foregiftAll}}元</td>
+        </tr>
+        <tr v-for=""></tr>
+      </table>
     </div>
     <div class="serviceCharge">
       <div class="serviceLeft">
@@ -39,13 +49,13 @@
         <span>服务费</span>
       </div>
       <div class="serviceRight" v-if="vip === '0'">
-        <span class="vipPrice">(VIP价￥{{vipPrice}})</span>
+        <span class="vipPrice">(VIP价￥{{servicePrice}})</span>
         <span>￥{{price}}</span>
         <div><router-link tag="span" class="joinVip" to="/user/vip/joinVip">申请VIP</router-link></div>
       </div>
       <div class="serviceRight" v-else>
         <span class="vipPrice">(非VIP价￥{{price}})</span>
-        <span>￥{{vipPrice}}</span>
+        <span>￥{{servicePrice}}</span>
       </div>
     </div>
     <div class="pushOrder">
@@ -93,9 +103,55 @@
         'Content-Type': 'application/json',
         'x-api-token': localStorage.token
       }
+      if (sessionStorage.hehereception !== undefined) {
+        this.reception = sessionStorage.hehereception
+        if (this.reception === '自主入住') {
+          this.byUserSelf = false
+          this.receptionType = 'byYourself'
+        } else {
+          this.byUserSelf = true
+          this.receptionType = 'byGuide'
+        }
+      }
+      if (sessionStorage.hehereceive !== undefined && sessionStorage.hehereception !== '自主入住') {
+        this.receive = sessionStorage.hehereceive
+      }
+      if (sessionStorage.heheclean !== undefined) {
+        this.clean = sessionStorage.heheclean
+      }
+      if (sessionStorage.hehecheckInPerson !== undefined) {
+        this.checkInPerson = sessionStorage.hehecheckInPerson
+      }
+      if (sessionStorage.hehecheckInPhone !== undefined) {
+        this.checkInPhone = sessionStorage.hehecheckInPhone
+      }
+      if (sessionStorage.orderDetailList !== undefined) {
+        this.orderDetailList = JSON.parse(sessionStorage.orderDetailList)
+        this.oneGoods = JSON.parse(sessionStorage.orderDetailList)[0].productName
+        this.oneGoodsNum = JSON.parse(sessionStorage.orderDetailList)[0].quantity
+        this.oneGoodsAllPrice = JSON.parse(sessionStorage.orderDetailList)[0].price
+        for (let i = 0; i < JSON.parse(sessionStorage.orderDetailList).length; i++) {
+          this.foregiftAll += Number(JSON.parse(sessionStorage.orderDetailList)[i].foregift)
+        }
+        for (let i = 0; i < JSON.parse(sessionStorage.orderDetailList).length; i++) {
+          this.AllPrice += Number(JSON.parse(sessionStorage.orderDetailList)[i].price)
+          this.AllPrice += Number(JSON.parse(sessionStorage.orderDetailList)[i].foregift)
+        }
+      }
       this.howPrice()
     },
     methods: {
+      goGoods: function () {
+        let that = this
+        Promise.resolve((() => {
+          sessionStorage.hehecheckInPerson = that.checkInPerson
+          sessionStorage.hehecheckInPhone = that.checkInPhone
+        })()
+        )
+          .then(
+            this.$router.push('/home/pushOrderBefore/vipGoods')
+          )
+      },
 //      根据省市获取服务费
       howPrice: function () {
         let that = this
@@ -105,16 +161,20 @@
         }
         ).then(function (data) {
           if (sessionStorage.orderUseHouesRoom === '1') {
-            that.vipPrice = data.data.data[0].vipPrice
+            that.servicePrice = data.data.data[0].vipPrice
+            that.vipPrice = data.data.data[0].vipPrice + Number(that.AllPrice)
             that.price = data.data.data[0].price
           } else if (sessionStorage.orderUseHouesRoom === '2') {
-            that.vipPrice = data.data.data[1].vipPrice
+            that.servicePrice = data.data.data[1].vipPrice
+            that.vipPrice = data.data.data[1].vipPrice + Number(that.AllPrice)
             that.price = data.data.data[1].price
           } else if (sessionStorage.orderUseHouesRoom === '3') {
-            that.vipPrice = data.data.data[2].vipPrice
+            that.servicePrice = data.data.data[2].vipPrice
+            that.vipPrice = data.data.data[2].vipPrice + Number(that.AllPrice)
             that.price = data.data.data[2].price
           } else if (sessionStorage.orderUseHouesRoom === '4') {
-            that.vipPrice = data.data.data[3].vipPrice
+            that.servicePrice = data.data.data[3].vipPrice
+            that.vipPrice = data.data.data[3].vipPrice + Number(that.AllPrice)
             that.price = data.data.data[3].price
           }
         })
@@ -200,16 +260,22 @@
                     checkInPerson: that.checkInPerson,
                     checkInPhone: that.checkInPhone,
 //                  额外服务
-                    orderDetailList: []
+                    orderDetailList: that.orderDetailList
                   }
                   ).then(function (data) {
                     console.log(data)
                     if (data.data.message === 'isOk') {
-                      that.$toast({
-                        message: '下单成功',
-                        position: 'bottom'
-                      })
-                      that.$router.push('/home')
+                      Promise.resolve((() => {
+                        sessionStorage.clear()
+                        that.$toast({
+                          message: '下单成功',
+                          position: 'bottom'
+                        })
+                      })()
+                      )
+                        .then(
+                          that.$router.push('/home')
+                        )
                     } else {
                       that.$toast({
                         message: '请勿同时段重复下单',
@@ -250,8 +316,11 @@
         this.popupReception = false
       },
       getReception: function () {
+        this.receive = ''
         this.popupReception = false
         this.reception = this.saveReception
+//      --------------------------------------------------------存值返回时填入
+        sessionStorage.hehereception = this.saveReception
         if (this.reception === '自主入住') {
           this.byUserSelf = false
           this.receptionType = 'byYourself'
@@ -281,6 +350,8 @@
       getReceive: function () {
         this.popupReceive = false
         this.receive = this.saveReceive
+        //      --------------------------------------------------------存值返回时填入
+        sessionStorage.hehereceive = this.receive
       },
       getReceiveTimeValue: function (picker, values) {
         this.saveReceive = picker.getValues()[0] + picker.getValues()[1]
@@ -335,12 +406,27 @@
       cleanGet: function () {
         this.popupClean = false
         this.clean = this.saveClean
+        //      --------------------------------------------------------存值返回时填入
+        sessionStorage.heheclean = this.clean
       }
     },
     data () {
       return {
+//        商品总金额+总押金
+        AllPrice: 0,
+//        商品订单
+        oneGoods: '',
+        oneGoodsNum: '',
+        oneGoodsAllPrice: '',
+        foregiftAll: 0,
+//      防止sessionStorage.orderDetailList无值时解析错误
+        orderDetailList: [],
         vip: sessionStorage.orderUseHouesVip,
+//        vip情况下合计总价
         vipPrice: '',
+//        vip情况下的服务费
+        servicePrice: '',
+//        非vip情况下合计总价，和服务费
         price: '',
 //        ---------------------存储接口需要的数据
         receptionType: '',
