@@ -385,7 +385,6 @@
     width: 100vw;
     height: 100vh;
     background-color: #ededed;
-    position: relative;
   }
   #changeHouse .mint-cell-value{
     max-width: 70%;

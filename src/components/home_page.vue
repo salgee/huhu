@@ -1,7 +1,7 @@
 <template>
  <div id="homePage">
   <router-view></router-view>
-   <mt-tabbar v-model="selected" :fixed=true>
+   <mt-tabbar v-model="selected" fixed>
      <mt-tab-item id="home">
        <img slot="icon" :src="url1">
        房源
@@ -48,6 +48,7 @@ export default {
   },
   watch: {
     selected (val, oldval) {
+      console.log(val)
       let vm = this
       vm.url1 = '../../static/unselected/房源@2x.png'
       vm.url2 = '../../static/unselected/订单@2x.png'
@@ -64,6 +65,12 @@ export default {
           break
         case 'order':
           this.$router.push('/order')
+          this.url2 = '../../static/selected/订单@2x.png'
+          break
+        case 'processing':
+          this.url2 = '../../static/selected/订单@2x.png'
+          break
+        case 'cancel':
           this.url2 = '../../static/selected/订单@2x.png'
           break
         case 'user':

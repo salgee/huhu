@@ -1,9 +1,9 @@
 <template>
   <div id="order-info">
-    <mt-header title="订单详情" style="background: #79ac36;" >
+    <mt-header title="订单详情" style="background: #79ac36;">
       <mt-button icon="back" slot="left" @click="$router.go(-1)"></mt-button>
     </mt-header>
-    <div v-if="orderInfo.orderInfo !==undefined">
+    <div class="details" v-if="orderInfo.orderInfo !==undefined">
       <mt-cell to="/home">
         <p slot="title" class="order-status">
           <span>订单状态</span>
@@ -124,6 +124,9 @@
   #order-info {
     width: 100vw;
     height: 100vh;
+  }
+  #order-info .details {
+    margin-bottom: 40px;
   }
   #order-info .mint-cell-value span{
     margin-right: 30px;

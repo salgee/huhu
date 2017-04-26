@@ -107,6 +107,8 @@
       pushDetails (infos) {
         if (infos.housekeeper !== undefined) {
           sessionStorage.huhu_avatar = 'http://139.224.238.161:9999' + infos.housekeeper.avatar
+        } else {
+          sessionStorage.removeItem('huhu_avatar')
         }
         this.$router.push({name: 'orderInfo', params: {orderType: 'cancel', orderId: infos.orderInfo.orderId}})
       }
@@ -116,8 +118,11 @@
 
 <style>
   #cancel {
+    position: fixed;
+    top: 75px;
+    bottom: 56px;
     width: 100%;
-    margin-top: 80px;
+    overflow: scroll;
   }
   #cancel .cancel-order {
     padding:20px 15px 25px;
