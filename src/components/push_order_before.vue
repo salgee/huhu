@@ -28,19 +28,23 @@
         <input type="text" maxlength="11"  class="guest" v-model="checkInPhone">
       </mt-cell>
     </div>
-    <div class="vipGoods" v-if="vip === '1'" @click="goGoods">
+    <div class="vipGoods" v-if="vip === '1'">
       <img src="../assets/images/额外服务@2x.png" width="20">
-      <div class="vipGoodsTitle">额外服务<span>(当前城市可提供布草服务)</span></div>
-      <div style="float: right"><img src="../assets/images/返回@2x.png" width="8" height="14"></div>
+      <div class="vipGoodsTitle">额外服务<span v-if="ifExtra">(当前城市可提供布草服务)</span><span v-else>(当前城市不提供布草服务)</span></div>
+      <div style="float: right" v-if="ifExtra" @click="goGoods"><img src="../assets/images/返回@2x.png" width="8" height="14" ></div>
     </div>
     <div class="showVipGoods" v-if="oneGoods !== ''">
       <table>
-        <tr>
+        <tr style="border-top: none">
           <td>{{oneGoods}}x{{oneGoodsNum}}</td>
-          <td>￥:{{oneGoodsAllPrice}}</td>
-          <td>总押金:{{foregiftAll}}元</td>
+          <td style="text-align: left; width: 15%">￥:&nbsp;{{oneGoodsAllPrice}}</td>
+          <td style="text-align: left;">总押金&nbsp;:&nbsp;{{foregiftAll}}元</td>
         </tr>
-        <tr v-for=""></tr>
+        <tr v-for="extraGood in extraGoods">
+          <td>{{extraGood.productName}}x{{extraGood.quantity}}</td>
+          <td style="text-align: left;width: 15%">￥:&nbsp;{{extraGood.price}}</td>
+          <td></td>
+        </tr>
       </table>
     </div>
     <div class="serviceCharge">
@@ -103,6 +107,7 @@
         'Content-Type': 'application/json',
         'x-api-token': localStorage.token
       }
+      this.extra()
       if (sessionStorage.hehereception !== undefined) {
         this.reception = sessionStorage.hehereception
         if (this.reception === '自主入住') {
@@ -137,10 +142,26 @@
           this.AllPrice += Number(JSON.parse(sessionStorage.orderDetailList)[i].price)
           this.AllPrice += Number(JSON.parse(sessionStorage.orderDetailList)[i].foregift)
         }
+        let abc = JSON.parse(sessionStorage.orderDetailList)
+        abc.splice(0, 1)
+        this.extraGoods = abc
       }
       this.howPrice()
     },
     methods: {
+//      判断该城市是否支持额外服务
+      extra: function () {
+        let that = this
+        Axios.get('/api/manage/material/findByProvince/' + sessionStorage.orderUseHouesProvince + '/' + sessionStorage.orderUseHouesCity
+        ).then(function (data) {
+          if (data.data.message === 'isOk') {
+            that.ifExtra = true
+          } else {
+            that.ifExtra = false
+          }
+        })
+      },
+//      存用户之前选好的值，并跳转到商品页面
       goGoods: function () {
         let that = this
         Promise.resolve((() => {
@@ -162,19 +183,19 @@
         ).then(function (data) {
           if (sessionStorage.orderUseHouesRoom === '1') {
             that.servicePrice = data.data.data[0].vipPrice
-            that.vipPrice = data.data.data[0].vipPrice + Number(that.AllPrice)
+            that.vipPrice = Number(data.data.data[0].vipPrice + Number(that.AllPrice)).toFixed(2)
             that.price = data.data.data[0].price
           } else if (sessionStorage.orderUseHouesRoom === '2') {
             that.servicePrice = data.data.data[1].vipPrice
-            that.vipPrice = data.data.data[1].vipPrice + Number(that.AllPrice)
+            that.vipPrice = Number(data.data.data[1].vipPrice + Number(that.AllPrice)).toFixed(2)
             that.price = data.data.data[1].price
           } else if (sessionStorage.orderUseHouesRoom === '3') {
             that.servicePrice = data.data.data[2].vipPrice
-            that.vipPrice = data.data.data[2].vipPrice + Number(that.AllPrice)
+            that.vipPrice = Number(data.data.data[2].vipPrice + Number(that.AllPrice)).toFixed(2)
             that.price = data.data.data[2].price
           } else if (sessionStorage.orderUseHouesRoom === '4') {
             that.servicePrice = data.data.data[3].vipPrice
-            that.vipPrice = data.data.data[3].vipPrice + Number(that.AllPrice)
+            that.vipPrice = Number(data.data.data[3].vipPrice + Number(that.AllPrice)).toFixed(2)
             that.price = data.data.data[3].price
           }
         })
@@ -412,6 +433,10 @@
     },
     data () {
       return {
+//        商品列表
+        extraGoods: '',
+//        是否显示城市支持额外服务
+        ifExtra: false,
 //        商品总金额+总押金
         AllPrice: 0,
 //        商品订单
@@ -561,6 +586,7 @@
     margin-top: 2px;
   }
   .pushOrder{
+    background: #eee;
     position: fixed;
     bottom: 0;
     border-top: 1px solid #d9d9d9;
@@ -624,6 +650,22 @@
   .vipGoods .vipGoodsTitle span{
     color: #bbbbbb;
     font-size: 12px;
+  }
+  .showVipGoods{
+    background: #fff;
+    margin-bottom: 10px;
+    font-size: 13px;
+    padding-left: 10px;
+  }
+  .showVipGoods table{
+    border-collapse: collapse;
+  }
+  .showVipGoods table tr{
+    border-top: 1px solid #d9d9d9;
+  }
+  .showVipGoods table td{
+    width: 20%;
+    padding: 8px;
   }
 
 </style>
