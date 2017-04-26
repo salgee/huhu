@@ -1,35 +1,20 @@
 <template>
   <div id="processing">
     <div class="wrapper" v-if="orderInfos.length !== 0">
-      <section v-for="(infos, index) in orderInfos" :key="infos.orderInfo.id" class="processing-order"
-        @click=pushDetails(infos.housekeeper.avatar,infos.houseInfo.orderId)>
-        <p class="customer">
-          <img :src="'http://139.224.238.161:9999'+infos.housekeeper.avatar" alt="avatar">
-          <span>{{infos.housekeeper.name}}</span>
-          <span class="time"
-                v-if="infos.orderInfo.orderStatus === 'waitPay'">
-            {{orderTime(infos.orderInfo.createTime)}}</span>
-        </p>
-        <order-main :infos="infos"></order-main>
-        <div class="order-handle">
-          <mt-button size="small"
-                     v-if="infos.orderInfo.orderStatus === 'paid'"
-                     @click.stop="cancel(infos.orderInfo.orderId, index)">取消</mt-button>
-          <mt-button size="small"
-                     v-else-if="infos.orderInfo.orderStatus === 'waitPay'"
-                     @click.stop="confirm(infos.orderInfo.orderId, index)">支付</mt-button>
-          <mt-button size="small" v-else
-                     @click.stop="confirm(infos.orderInfo.orderId, index)">确定</mt-button>
-        </div>
-      </section>
+      <orderItem
+        v-for="(infos, index) in orderInfos"
+        key="infos.orderInfo.id"
+        :infos="infos"
+      ></orderItem>
     </div>
   </div>
+
 </template>
 
 <script>
   import Axios from 'axios'
-  import orderMain from './order-main.vue'
-  import {Button, Toast, MessageBox} from 'mint-ui'
+  import orderItem from './order_item.vue'
+  import { Toast } from 'mint-ui'
   export default {
     name: 'processing',
     data () {
@@ -41,10 +26,8 @@
       this.getOrderList(1)
     },
     components: {
-      orderMain,
-      mtButton: Button,
       Toast,
-      MessageBox
+      orderItem
     },
     methods: {
       getOrderList (page) {
@@ -74,54 +57,6 @@
               duration: 2000
             })
           })
-      },
-      // 计算订单有效时间
-      orderTime (time) {
-        let timeDis = ((new Date()).getTime() / 1000 - time) / 60
-        if (timeDis > 15) return
-        return '剩余' + parseInt(15 - timeDis) + '分钟'
-      },
-      confirm () {
-
-      },
-      cancel (orderId, index) {
-        MessageBox.confirm('确定取消订单?', '').then(action => {
-          let vm = this
-          Axios.post('/api/order/landlordCancelOrder/' + orderId, {}, {
-            headers: {
-              'Content-Type': 'application/json',
-              'x-api-token': localStorage.token
-            }
-          })
-            .then(function (data) {
-              const dt = data.data
-              if (dt.message === 'isOk') {
-                vm.orderInfos.splice(index, 1)
-                Toast({
-                  message: '订单已取消',
-                  position: 'bottom',
-                  duration: 2000
-                })
-              } else {
-                Toast({
-                  message: dt.message,
-                  position: 'bottom',
-                  duration: 2000
-                })
-              }
-            })
-            .catch(function (error) {
-              Toast({
-                message: error,
-                position: 'bottom',
-                duration: 2000
-              })
-            })
-        })
-      },
-      pushDetails (src, id) {
-        sessionStorage.huhu_avatar = 'http://139.224.238.161:9999' + src
-        this.$router.push({name: 'orderInfo', params: {orderType: 'processing', orderId: id}})
       }
     }
   }
@@ -143,11 +78,18 @@
     font-size: 12px;
   }
   #processing .customer {
-    position: relative;
     border-bottom: 1px solid #ededed;
     margin-bottom: 15px;
+    overflow: hidden;
+  }
+  #processing .customer section {
+    display: table-cell;
+    line-height: 20px;
+    vertical-align: middle;
+    padding-top: 3px;
   }
   #processing .customer img{
+    float: left;
     width: 40px;
     height: 40px;
     border-radius: 50%;
@@ -164,5 +106,9 @@
     background-size: 20px;
     color: #74a92e;
     transform: scale(.8);
+  }
+  #processing .star-level{
+    background: url("../../../assets/images/星级@2x.png") no-repeat left top;
+    background-size: 75px;
   }
 </style>

@@ -18,7 +18,7 @@
 
 <script>
   import Axios from 'axios'
-  import orderMain from './order-main.vue'
+  import orderMain from './order_main.vue'
   import {Button, Toast, MessageBox} from 'mint-ui'
   export default {
     name: 'cancel',
@@ -106,9 +106,10 @@
       },
       pushDetails (infos) {
         if (infos.housekeeper !== undefined) {
+          sessionStorage.huhu_name = infos.housekeeper.name || ''
+          sessionStorage.huhu_rej = infos.housekeeper.rejectTimes || 0
+          sessionStorage.huhu_ser = infos.housekeeper.serviceTimes || 0
           sessionStorage.huhu_avatar = 'http://139.224.238.161:9999' + infos.housekeeper.avatar
-        } else {
-          sessionStorage.removeItem('huhu_avatar')
         }
         this.$router.push({name: 'orderInfo', params: {orderType: 'cancel', orderId: infos.orderInfo.orderId}})
       }

@@ -93,9 +93,9 @@ export default {
   }
   .vip {
     float: left;
-    margin-right: 3px;
-    width: 13px;
-    height: 12px;
+    margin-right: 4px;
+    width: 15px;
+    height: 14px;
     vertical-align: top;
   }
 </style>

@@ -57,7 +57,7 @@
   import Axios from 'axios'
   Axios.defaults.baseURL = 'http://a.com'
   import {Header, Button, Toast, Picker, Popup, MessageBox} from 'mint-ui'
-  import orderMain from './order-main.vue'
+  import orderMain from './order_main.vue'
   export default {
     name: 'onorder',
     mounted () {
