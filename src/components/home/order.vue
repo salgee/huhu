@@ -6,22 +6,22 @@
     <mt-navbar v-model="selected">
       <mt-tab-item id="processing">进行中</mt-tab-item>
       <mt-tab-item id="cancel">已取消</mt-tab-item>
-      <mt-tab-item id="3">待处理</mt-tab-item>
-      <mt-tab-item id="4">已完成</mt-tab-item>
+      <mt-tab-item id="waitHandle">待处理</mt-tab-item>
+      <mt-tab-item id="finish">已完成</mt-tab-item>
     </mt-navbar>
     <!--根据选项卡id,显示页面-->
     <mt-tab-container v-model="selected">
       <mt-tab-container-item id="processing">
-        <router-view v-if="selected === 'processing'"></router-view>
+        <router-view name="processing"></router-view>
       </mt-tab-container-item>
       <mt-tab-container-item id="cancel">
-        <router-view v-if="selected === 'cancel'"></router-view>
+        <router-view name="cancel"></router-view>
       </mt-tab-container-item>
-      <mt-tab-container-item id="3">
-        <div>3</div>
+      <mt-tab-container-item id="waitHandle">
+        <router-view name="waitHandle"></router-view>
       </mt-tab-container-item>
-      <mt-tab-container-item id="4">
-        <div>4</div>
+      <mt-tab-container-item id="finish">
+        <router-view name="finish"></router-view>
       </mt-tab-container-item>
     </mt-tab-container>
   </div>
@@ -55,6 +55,14 @@
             sessionStorage.huhu_selected = 'cancel'
             vm.$router.push('/order/cancel')
             break
+          case 'waitHandle':
+            sessionStorage.huhu_selected = 'waitHandle'
+            vm.$router.push('/order/waitHandle')
+            break
+          case 'finish':
+            sessionStorage.huhu_selected = 'finish'
+            vm.$router.push('/order/finish')
+            break
           case 'order':
             vm.$router.push('/order')
             break
@@ -87,7 +95,7 @@
   #order .order-handle{
     text-align: right;
   }
-  #order .order-handle button {
+  #order button {
     font-size: 12px;
     margin-left: 10px;
     padding: 0 24px;

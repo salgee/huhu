@@ -59,17 +59,23 @@
         <p>
           <span style="color: #888">服务费</span>
           <span style="color: #888">&yen; {{orderInfo.orderInfo.serviceFee.toFixed(2)}}</span>
-          <span v-if="orderInfo.orderInfo.order"></span>
           <span v-if="orderInfo.orderInfo.award">打赏</span>
           <span v-if="orderInfo.orderInfo.award" style="color: red">&yen; {{orderInfo.orderInfo.award.toFixed(2)}}</span>
           <span>实付款</span>
           <span style="color: red">&yen; {{orderInfo.orderInfo.totalAmount.toFixed(2)}}</span>
         </p>
       </section>
-      <p class="order-time">
+      <section v-if="orderInfo.orderInfo.picList.length !== 0" class="penalty">
+        <h3>核实损耗</h3>
+        <section>
+          <img v-for="img in piclist(orderInfo.orderInfo.picList[0])" :src="'http://139.224.238.161:9999'+img" >
+        </section>
+        <p>损耗核实，赔偿费用 <span>&yen;&nbsp;&nbsp;{{orderInfo.orderInfo.penalty.toFixed(2)}}</span></p>
+      </section>
+      <p class="order-time" v-if="this.$route.params.orderType !== 'finish'">
         <span>下单时间： {{orderInfo.orderInfo.createTimeStr}}</br></span>
         <span v-if="this.$route.params.orderType === 'cancel'">取消时间： {{orderInfo.orderInfo.cancelTimeStr}}</br></span>
-        <span v-if="this.$route.params.orderType === 'processing'">确定时间： {{orderInfo.orderInfo.confirmTimeStr}}</span>
+        <span v-else>确定时间： {{orderInfo.orderInfo.confirmTimeStr}}</span>
       </p>
       <button v-if="this.$route.params.orderType === 'cancel'" class="remake-order" @click="remakeOrder">
         再次派单
@@ -135,10 +141,14 @@
           })
       },
       extraFee (total) {
-        console.log(total)
         return total.reduce((x, y) => {
           return x.itemAmount + y.itemAmount
         })
+      },
+      // 切割图片路径
+      piclist (list) {
+        let imgList = list.split(',')
+        return imgList.map((img) => img.replace(/(^\s*)/g, ''))
       },
       remakeOrder () {
       }
@@ -202,7 +212,7 @@
     font-size: 12px;
     color: #888;
   }
-  #order-info .customer-info, #order-info .order-fee, #order-info .exta-service{
+  #order-info .customer-info, #order-info .order-fee, #order-info .exta-service, #order-info .penalty{
     padding: 0 30px;
     border-bottom: 1px solid #ddd;
   }
@@ -272,5 +282,31 @@
   #order-info .star-level{
     background: url("../../../assets/images/星级@2x.png") no-repeat left top;
     background-size: 75px;
+  }
+  #order-info .penalty {
+    border-top: 5px solid #ededed;
+  }
+  #order-info .penalty section {
+    display: flex;
+    justify-content: space-between;
+    padding: 5px 0;
+  }
+  #order-info .penalty img {
+    width: 60px;
+    height: 60px;
+
+  }
+  #order-info .penalty h3 {
+    font-size: 14px;
+    margin: 8px 0;
+  }
+  #order-info .penalty p {
+    font-size: 14px;
+    line-height: 35px;
+    border-top: 1px solid #ededed;
+  }
+  #order-info .penalty span {
+    float: right;
+    color: red;
   }
 </style>

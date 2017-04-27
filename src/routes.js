@@ -31,6 +31,8 @@ import pushOrderVipGoods from './components/push_order_before_vip_goods.vue'
 // 四个订单状态
 import processing from './components/home/order/processing_order.vue'
 import cancel from './components/home/order/cancel_order.vue'
+import waitHandle from './components/home/order/waitHandle_order.vue'
+import finish from './components/home/order/finish_order.vue'
 // 定义路由集合
 const routes = [
   {
@@ -57,18 +59,28 @@ const routes = [
             name: 'processing',
             path: 'processing',
             alias: '',
-            component: processing
+            components: {processing: processing}
           },
           {
             name: 'cancel',
             path: 'cancel',
-            component: cancel
+            components: {cancel: cancel}
+          },
+          {
+            name: 'waitHandle',
+            path: 'waitHandle',
+            components: {waitHandle: waitHandle}
+          },
+          {
+            name: 'finish',
+            path: 'finish',
+            components: {finish: finish}
           }
         ]
       },
       {
         name: 'user',
-        path: '/user',
+        path: 'user',
         component: user
       }
     ]

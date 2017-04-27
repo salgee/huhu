@@ -73,6 +73,12 @@ export default {
         case 'cancel':
           this.url2 = '../../static/selected/订单@2x.png'
           break
+        case 'waitHandle':
+          this.url2 = '../../static/selected/订单@2x.png'
+          break
+        case 'finish':
+          this.url2 = '../../static/selected/订单@2x.png'
+          break
         case 'user':
           this.$router.push('/user')
           this.url4 = '../../static/selected/我的@2x.png'

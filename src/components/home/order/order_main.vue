@@ -8,9 +8,9 @@
       <slot name="delete"></slot>
     </div>
     <div class="info">
-      <p>
+      <p :class="{'bottom-line': isActive}">
         <span>接待方式：{{receptionType[infos.orderInfo.receptionType]}}</br></span>
-        <span v-if="infos.orderInfo.receptionType === 'byGuide'">接引时间：{{infos.orderInfo.receptionTimeFromStr}}</br></span>
+        <span v-if="infos.orderInfo.receptionType === 'byGuide'">接待客户时间：{{infos.orderInfo.receptionTimeFromStr}}</br></span>
         <span>清洁时间：{{infos.orderInfo.serviceTimeFromStr}}</span>
       </p>
       <div class="fee">
@@ -28,7 +28,7 @@ export default {
     return {
       receptionType: {
         byYourself: '自主入住',
-        byGuide: '接引用户'
+        byGuide: '接引客户'
       }
     }
   },
@@ -39,6 +39,11 @@ export default {
       let timeDis = ((new Date()).getTime() / 1000 - time) / 60
       if (timeDis > 15) return
       return '剩余' + Math.ceil(15 - timeDis) + '分钟'
+    }
+  },
+  computed: {
+    isActive () {
+      return this.$route.name === 'waitHandle'
     }
   }
 }
@@ -97,5 +102,9 @@ export default {
     width: 15px;
     height: 14px;
     vertical-align: top;
+  }
+  .bottom-line{
+    padding-bottom: 10px;
+    border-bottom: 1px solid #ededed;
   }
 </style>

@@ -10,6 +10,7 @@
       v-if="infos.orderInfo.orderStatus === 'waitPay'">
         {{orderTime(infos.orderInfo.createTime)}}</span>
       </section>
+      <slot name="commit"></slot>
     </p>
     <order-main :infos="infos"></order-main>
     <div class="order-handle">
@@ -87,12 +88,13 @@
         })
       },
       pushDetails (infos) {
+        let vm = this
         sessionStorage.huhu_name = infos.housekeeper.name || ''
         sessionStorage.huhu_rej = infos.housekeeper.rejectTimes || 0
         sessionStorage.huhu_ser = infos.housekeeper.serviceTimes || 0
         sessionStorage.huhu_avatar = 'http://139.224.238.161:9999' + infos.housekeeper.avatar
         sessionStorage.huhu_starLevel = infos.housekeeper.starLevel || 0
-        this.$router.push({name: 'orderInfo', params: {orderType: 'processing', orderId: infos.orderInfo.orderId}})
+        vm.$router.push({name: 'orderInfo', params: {orderType: vm.$route.name, orderId: infos.orderInfo.orderId}})
       },
       // 计算星级
       starLevel (level) {
@@ -118,6 +120,7 @@
     font-size: 12px;
   }
    .customer {
+    position: relative;
     border-bottom: 1px solid #ededed;
     margin-bottom: 15px;
     overflow: hidden;
@@ -150,5 +153,10 @@
    .star-level{
     background: url("../../../assets/images/星级@2x.png") no-repeat left top;
     background-size: 75px;
+  }
+  .commit {
+    position: absolute;
+    top: 4px;
+    right: 0;
   }
 </style>
