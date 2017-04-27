@@ -10,12 +10,16 @@
     <div class="ad" @click="goRecharge">充值有礼</div>
     <div class="tradeList">
       <div class="tradeTitle">交易记录</div>
-      <div class="oneTradeList" v-for="transaction of transactions">
+      <div class="oneTradeList" v-for="(transaction, index) of transactions">
         <div>
           <div  style="font-size: 15px;padding-bottom: 10px;" v-if="transaction.transactionType === 'payHouseForegift'">支付房屋押金</div>
+          <div  style="font-size: 15px;padding-bottom: 10px;" v-if="transaction.transactionType === 'payOrder'">订单支付</div>
+          <div  style="font-size: 15px;padding-bottom: 10px;" v-if="transaction.transactionType === 'deposit'">余额充值</div>
+          <div  style="font-size: 15px;padding-bottom: 10px;" v-if="transaction.transactionType === 'foregiftRefund'">押金扣款 赔付</div>
           <div  style="font-size: 14px;color: #9b9b9b;">{{transaction.createTimeStr}}</div>
         </div>
-        <div style="font-size: 13px;color: red">-￥{{transaction.amount}}</div>
+        <div style="font-size: 13px;color: red" v-if="transaction.transactionType !== 'deposit'">-￥{{transaction.amount}}</div>
+        <div style="font-size: 13px;color: red" v-else="">+￥{{transaction.amount}}</div>
       </div>
     </div>
   </div>
