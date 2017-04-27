@@ -130,7 +130,7 @@
       if (sessionStorage.hehecheckInPhone !== undefined) {
         this.checkInPhone = sessionStorage.hehecheckInPhone
       }
-      if (sessionStorage.orderDetailList !== undefined) {
+      if (sessionStorage.orderDetailList !== undefined && sessionStorage.orderDetailList !== '[]') {
         this.orderDetailList = JSON.parse(sessionStorage.orderDetailList)
         this.oneGoods = JSON.parse(sessionStorage.orderDetailList)[0].productName
         this.oneGoodsNum = JSON.parse(sessionStorage.orderDetailList)[0].quantity
@@ -199,6 +199,13 @@
             that.price = data.data.data[3].price
           }
         })
+          .catch(function (error) {
+            that.$toast({
+              message: error,
+              position: 'bottom',
+              duration: 2000
+            })
+          })
       },
 //    获取服务费
       getServiceFee: function () {
@@ -313,11 +320,11 @@
 //    处理数据成时间戳
       Unix: function (mmp) {
         let str = mmp.slice(0, 10) + '-' + mmp.slice(14, 16) + '-' + mmp.slice(17, 19)
-        return moment(str.split('-')).unix()
+        return Number(moment(str.split('-')).unix()) - 2649600
       },
       UnixEnd: function (mmp) {
         let str = mmp.slice(0, 10) + '-' + mmp.slice(20, 22) + '-' + mmp.slice(23, 25)
-        return moment(str.split('-')).unix()
+        return Number(moment(str.split('-')).unix()) - 2649600
       },
       clearAdData () {
         let vm = this
@@ -325,7 +332,7 @@
           sessionStorage.clear()
         ).then(
           () => {
-            vm.$router.push('/home')
+            vm.$router.go(-1)
           }
         )
       },
