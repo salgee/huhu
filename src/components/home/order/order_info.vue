@@ -77,7 +77,7 @@
         <span v-if="this.$route.params.orderType === 'cancel'">取消时间： {{orderInfo.orderInfo.cancelTimeStr}}</br></span>
         <span v-else-if="orderInfo.orderInfo.confirmTimeStr">确定时间： {{orderInfo.orderInfo.confirmTimeStr}}</span>
       </p>
-      <button v-if="this.$route.params.orderType === 'cancel'" class="remake-order" @click="remakeOrder">
+      <button v-if="this.$route.params.orderType === 'cancel'" class="remake-order" @click="remakeOrder(orderInfo)">
         再次派单
       </button>
     </div>
@@ -87,6 +87,8 @@
 <script>
   import Axios from 'axios'
   import {Header, Toast, Cell} from 'mint-ui'
+  import moment from 'moment'
+  moment.locale('zh-cn')
   export default {
     name: 'app',
     data () {
@@ -106,6 +108,10 @@
         serTimes: sessionStorage.huhu_ser,
         maName: sessionStorage.huhu_name
       }
+    },
+    mounted () {
+      this.getDays()
+      this.getTodayTime()
     },
     created () {
       this.getOrderInfo(this.$route.params.orderId)
@@ -150,12 +156,82 @@
         let imgList = list.split(',')
         return imgList.map((img) => img.replace(/(^\s*)/g, ''))
       },
-      remakeOrder () {
-      },
       // 页面跳转
       push () {
         let vm = this
-        vm.$router.push({name: 'orderTrack', params: {orderType: vm.$route.params.orderType, orderId: vm.$route.params.orderId}})
+        vm.$router.push({
+          name: 'orderTrack',
+          params: {orderType: vm.$route.params.orderType, orderId: vm.$route.params.orderId}
+        })
+      },
+      remakeOrder (infos) {
+        let that = this
+        Promise.resolve(
+          sessionStorage.orderUseHouesId = infos.houseInfo.id,
+          sessionStorage.orderUseHouesProvince = infos.houseInfo.province,
+          sessionStorage.orderUseHouesCity = infos.houseInfo.city,
+          sessionStorage.orderUseHouesVip = infos.houseInfo.vip,
+          sessionStorage.orderUseHouesRoom = infos.houseInfo.bedRoom,
+          sessionStorage.orderUseHouesforegift = infos.houseInfo.foregift,
+          sessionStorage.hehereception = that.whatType(infos),
+          sessionStorage.hehecheckInPerson = infos.orderInfo.checkInPerson,
+          sessionStorage.hehecheckInPhone = infos.orderInfo.checkInPhone,
+          sessionStorage.orderDetailList = JSON.stringify(infos.orderInfo.orderDetailList),
+        ).then(
+          () => {
+            that.$router.push('/home/pushOrderBefore')
+          })
+      },
+//      whyccup需要的判断函数---------------------------------
+      whatType: function (infos) {
+        if (infos.orderInfo.receptionType === 'byYourself') {
+          return '自主入住'
+        } else {
+          return '接引顾客'
+        }
+      },
+      getDays: function () {
+        let days = []
+        let m = ''
+        if (moment().add(1800000, 'ms').get('h') >= 17) {
+          m = 1
+//          不要今天
+        } else {
+          m = 0
+        }
+        for (let i = m; i <= 60; i++) {
+          let day = moment().add(i, 'd').format('YYYY-MM-DD(ddd)')
+          days.push(day)
+        }
+        sessionStorage.days = JSON.stringify(days)
+      },
+//      获得现在时间
+      getTodayTime: function () {
+        let todayTime = []
+        let todayT = moment().add(1800000, 'ms').get('h')
+        let a = ''
+        let b = ''
+        if (todayT >= '5' && todayT < '17') {
+          if (todayT === moment().get('h')) {
+            for (let i = 3; i < 20 - todayT; i++) {
+              a = moment().add(i, 'h').get('h') + ':30-' + moment().add(i + 1, 'h').get('h') + ':00'
+              todayTime.push(a)
+              b = moment().add(i + 1, 'h').get('h') + ':00-' + moment().add(i + 1, 'h').get('h') + ':30'
+              todayTime.push(b)
+            }
+            todayTime.pop()
+          } else {
+            for (let j = 3; j <= 19 - todayT; j++) {
+              b = moment().add(j + 1, 'h').get('h') + ':00-' + moment().add(j + 1, 'h').get('h') + ':30'
+              todayTime.push(b)
+              a = moment().add(j + 1, 'h').get('h') + ':30-' + moment().add(j + 2, 'h').get('h') + ':00'
+              todayTime.push(a)
+            }
+          }
+        } else {
+          todayTime = ['08:00-08:30', '08:30-09:00', '09:00-09:30', '09:30-10:00', '10:00-10:30', '10:30-11:00', '11:00-11:30', '11:30-12:00', '12:00-12:30', '12:30-13:00', '13:00-13:30', '13:30-14:00', '14:00-14:30', '14:30-15:00', '15:00-15:30', '15:30-16:00', '16:00-16:30', '16:30-17:00', '17:00-17:30', '17:30-18:00', '18:00-18:30', '18:30-19:00', '19:00-19:30', '19:30-20:00']
+        }
+        sessionStorage.todayTime = JSON.stringify(todayTime)
       }
     },
     computed: {

@@ -64,7 +64,7 @@
         let a = ''
         let b = ''
         if (todayT >= '5' && todayT < '17') {
-          if (moment().add(1800000, 'ms').get('h') === moment().get('h')) {
+          if (todayT === moment().get('h')) {
             for (let i = 3; i < 20 - todayT; i++) {
               a = moment().add(i, 'h').get('h') + ':30-' + moment().add(i + 1, 'h').get('h') + ':00'
               todayTime.push(a)
@@ -73,7 +73,7 @@
             }
             todayTime.pop()
           } else {
-            for (let j = 3; j < 19 - todayT; j++) {
+            for (let j = 3; j <= 19 - todayT; j++) {
               b = moment().add(j + 1, 'h').get('h') + ':00-' + moment().add(j + 1, 'h').get('h') + ':30'
               todayTime.push(b)
               a = moment().add(j + 1, 'h').get('h') + ':30-' + moment().add(j + 2, 'h').get('h') + ':00'
