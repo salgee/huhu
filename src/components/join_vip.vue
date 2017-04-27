@@ -30,8 +30,6 @@
     </div>
 </template>
 <script>
-  import Axios from 'axios'
-  Axios.defaults.baseURL = 'http://a.com'
   export default{
     data () {
       return {
