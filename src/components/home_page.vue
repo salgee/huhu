@@ -71,7 +71,11 @@ export default {
   },
   watch: {
     selected (val, oldval) {
-      this.$router.push(`/${val}`)
+      if (val === 'add') {
+        this.$router.push('/home/addHouse')
+      } else {
+        this.$router.push(`/${val}`)
+      }
     },
     $route (to, from) {
       let vm = this

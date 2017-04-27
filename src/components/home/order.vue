@@ -1,7 +1,7 @@
 <template>
   <div id="order">
     <mt-header title="订单">
-      <img src="../../assets/images/信封@2x.png" slot="right" @click="goPushList" style="width: 20px;font-size: 0;">
+      <!--<img src="../../assets/images/信封@2x.png" slot="right" @click="goPushList" style="width: 20px;font-size: 0;">-->
     </mt-header>
     <mt-navbar v-model="selected">
       <mt-tab-item id="processing">进行中</mt-tab-item>
@@ -37,9 +37,9 @@
       }
     },
     methods: {
-      goPushList: function () {
-        this.$router.push('/order/pushList')
-      }
+//      goPushList: function () {
+//        this.$router.push('/order/pushList')
+//      }
     },
     watch: {
       selected (val) {

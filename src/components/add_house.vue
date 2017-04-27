@@ -138,14 +138,11 @@ export default {
   methods: {
     clearAdData () {
       let vm = this
-      Promise.resolve((() => {
-        let path = sessionStorage.huhu_path || '/home'
-        sessionStorage.clear()
-        return path
-      })()
+      Promise.resolve(
+        vm.$router.go(-1)
       ).then(
-        (path) => {
-          vm.$router.push(path)
+        () => {
+          sessionStorage.clear()
         }
       )
     },

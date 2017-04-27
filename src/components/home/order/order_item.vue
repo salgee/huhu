@@ -47,7 +47,7 @@
       orderTime (time) {
         let timeDis = ((new Date()).getTime() / 1000 - time) / 60
         if (timeDis > 15) return
-        return '剩余' + parseInt(15 - timeDis) + '分钟'
+        return '剩余' + Math.ceil(15 - timeDis) + '分钟'
       },
       confirm () {
 

@@ -52,6 +52,7 @@
             if (dt.message === 'isOk') {
               vm.orderInfos = dt.data.list
             } else {
+              Indicator.close()
               Toast({
                 message: dt.message,
                 position: 'bottom',
@@ -60,6 +61,7 @@
             }
           })
           .catch(function (error) {
+            Indicator.close()
             Toast({
               message: error,
               position: 'bottom',

@@ -34,6 +34,7 @@ import processing from './components/home/order/processing_order.vue'
 import cancel from './components/home/order/cancel_order.vue'
 import waitHandle from './components/home/order/waitHandle_order.vue'
 import finish from './components/home/order/finish_order.vue'
+import orderTrack from './components/home/order/order_track.vue'
 // 定义路由集合
 const routes = [
   {
@@ -198,6 +199,11 @@ const routes = [
     name: 'walletRecharge',
     path: '/wallet/walletRecharge',
     component: walletRecharge
+  },
+  {
+    name: 'orderTrack',
+    path: '/home/order/:orderType/orderInfo/:orderId/orderTrack',
+    component: orderTrack
   }
 ]
 export default routes

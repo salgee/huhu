@@ -4,7 +4,7 @@
       <mt-button icon="back" slot="left" @click="$router.go(-1)"></mt-button>
     </mt-header>
     <div class="details" v-if="orderInfo.orderInfo !==undefined">
-      <mt-cell to="/home">
+      <mt-cell @click.native="push">
         <p slot="title" class="order-status">
           <span>订单状态</span>
           <span style="color: #74a92e;">{{orderStatus[orderInfo.orderInfo.orderStatus]}}</span>
@@ -75,7 +75,7 @@
       <p class="order-time" v-if="this.$route.params.orderType !== 'finish'">
         <span>下单时间： {{orderInfo.orderInfo.createTimeStr}}</br></span>
         <span v-if="this.$route.params.orderType === 'cancel'">取消时间： {{orderInfo.orderInfo.cancelTimeStr}}</br></span>
-        <span v-else>确定时间： {{orderInfo.orderInfo.confirmTimeStr}}</span>
+        <span v-else-if="orderInfo.orderInfo.confirmTimeStr">确定时间： {{orderInfo.orderInfo.confirmTimeStr}}</span>
       </p>
       <button v-if="this.$route.params.orderType === 'cancel'" class="remake-order" @click="remakeOrder">
         再次派单
@@ -151,6 +151,11 @@
         return imgList.map((img) => img.replace(/(^\s*)/g, ''))
       },
       remakeOrder () {
+      },
+      // 页面跳转
+      push () {
+        let vm = this
+        vm.$router.push({name: 'orderTrack', params: {orderType: vm.$route.params.orderType, orderId: vm.$route.params.orderId}})
       }
     },
     computed: {
