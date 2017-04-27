@@ -13,7 +13,7 @@
 <script>
   import Axios from 'axios'
   import orderItem from './order_item.vue'
-  import { Toast } from 'mint-ui'
+  import {Toast, Indicator} from 'mint-ui'
   export default {
     name: 'processing',
     data () {
@@ -26,7 +26,8 @@
     },
     components: {
       Toast,
-      orderItem
+      orderItem,
+      Indicator
     },
     methods: {
       getOrderList (page) {
@@ -42,6 +43,7 @@
             if (dt.message === 'isOk') {
               vm.orderInfos = dt.data.list
             } else {
+              Indicator.close()
               Toast({
                 message: dt.message,
                 position: 'bottom',
@@ -50,12 +52,18 @@
             }
           })
           .catch(function (error) {
+            Indicator.close()
             Toast({
               message: error,
               position: 'bottom',
               duration: 2000
             })
           })
+      }
+    },
+    watch: {
+      orderInfos (val) {
+        Indicator.close()
       }
     }
   }

@@ -3,22 +3,22 @@
   <router-view></router-view>
    <mt-tabbar v-model="selected" fixed>
      <mt-tab-item id="home">
-       <img slot="icon" :src="url1">
+       <img slot="icon" :src="home">
        房源
      </mt-tab-item>
    <mt-tab-item id="order">
-     <img slot="icon" :src="url2">
+     <img slot="icon" :src="processing">
      订单
    </mt-tab-item>
    <mt-tab-item id="add" class="add">
      <img slot="icon" src="../../static/unselected/添加@2x.png" height="24" width="24">
    </mt-tab-item>
    <mt-tab-item id="wallet" >
-     <img slot="icon" :src="url3">
+     <img slot="icon" :src="wallet">
      钱包
    </mt-tab-item>
    <mt-tab-item id="user">
-     <img slot="icon" :src="url4">
+     <img slot="icon" :src="user">
      我的
    </mt-tab-item>
   </mt-tabbar>
@@ -30,64 +30,61 @@ import {Tabbar, TabItem} from 'mint-ui'
 export default {
   name: 'homepage',
   mounted () {
-    this.selected = this.$route.name
   },
   data () {
     return {
-      selected: '',
-      url1: '../../static/unselected/房源@2x.png',
-      url2: '../../static/unselected/订单@2x.png',
-      url3: '../../static/unselected/钱包@2x.png',
-      url4: '../../static/unselected/我的@2x.png'
+      selected: sessionStorage.huhu_homeselected || 'home'
     }
   },
   components: {
     Tabbar, TabItem
   },
   computed: {
+    home () {
+      if (this.selected === 'home') {
+        return '../../static/selected/home@2x.png'
+      } else {
+        return '../../static/unselected/home@2x.png'
+      }
+    },
+    processing () {
+      if (this.selected === 'order') {
+        return '../../static/selected/processing@2x.png'
+      } else {
+        return '../../static/unselected/processing@2x.png'
+      }
+    },
+    wallet () {
+      if (this.selected === 'wallet') {
+        return '../../static/selected/wallet@2x.png'
+      } else {
+        return '../../static/unselected/wallet@2x.png'
+      }
+    },
+    user () {
+      if (this.selected === 'user') {
+        return '../../static/selected/user@2x.png'
+      } else {
+        return '../../static/unselected/user@2x.png'
+      }
+    }
   },
   watch: {
     selected (val, oldval) {
-      console.log(val)
+      this.$router.push(`/${val}`)
+    },
+    $route (to, from) {
       let vm = this
-      vm.url1 = '../../static/unselected/房源@2x.png'
-      vm.url2 = '../../static/unselected/订单@2x.png'
-      vm.url3 = '../../static/unselected/钱包@2x.png'
-      vm.url4 = '../../static/unselected/我的@2x.png'
-      switch (val) {
-        case 'wallet':
-          this.$router.push('/wallet')
-          this.url3 = '../../static/selected/钱包@2x.png'
-          break
-        case 'home':
-          this.$router.push('/home')
-          this.url1 = '../../static/selected/房源@2x.png'
-          break
-        case 'order':
-          this.$router.push('/order')
-          this.url2 = '../../static/selected/订单@2x.png'
-          break
-        case 'processing':
-          this.url2 = '../../static/selected/订单@2x.png'
-          break
-        case 'cancel':
-          this.url2 = '../../static/selected/订单@2x.png'
-          break
-        case 'waitHandle':
-          this.url2 = '../../static/selected/订单@2x.png'
-          break
-        case 'finish':
-          this.url2 = '../../static/selected/订单@2x.png'
-          break
-        case 'user':
-          this.$router.push('/user')
-          this.url4 = '../../static/selected/我的@2x.png'
-          break
-        case 'add':
-          this.$router.push('/home/addHouse')
-          break
-      }
+      vm.selected = to.matched[1].name
+      if (to.path.split('/').length > 2) return
+      vm[to.name] = `../../static/selected/${to.name}@2x.png`
+      vm[from.name] = `../../static/unselected/${from.name}@2x.png`
     }
+  },
+  // 通过路由名字判断底部导航栏选中状态
+  beforeRouteEnter (to, from, next) {
+    sessionStorage.huhu_homeselected = to.matched[1].name
+    next()
   }
 }
 </script>

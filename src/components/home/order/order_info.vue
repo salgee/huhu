@@ -1,6 +1,6 @@
 <template>
   <div id="order-info">
-    <mt-header title="订单详情" style="background: #79ac36;">
+    <mt-header title="订单详情" style="background: #79ac36;" fixed>
       <mt-button icon="back" slot="left" @click="$router.go(-1)"></mt-button>
     </mt-header>
     <div class="details" v-if="orderInfo.orderInfo !==undefined">
@@ -81,7 +81,6 @@
         再次派单
       </button>
     </div>
-    <div v-else></div>
   </div>
 </template>
 
@@ -141,6 +140,7 @@
           })
       },
       extraFee (total) {
+        if (total.length === 1) return total[0].itemAmount
         return total.reduce((x, y) => {
           return x.itemAmount + y.itemAmount
         })
@@ -187,7 +187,11 @@
     background-color: #fff;
   }
   #order-info .details {
-    margin-bottom: 40px;
+    position: fixed;
+    z-index: 100;
+    top: 40px;
+    bottom: 0;
+    overflow: scroll;
   }
   #order-info .mint-cell-value span{
     margin-right: 30px;

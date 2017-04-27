@@ -28,11 +28,9 @@
 </template>
 
 <script>
+  import {Indicator} from 'mint-ui'
   export default {
     name: 'order',
-    mounted () {
-
-    },
     data () {
       return {
         selected: sessionStorage.huhu_selected || 'processing'
@@ -48,19 +46,19 @@
         let vm = this
         switch (val) {
           case 'processing':
-            sessionStorage.huhu_selected = 'processing'
+            Indicator.open()
             vm.$router.push('/order/processing')
             break
           case 'cancel':
-            sessionStorage.huhu_selected = 'cancel'
+            Indicator.open()
             vm.$router.push('/order/cancel')
             break
           case 'waitHandle':
-            sessionStorage.huhu_selected = 'waitHandle'
+            Indicator.open()
             vm.$router.push('/order/waitHandle')
             break
           case 'finish':
-            sessionStorage.huhu_selected = 'finish'
+            Indicator.open()
             vm.$router.push('/order/finish')
             break
           case 'order':
@@ -73,11 +71,27 @@
             vm.$router.push('/home/addHouse')
             break
         }
+      },
+      $route (val) {
+        this.selected = val.name
       }
+    },
+    components: {
+      Indicator
+    },
+    beforeRouteEnter (to, from, next) {
+      if (to.name === 'order') {
+        sessionStorage.huhu_selected = 'processing'
+      } else {
+        sessionStorage.huhu_selected = to.name
+      }
+      Indicator.open()
+      next()
     },
     beforeRouteLeave (to, from, next) {
       if (to.path.indexOf('orderInfo') === -1) {
         sessionStorage.removeItem('huhu_selected')
+        sessionStorage.removeItem('huhu_homeselected')
       }
       next()
     }
