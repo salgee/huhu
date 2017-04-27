@@ -24,13 +24,13 @@
   import Axios from 'axios'
 //  import wx from 'weixin-js-sdk'
   Axios.defaults.baseURL = 'http://a.com'
-  Axios.defaults.headers = {
-    'Content-Type': 'application/json',
-    'x-api-token': localStorage.token
-  }
   export default{
     name: 'payFor',
     mounted () {
+      Axios.defaults.headers = {
+        'Content-Type': 'application/json',
+        'x-api-token': localStorage.token
+      }
       // 请求支付押金
       this.getFee()
       // 请求余额
