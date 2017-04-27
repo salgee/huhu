@@ -169,7 +169,7 @@
 }
 .homeBackground {
   position: relative;
-  padding-top: 100%;
+  padding-top: 90%;
   font-size: 13px;
   text-align: center;
   background: url(../../assets/images/activity_one_house.png) no-repeat center;
