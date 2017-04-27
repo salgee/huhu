@@ -19,9 +19,10 @@
 <script>
   import Axios from 'axios'
   import orderMain from './order_main.vue'
-  import {Button, Toast, MessageBox} from 'mint-ui'
+  import {Button, Toast, MessageBox, Indicator} from 'mint-ui'
   import moment from 'moment'
   moment.locale('zh-cn')
+
   export default {
     name: 'cancel',
     data () {
@@ -39,7 +40,8 @@
       orderMain,
       mtButton: Button,
       Toast,
-      MessageBox
+      MessageBox,
+      Indicator
     },
     methods: {
       getOrderList (page) {
@@ -183,6 +185,11 @@
           sessionStorage.huhu_avatar = 'http://139.224.238.161:9999' + infos.housekeeper.avatar
         }
         this.$router.push({name: 'orderInfo', params: {orderType: 'cancel', orderId: infos.orderInfo.orderId}})
+      }
+    },
+    watch: {
+      orderInfos (val) {
+        Indicator.close()
       }
     }
   }

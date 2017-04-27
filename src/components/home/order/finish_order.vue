@@ -16,7 +16,7 @@
 <script>
   import Axios from 'axios'
   import orderItem from './order_item.vue'
-  import { Toast } from 'mint-ui'
+  import {Toast, Indicator} from 'mint-ui'
   export default {
     name: 'finish',
     data () {
@@ -29,7 +29,8 @@
     },
     components: {
       Toast,
-      orderItem
+      orderItem,
+      Indicator
     },
     methods: {
       getOrderList (page) {
@@ -59,6 +60,11 @@
               duration: 2000
             })
           })
+      }
+    },
+    watch: {
+      orderInfos (val) {
+        Indicator.close()
       }
     }
   }
