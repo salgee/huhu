@@ -1,26 +1,30 @@
 <template>
-  <section class="order-item"
+  <section v-if="deleteOrder === true"
            @click=pushDetails(infos)>
-    <p class="customer">
-      <img :src="'http://139.224.238.161:9999'+infos.housekeeper.avatar" alt="avatar">
-      <section>
-        <span>{{infos.housekeeper.name}}</span>
-        <span class="star-level" :style="{ 'padding-left': starLevel(infos.housekeeper.starLevel) + 'px' }"></span>
-      <span class="time"
-      v-if="infos.orderInfo.orderStatus === 'waitPay'">
-        {{orderTime(infos.orderInfo.createTime)}}</span>
-      </section>
-      <slot name="commit"></slot>
-    </p>
-    <order-main :infos="infos"></order-main>
-    <div class="order-handle">
-      <mt-button size="small"
-                 v-if="infos.orderInfo.orderStatus === 'paid'"
-                 @click.stop="cancel(infos.orderInfo.orderId, index)">取消</mt-button>
-      <mt-button size="small"
-                 v-else-if="infos.orderInfo.orderStatus === 'waitPay'"
-                 @click.stop="confirm(infos.orderInfo.orderId, index)">支付</mt-button>
+    <div class="order-item">
+      <p class="customer">
+        <img :src="'http://139.224.238.161:9999'+infos.housekeeper.avatar" alt="avatar">
+        <section>
+          <span>{{infos.housekeeper.name}}</span>
+          <span class="star-level" :style="{ 'padding-left': starLevel(infos.housekeeper.starLevel) + 'px' }"></span>
+        <span class="time"
+        v-if="infos.orderInfo.orderStatus === 'waitPay'">
+          {{orderTime(infos.waitPayTime)}}</span>
+        </section>
+        <slot name="commit"></slot>
+      </p>
+      <order-main :infos="infos"></order-main>
+      <div class="order-handle">
+        <mt-button size="small"
+                   v-if="infos.orderInfo.orderStatus === 'paid'"
+                   @click.stop="cancel(infos.orderInfo.orderId, index)">取消</mt-button>
+        <mt-button size="small"
+                   v-else-if="infos.orderInfo.orderStatus === 'waitPay'"
+                   @click.stop="confirm(infos.orderInfo.orderId, index)">支付</mt-button>
+        <slot name="reOrder"></slot>
+      </div>
     </div>
+    <slot name="appendOrder"></slot>
   </section>
 </template>
 
@@ -34,6 +38,15 @@
       infos: {
         type: Object,
         required: true
+      },
+      index: {
+        type: Number,
+        required: true
+      }
+    },
+    data () {
+      return {
+        deleteOrder: true
       }
     },
     components: {
@@ -45,16 +58,14 @@
     methods: {
       // 计算订单有效时间
       orderTime (time) {
-        let timeDis = ((new Date()).getTime() / 1000 - time) / 60
-        if (timeDis > 15) return
-        return '剩余' + Math.ceil(15 - timeDis) + '分钟'
+        return '剩余' + Math.ceil(time / 60) + '分钟'
       },
       confirm () {
 
       },
       cancel (orderId, index) {
+        let vm = this
         MessageBox.confirm('确定取消订单?', '').then(action => {
-          let vm = this
           Axios.post('/api/order/landlordCancelOrder/' + orderId, {}, {
             headers: {
               'Content-Type': 'application/json',
@@ -64,7 +75,7 @@
             .then(function (data) {
               const dt = data.data
               if (dt.message === 'isOk') {
-                vm.orderInfos.splice(index, 1)
+                vm.deleteOrder = false
                 Toast({
                   message: '订单已取消',
                   position: 'bottom',
@@ -89,6 +100,7 @@
       },
       pushDetails (infos) {
         let vm = this
+        sessionStorage.huhu_appendOrder = JSON.stringify(infos.appendOrders)
         sessionStorage.huhu_name = infos.housekeeper.name || ''
         sessionStorage.huhu_rej = infos.housekeeper.rejectTimes || 0
         sessionStorage.huhu_ser = infos.housekeeper.serviceTimes || 0

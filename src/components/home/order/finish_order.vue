@@ -5,12 +5,13 @@
         v-for="(infos, index) in orderInfos"
         key="infos.orderInfo.id"
         :infos="infos"
+        :index="index"
       >
         <mt-button slot="commit" class="commit" @click.stop="goEvaluate(infos)">评价</mt-button>
       </orderItem>
     </div>
+    <div v-else class="default">没有订单</div>
   </div>
-
 </template>
 
 <script>

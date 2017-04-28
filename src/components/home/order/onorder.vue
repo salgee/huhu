@@ -24,7 +24,10 @@
           <img :src="'http://139.224.238.161:9999'+customer.avatar" alt="avator">
           <span class="name">{{customer.name}}</span>
           <p>
-            <span>星级: {{customer.starLevel}}</span>
+            <span>星级:</span>
+            <span class="star-level"
+                  :style="{ 'padding-left': starLevel(customer.starLevel) + 'px' }">
+            </span>
             <span>服务次数: {{customer.serviceTimes}}</span>
             <span>拒单率: {{customer.rejectRate + '%'}}</span>
           </p>
@@ -122,6 +125,10 @@
       },
       onValuesChange (picker, values) {
         this.selected = values[0]
+      },
+      // 计算星级
+      starLevel (level) {
+        return level * 15
       },
       // 请求打赏接口
       saveAward () {
@@ -288,8 +295,15 @@
   }
   #onorder .customer span{
     display: inline-block;
-    width: 30%;
     vertical-align: middle;
-    font-size: 14px;
+    font-size: 15px;
+  }
+  #onorder .customer span+span {
+    margin-right: 20px;
+  }
+  .star-level{
+    height: 16px;
+    background: url("../../../assets/images/星级@2x.png") no-repeat left center;
+    background-size: 75px;
   }
 </style>

@@ -1,14 +1,17 @@
 <template>
   <div id="processing">
     <div class="wrapper" v-if="orderInfos.length !== 0">
-      <orderItem
+      <order-item
         v-for="(infos, index) in orderInfos"
         key="infos.orderInfo.id"
         :infos="infos"
-      ></orderItem>
+        :index="index"
+      >
+        <mt-button slot="reOrder" size="small" @click.stop>追加订单</mt-button>
+      </order-item>
     </div>
+    <div v-else class="default">没有订单</div>
   </div>
-
 </template>
 
 <script>
