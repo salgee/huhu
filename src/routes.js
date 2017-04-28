@@ -29,6 +29,7 @@ import orderInfo from './components/home/order/order_info.vue'
 import orderToConfirm from './components/home/order/orderToConfirm.vue'
 import pushOrderVipGoods from './components/push_order_before_vip_goods.vue'
 import walletRecharge from './components/home/wallet_recharge.vue'
+import orderEvaluate from './components/home/order/order_evaluate.vue'
 // 四个订单状态
 import processing from './components/home/order/processing_order.vue'
 import cancel from './components/home/order/cancel_order.vue'
@@ -204,6 +205,11 @@ const routes = [
     name: 'orderTrack',
     path: '/home/order/:orderType/orderInfo/:orderId/orderTrack',
     component: orderTrack
+  },
+  {
+    name: 'orderEvaluate',
+    path: '/home/order/orderEvaluate',
+    component: orderEvaluate
   }
 ]
 export default routes

@@ -377,7 +377,7 @@
   }
 </script>
 
-<style>
+<style scoped>
   a {
     font-size: 0;
   }
@@ -438,7 +438,7 @@
   }
   #changeHouse .submit{
     position: absolute;
-    bottom: 60px;
+    bottom: 30px;
     right: 0;
     left: 0;
     margin: auto;

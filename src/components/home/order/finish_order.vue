@@ -6,7 +6,7 @@
         key="infos.orderInfo.id"
         :infos="infos"
       >
-        <mt-button slot="commit" class="commit">评价</mt-button>
+        <mt-button slot="commit" class="commit" @click.stop="goEvaluate(infos)">评价</mt-button>
       </orderItem>
     </div>
   </div>
@@ -33,6 +33,29 @@
       Indicator
     },
     methods: {
+      goEvaluate: function (infos) {
+        let that = this
+        console.log(infos)
+        Promise.resolve(
+//          订单号
+          sessionStorage.evaluateUseOrderId = infos.orderInfo.orderId,
+//          服务人员id
+          sessionStorage.evaluateUseHousekeeperId = infos.orderInfo.houseKeeperId,
+//          管家名字
+          sessionStorage.evaluateUseName = infos.housekeeper.name,
+//          头像
+          sessionStorage.evaluateUseAvatar = 'http://139.224.238.161:9999/' + infos.housekeeper.avatar,
+//          星级
+          sessionStorage.evaluateUseStarLevel = infos.housekeeper.starLevel,
+//          服务次数
+          sessionStorage.evaluateUseServiceTimes = infos.housekeeper.serviceTimes,
+//          拒单率
+          sessionStorage.evaluateUseRejectRate = infos.housekeeper.rejectRate
+        ).then(
+          () => {
+            that.$router.push('/home/order/orderEvaluate')
+          })
+      },
       getOrderList (page) {
         let vm = this
         Axios.get('/api/order/findOrders/landlord/finish/10/' + page, {
