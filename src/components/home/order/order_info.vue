@@ -39,10 +39,13 @@
           <span>{{orderInfo.orderInfo.receptionTimeFromStr}}</span>
         </p>
         <p>
-          <span>清洁时间</span>
+          <span>清洁日期</span>
           <span>{{orderInfo.orderInfo.serviceTimeFromStr}}</span>
         </p>
       </section>
+      <append-order v-if="appendOrder !== undefined"
+                    :appendOrder = appendOrder
+                    :show=false></append-order>
       <section v-if="orderInfo.orderInfo.orderDetailList.length !== 0" class="exta-service">
         <p>
           额外服务:&nbsp;&nbsp;
@@ -52,7 +55,8 @@
         </p>
         <p v-for="item in orderInfo.orderInfo.orderDetailList" style="color: #888;">
           <span>{{item.productName}}x{{item.quantity}}</span>
-          <span>&yen;&nbsp;{{item.itemAmount}}</span>
+          <span>&yen;&nbsp;{{item.quantity*item.price}}</span>
+          <span v-if="item.foregift !== 0" style="width: 22%; float:right">押金 &yen;&nbsp;{{item.quantity*item.foregift}}</span>
         </p>
       </section>
       <section class="order-fee">
@@ -86,7 +90,8 @@
 
 <script>
   import Axios from 'axios'
-  import {Header, Toast, Cell} from 'mint-ui'
+  import {Header, Toast, Cell, Popup} from 'mint-ui'
+  import appendOrder from './append_order.vue'
   import moment from 'moment'
   moment.locale('zh-cn')
   export default {
@@ -95,9 +100,11 @@
       return {
         orderInfo: {},
         orderStatus: {
-          noPayCancel: '已取消',
+          cancel: '已取消',
           news: '待确认',
-          paid: '已支付'
+          paid: '已支付',
+          lossWaitHandle: '待处理',
+          finish: '已完成'
         },
         receptionType: {
           byYourself: '自主入住',
@@ -239,12 +246,21 @@
       starLevel () {
         if (!sessionStorage.huhu_starLevel) return 0
         return sessionStorage.huhu_starLevel * 15
+      },
+      appendOrder () {
+        if (!sessionStorage.huhu_appendOrder) {
+          return undefined
+        }
+        console.log(JSON.parse(sessionStorage.huhu_appendOrder))
+        return JSON.parse(sessionStorage.huhu_appendOrder)
       }
     },
     components: {
       mtHeader: Header,
       Toast,
-      Cell
+      Cell,
+      Popup,
+      appendOrder
     },
     beforeRouteLeave (to, from, next) {
       Promise.resolve(
@@ -255,6 +271,7 @@
           sessionStorage.removeItem('huhu_rej')
           sessionStorage.removeItem('huhu_ser')
           sessionStorage.removeItem('huhu_avatar')
+          sessionStorage.removeItem('huhu_appendOrder')
         })
     }
   }
@@ -300,6 +317,7 @@
   #order-info .customer-info, #order-info .order-fee, #order-info .exta-service, #order-info .penalty{
     padding: 0 30px;
     border-bottom: 1px solid #ddd;
+    border-top: 1px solid #ddd;
   }
   #order-info .customer-info p, .order-fee p,#order-info .exta-service p{
     margin: 5px 0;

@@ -1,18 +1,27 @@
 <template>
   <div id="processing">
     <div class="wrapper" v-if="orderInfos.length !== 0">
-      <orderItem
+      <order-item
         v-for="(infos, index) in orderInfos"
         key="infos.orderInfo.id"
         :infos="infos"
-      ></orderItem>
+        :index="index"
+      >
+        <mt-button slot="reOrder" size="small" @click.stop>追加订单</mt-button>
+        <append-order v-if="infos.appendOrders.length > 0"
+                      slot="appendOrder"
+                      :appendOrder = infos.appendOrders
+                      :show=true></append-order>
+      </order-item>
     </div>
+    <div v-else class="default">没有订单</div>
   </div>
 </template>
 
 <script>
   import Axios from 'axios'
   import orderItem from './order_item.vue'
+  import appendOrder from './append_order.vue'
   import {Toast, Indicator} from 'mint-ui'
   export default {
     name: 'processing',
@@ -27,7 +36,8 @@
     components: {
       Toast,
       orderItem,
-      Indicator
+      Indicator,
+      appendOrder
     },
     methods: {
       getOrderList (page) {
@@ -76,6 +86,12 @@
     bottom: 56px;
     width: 100%;
     overflow: scroll;
+  }
+  #processing .default {
+    width: 100%;
+    height: 100%;
+    background: url(../../../assets/images/activity_one_house.png) no-repeat center;
+    background-size: 40%;
   }
   #processing .processing-order {
     padding:10px 15px 20px;
