@@ -7,7 +7,7 @@
         :infos="infos"
         :index="index"
       >
-        <mt-button slot="reOrder" size="small" @click.stop>追加订单</mt-button>
+        <mt-button v-if="isShow(infos)" slot="reOrder" size="small" @click.stop>追加订单</mt-button>
         <append-order v-if="infos.appendOrders.length > 0"
                       slot="appendOrder"
                       :appendOrder = infos.appendOrders
@@ -69,6 +69,21 @@
               duration: 2000
             })
           })
+      },
+      // 通过vip身份和时间判断是否有追加订单的权限
+      isShow (infos) {
+        if (infos.houseInfo.vip === 1) {
+          const sureAppend = infos.orderInfo.receptionTimeFrom ? infos.orderInfo.receptionTimeFrom : infos.orderInfo.serviceTimeFrom
+          const timeDis = sureAppend - new Date().getTime() / 1000
+          console.log(timeDis)
+          if (timeDis > 12 * 60 * 60) {
+            return true
+          } else {
+            return false
+          }
+        } else {
+          return false
+        }
       }
     },
     watch: {
