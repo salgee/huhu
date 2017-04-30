@@ -17,7 +17,7 @@
       <div class="order-handle">
         <mt-button size="small"
                    v-if="infos.orderInfo.orderStatus === 'paid'"
-                   @click.stop="cancel(infos.orderInfo.orderId, index)">取消</mt-button>
+                   @click.stop="cancel(infos.orderInfo.orderId, index, infos)">取消</mt-button>
         <mt-button size="small"
                    v-else-if="infos.orderInfo.orderStatus === 'waitPay'"
                    @click.stop="confirm(infos.orderInfo.orderId, index)">支付</mt-button>
@@ -63,9 +63,19 @@
       confirm () {
 
       },
-      cancel (orderId, index) {
+      cancel (orderId, index, infos) {
         let vm = this
-        MessageBox.confirm('确定取消订单?', '').then(action => {
+        let msg = ''
+        const sureAppend = infos.orderInfo.receptionTimeFrom ? infos.orderInfo.receptionTimeFrom : infos.orderInfo.serviceTimeFrom
+        const timeDis = sureAppend - new Date().getTime() / 1000
+        if (timeDis > 12 * 60 * 60) {
+          msg = '确定取消订单?'
+        } else if (timeDis < 2 * 60 * 60) {
+          msg = '现在取消订单，将不会返回押金'
+        } else {
+          msg = '现在取消订单，将会扣除20%的费用'
+        }
+        MessageBox.confirm(msg, '').then(action => {
           Axios.post('/api/order/landlordCancelOrder/' + orderId, {}, {
             headers: {
               'Content-Type': 'application/json',
