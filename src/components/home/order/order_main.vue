@@ -105,6 +105,6 @@ export default {
   }
   .bottom-line{
     padding-bottom: 10px;
-    border-bottom: 1px solid #ededed;
+    border-bottom: 1px solid #ddd;
   }
 </style>
