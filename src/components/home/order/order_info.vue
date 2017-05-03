@@ -72,7 +72,7 @@
       <section v-if="orderInfo.orderInfo.picList.length !== 0" class="penalty">
         <h3>核实损耗</h3>
         <section>
-          <img v-for="img in piclist(orderInfo.orderInfo.picList[0])" :src="'http://139.224.238.161:9999'+img" >
+          <img @click="showImgDetails('http://139.224.238.161:9999'+img)" v-for="img in piclist(orderInfo.orderInfo.picList[0])" :src="'http://139.224.238.161:9999'+img" >
         </section>
         <p>损耗核实，赔偿费用 <span>&yen;&nbsp;&nbsp;{{orderInfo.orderInfo.penalty.toFixed(2)}}</span></p>
       </section>
@@ -85,6 +85,11 @@
         再次派单
       </button>
     </div>
+    <mt-popup
+      v-model="popupVisible"
+      popup-transition="popup-fade">
+      <img @click="popupVisible = false" :src="src" style="width: 100%">
+    </mt-popup>
   </div>
 </template>
 
@@ -113,7 +118,9 @@
         avatar: sessionStorage.huhu_avatar,
         rejTimes: sessionStorage.huhu_rej,
         serTimes: sessionStorage.huhu_ser,
-        maName: sessionStorage.huhu_name
+        maName: sessionStorage.huhu_name,
+        popupVisible: false,
+        src: ''
       }
     },
     mounted () {
@@ -239,6 +246,11 @@
           todayTime = ['08:00-08:30', '08:30-09:00', '09:00-09:30', '09:30-10:00', '10:00-10:30', '10:30-11:00', '11:00-11:30', '11:30-12:00', '12:00-12:30', '12:30-13:00', '13:00-13:30', '13:30-14:00', '14:00-14:30', '14:30-15:00', '15:00-15:30', '15:30-16:00', '16:00-16:30', '16:30-17:00', '17:00-17:30', '17:30-18:00', '18:00-18:30', '18:30-19:00', '19:00-19:30', '19:30-20:00']
         }
         sessionStorage.todayTime = JSON.stringify(todayTime)
+      },
+      showImgDetails (src) {
+        let vm = this
+        vm.src = src
+        vm.popupVisible = !vm.popupVisible
       }
     },
     computed: {
@@ -411,5 +423,8 @@
   #order-info .penalty span {
     float: right;
     color: red;
+  }
+  #order-info .mint-popup {
+    width: 100%;
   }
 </style>

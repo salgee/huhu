@@ -7,7 +7,6 @@
         :infos="infos"
         :index="index"
       >
-        <mt-button slot="reOrder" size="small" @click.stop>追加订单</mt-button>
       </order-item>
     </div>
     <div v-else class="default">没有订单</div>
