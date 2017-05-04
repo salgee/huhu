@@ -475,6 +475,6 @@
     float: right;
   }
   .mint-header-button.is-left{
-    z-index: 9999;
+    z-index: 9997;
   }
 </style>

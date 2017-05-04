@@ -3,7 +3,7 @@
            @click=pushDetails(infos)>
     <div class="order-item">
       <p class="customer">
-        <img :src="'http://139.224.238.161:9999'+infos.housekeeper.avatar" alt="avatar">
+        <img :src="'http://139.224.238.161:9997'+infos.housekeeper.avatar" alt="avatar">
         <section>
           <span>{{infos.housekeeper.name}}</span>
           <span class="star-level" :style="{ 'padding-left': starLevel(infos.housekeeper.starLevel) + 'px' }"></span>
@@ -114,7 +114,7 @@
         sessionStorage.huhu_name = infos.housekeeper.name || ''
         sessionStorage.huhu_rej = infos.housekeeper.rejectTimes || 0
         sessionStorage.huhu_ser = infos.housekeeper.serviceTimes || 0
-        sessionStorage.huhu_avatar = 'http://139.224.238.161:9999' + infos.housekeeper.avatar
+        sessionStorage.huhu_avatar = 'http://139.224.238.161:9997' + infos.housekeeper.avatar
         sessionStorage.huhu_starLevel = infos.housekeeper.starLevel || 0
         vm.$router.push({name: 'orderInfo', params: {orderType: vm.$route.name, orderId: infos.orderInfo.orderId}})
       },

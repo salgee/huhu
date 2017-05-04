@@ -139,7 +139,7 @@ export default {
     clearAdData () {
       let vm = this
       Promise.resolve(
-        vm.$router.go(-1)
+        vm.$router.push('/home')
       ).then(
         () => {
           sessionStorage.clear()

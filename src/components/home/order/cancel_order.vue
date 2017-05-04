@@ -185,7 +185,7 @@
           sessionStorage.huhu_name = infos.housekeeper.name || ''
           sessionStorage.huhu_rej = infos.housekeeper.rejectTimes || 0
           sessionStorage.huhu_ser = infos.housekeeper.serviceTimes || 0
-          sessionStorage.huhu_avatar = 'http://139.224.238.161:9999' + infos.housekeeper.avatar
+          sessionStorage.huhu_avatar = 'http://139.224.238.161:9997' + infos.housekeeper.avatar
         }
         this.$router.push({name: 'orderInfo', params: {orderType: 'cancel', orderId: infos.orderInfo.orderId}})
       }

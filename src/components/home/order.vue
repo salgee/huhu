@@ -93,6 +93,7 @@
         sessionStorage.removeItem('huhu_selected')
         sessionStorage.removeItem('huhu_homeselected')
       }
+      Indicator.close()
       next()
     }
   }

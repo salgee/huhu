@@ -21,7 +21,7 @@
           </div>
         </router-link>
         <div v-for="customer in infos.housekeepers" class="customer">
-          <img :src="'http://139.224.238.161:9999'+customer.avatar" alt="avator">
+          <img :src="'http://139.224.238.161:9997'+customer.avatar" alt="avator">
           <span class="name">{{customer.name}}</span>
           <p>
             <span>星级:</span>

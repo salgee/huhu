@@ -12,7 +12,7 @@
     </mt-cell>
     <mt-cell class="register-input">
       <input placeholder="图形验证码"   v-model="registerimgyzm">
-      <img src="http://139.224.238.161:9999/image/verification?uid=12902jkolgh3dkdv45" height="45px" width="100px">
+      <img src="http://139.224.238.161:9997/image/verification?uid=12902jkolgh3dkdv45" height="45px" width="100px">
       <img slot="icon" src="../assets/images/登录锁@2x.png" width="13" height="17">
     </mt-cell>
     <mt-cell class="register-input">

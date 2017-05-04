@@ -45,7 +45,7 @@
 //          管家名字
           sessionStorage.evaluateUseName = infos.housekeeper.name,
 //          头像
-          sessionStorage.evaluateUseAvatar = 'http://139.224.238.161:9999/' + infos.housekeeper.avatar,
+          sessionStorage.evaluateUseAvatar = 'http://139.224.238.161:9997/' + infos.housekeeper.avatar,
 //          星级
           sessionStorage.evaluateUseStarLevel = infos.housekeeper.starLevel,
 //          服务次数

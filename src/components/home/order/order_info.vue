@@ -72,7 +72,7 @@
       <section v-if="orderInfo.orderInfo.picList.length !== 0" class="penalty">
         <h3>核实损耗</h3>
         <section>
-          <img @click="showImgDetails('http://139.224.238.161:9999'+img)" v-for="img in piclist(orderInfo.orderInfo.picList[0])" :src="'http://139.224.238.161:9999'+img" >
+          <img @click="showImgDetails('http://139.224.238.161:9997'+img)" v-for="img in piclist(orderInfo.orderInfo.picList[0])" :src="'http://139.224.238.161:9997'+img" >
         </section>
         <p>损耗核实，赔偿费用 <span>&yen;&nbsp;&nbsp;{{orderInfo.orderInfo.penalty.toFixed(2)}}</span></p>
       </section>
