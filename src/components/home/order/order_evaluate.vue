@@ -156,11 +156,29 @@
                 }
               })
                 .then(function (data) {
-                  console.log(data)
+                  if (data.data.data === 'isOk') {
+                    Promise.resolve((() => {
+                      that.$toast({
+                        message: '评价成功',
+                        position: 'bottom',
+                        duration: 2000
+                      })
+                    })()
+                    )
+                      .then(
+                        this.$router.go(-1)
+                      )
+                  } else {
+                    that.$toast({
+                      message: data.data.message,
+                      position: 'bottom',
+                      duration: 2000
+                    })
+                  }
                 })
                 .catch(function () {
                   that.$toast({
-                    message: '订单信息错误，请稍后重试',
+                    message: '服务器错误，请稍后重试',
                     position: 'bottom',
                     duration: 2000
                   })
