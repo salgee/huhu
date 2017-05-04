@@ -1,15 +1,24 @@
 <template>
   <div id="processing">
-    <div class="wrapper" v-if="orderInfos.length !== 0">
-      <orderItem
-        v-for="(infos, index) in orderInfos"
-        key="infos.orderInfo.id"
-        :infos="infos"
-        :index="index"
-      >
-        <mt-button slot="commit" class="commit" @click.stop="goEvaluate(infos)">评价</mt-button>
-      </orderItem>
-    </div>
+    <mt-loadmore
+      :top-method="loadTop"
+      :bottom-method="loadBottom"
+      :bottom-all-loaded="allLoaded"
+      ref="loadmore"
+      class="wrapper"
+      :autoFill=false
+      v-if="orderInfos.length !== 0">
+      <div class="wrapper" v-if="orderInfos.length !== 0">
+        <orderItem
+          v-for="(infos, index) in orderInfos"
+          key="infos.orderInfo.id"
+          :infos="infos"
+          :index="index"
+        >
+          <mt-button slot="commit" class="commit" @click.stop="goEvaluate(infos)">评价</mt-button>
+        </orderItem>
+      </div>
+    </mt-loadmore>
     <div v-else class="default">没有订单</div>
   </div>
 </template>
@@ -22,7 +31,9 @@
     name: 'finish',
     data () {
       return {
-        orderInfos: []
+        orderInfos: [],
+        page: 1,
+        allLoaded: false
       }
     },
     mounted () {
@@ -59,7 +70,7 @@
       },
       getOrderList (page) {
         let vm = this
-        Axios.get('/api/order/findOrders/landlord/finish/10/' + page, {
+        return Axios.get('/api/order/findOrders/landlord/finish/10/' + page, {
           headers: {
             'Content-Type': 'application/json',
             'x-api-token': localStorage.token
@@ -68,7 +79,15 @@
           .then(function (data) {
             const dt = data.data
             if (dt.message === 'isOk') {
-              vm.orderInfos = dt.data.list
+              if (page === 1) {
+                vm.orderInfos = dt.data.list
+              } else {
+                vm.orderInfos = vm.orderInfos.concat(dt.data.list)
+              }
+              if (dt.data.list.length === 0) {
+                vm.allLoaded = true
+                vm.msg = '没有跟多订单了~~'
+              }
             } else {
               Indicator.close()
               Toast({
@@ -85,6 +104,37 @@
               position: 'bottom',
               duration: 2000
             })
+          })
+      },
+      // 更新列表
+      loadTop () {
+        let vm = this
+        vm.page = 1
+        vm.getOrderList(1)
+          .then(() => {
+            Toast({
+              message: '刷新成功',
+              position: 'bottom',
+              duration: 2000
+            })
+            vm.$refs.loadmore.onTopLoaded()
+          })
+      },
+      // 加载更多
+      loadBottom () {
+        let vm = this
+        vm.page += 1
+        vm.getOrderList(vm.page)
+          .then(() => {
+            Toast({
+              message: vm.msg,
+              position: 'bottom',
+              duration: 2000
+            })
+            vm.$refs.loadmore.onBottomLoaded()
+          })
+          .catch(() => {
+            vm.$refs.loadmore.onBottomLoaded()
           })
       }
     },

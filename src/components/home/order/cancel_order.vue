@@ -1,18 +1,27 @@
 <template>
   <div id="cancel">
-    <div class="wrapper" v-if="orderInfos.length !== 0">
-      <section v-for="(infos, index) in orderInfos" :key="infos.orderInfo.id" class="cancel-order"
-        @click=pushDetails(infos)>
-        <order-main :infos="infos">
-          <div slot="delete" class="delete" @click.stop="deleteOrder(infos.orderInfo.orderId, index)"></div>
-        </order-main>
-        <div class="order-handle">
-          <span v-if="infos.housekeeper" class="remark">订单未支付</span>
-          <span v-else class="remark">{{remark}}</span>
-          <mt-button size="small" @click.stop="remakeOrder(infos)">再次派单</mt-button>
-        </div>
-      </section>
-    </div>
+    <mt-loadmore
+      :top-method="loadTop"
+      :bottom-method="loadBottom"
+      :bottom-all-loaded="allLoaded"
+      ref="loadmore"
+      class="wrapper"
+      :autoFill=false
+      v-if="orderInfos.length !== 0">
+      <div class="wrapper" v-if="orderInfos.length !== 0">
+        <section v-for="(infos, index) in orderInfos" :key="infos.orderInfo.id" class="cancel-order"
+          @click=pushDetails(infos)>
+          <order-main :infos="infos">
+            <div slot="delete" class="delete" @click.stop="deleteOrder(infos.orderInfo.orderId, index)"></div>
+          </order-main>
+          <div class="order-handle">
+            <span v-if="infos.housekeeper" class="remark">订单未支付</span>
+            <span v-else class="remark">{{remark}}</span>
+            <mt-button size="small" @click.stop="remakeOrder(infos)">再次派单</mt-button>
+          </div>
+        </section>
+      </div>
+    </mt-loadmore>
     <div v-else class="default">没有订单</div>
   </div>
 </template>
@@ -29,7 +38,9 @@
     data () {
       return {
         orderInfos: [],
-        remark: '未被抢单'
+        remark: '未被抢单',
+        allLoaded: false,
+        page: 1
       }
     },
     mounted () {
@@ -47,7 +58,7 @@
     methods: {
       getOrderList (page) {
         let vm = this
-        Axios.get('/api/order/findOrders/landlord/cancel/30/' + page, {
+        return Axios.get('/api/order/findOrders/landlord/cancel/10/' + page, {
           headers: {
             'Content-Type': 'application/json',
             'x-api-token': localStorage.token
@@ -56,7 +67,11 @@
           .then(function (data) {
             const dt = data.data
             if (dt.message === 'isOk') {
-              vm.orderInfos = dt.data.list
+              if (page === 1) {
+                vm.orderInfos = dt.data.list
+              } else {
+                vm.orderInfos = vm.orderInfos.concat(dt.data.list)
+              }
             } else {
               Indicator.close()
               Toast({
@@ -73,6 +88,7 @@
               position: 'bottom',
               duration: 2000
             })
+            throw error
           })
       },
       remakeOrder (infos) {
@@ -188,6 +204,37 @@
           sessionStorage.huhu_avatar = 'http://139.224.238.161:9997' + infos.housekeeper.avatar
         }
         this.$router.push({name: 'orderInfo', params: {orderType: 'cancel', orderId: infos.orderInfo.orderId}})
+      },
+      // 更新列表
+      loadTop () {
+        let vm = this
+        vm.page = 1
+        vm.getOrderList(1)
+          .then(() => {
+            Toast({
+              message: '刷新成功',
+              position: 'bottom',
+              duration: 2000
+            })
+            vm.$refs.loadmore.onTopLoaded()
+          })
+      },
+      // 加载更多
+      loadBottom () {
+        let vm = this
+        vm.page += 1
+        vm.getOrderList(vm.page)
+          .then(() => {
+            Toast({
+              message: vm.msg,
+              position: 'bottom',
+              duration: 2000
+            })
+            vm.$refs.loadmore.onBottomLoaded()
+          })
+          .catch(() => {
+            vm.$refs.loadmore.onBottomLoaded()
+          })
       }
     },
     watch: {
