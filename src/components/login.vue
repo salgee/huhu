@@ -47,7 +47,8 @@
               localStorage.name = response.data.data.user.account
               localStorage.token = response.data.data.token
               localStorage.accountType = response.data.data.accountType
-              _this.$router.go(-1)
+              console.log(_this.$route.query.redirect)
+              _this.$router.replace(_this.$route.query.redirect || '/user')
             } else {
 
             }

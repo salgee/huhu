@@ -51,12 +51,14 @@ const routes = [
       {
         name: 'wallet',
         path: 'wallet',
-        component: wallet
+        component: wallet,
+        meta: { requiresAuth: true }
       },
       {
         name: 'order',
         path: 'order',
         component: order,
+        meta: { requiresAuth: true },
         children: [
           {
             name: 'processing',
@@ -109,7 +111,8 @@ const routes = [
   {
     name: 'add',
     path: '/home/addHouse',
-    component: addHouse
+    component: addHouse,
+    meta: { requiresAuth: true }
   },
   {
     name: 'shezhi',
@@ -139,12 +142,14 @@ const routes = [
   {
     name: 'joinVip',
     path: '/user/vip/joinVip',
-    component: joinVip
+    component: joinVip,
+    meta: { requiresAuth: true }
   },
   {
     name: 'address',
     path: '/home/addHouse/address',
-    component: address
+    component: address,
+    meta: { requiresAuth: true }
   },
   {
     name: 'vipAgreement',
@@ -164,7 +169,8 @@ const routes = [
   {
     name: 'changeHouse',
     path: '/user/changeHouse',
-    component: changeHouse
+    component: changeHouse,
+    meta: { requiresAuth: true }
   },
   {
     name: 'pushList',
@@ -184,12 +190,14 @@ const routes = [
   {
     name: 'orderInfo',
     path: '/home/order/:orderType/orderInfo/:orderId',
-    component: orderInfo
+    component: orderInfo,
+    meta: { requiresAuth: true }
   },
   {
     name: 'orderToConfirm',
     path: '/home/order/onOrder/orderToConfirm/:orderId/:id',
-    component: orderToConfirm
+    component: orderToConfirm,
+    meta: { requiresAuth: true }
   },
   {
     name: 'pushOrderVipGoods',
@@ -204,12 +212,14 @@ const routes = [
   {
     name: 'orderTrack',
     path: '/home/order/:orderType/orderInfo/:orderId/orderTrack',
-    component: orderTrack
+    component: orderTrack,
+    meta: { requiresAuth: true }
   },
   {
     name: 'orderEvaluate',
     path: '/home/order/orderEvaluate',
-    component: orderEvaluate
+    component: orderEvaluate,
+    meta: { requiresAuth: true }
   }
 ]
 export default routes
