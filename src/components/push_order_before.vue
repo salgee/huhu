@@ -332,7 +332,7 @@
           sessionStorage.clear()
         ).then(
           () => {
-            vm.$router.go(-1)
+            vm.$router.push('/home')
           }
         )
       },
