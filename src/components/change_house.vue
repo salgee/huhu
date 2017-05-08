@@ -2,7 +2,7 @@
   <div id="changeHouse">
     <div class="notTouchByVip" v-if="vip === '1'" @click="toastVip"></div>
     <mt-header title="修改房源" style="background: #79ac36;">
-      <mt-button icon="back" slot="left" @click="clearAdData"></mt-button>
+      <mt-button icon="back" slot="left" @click="clearAdData" style="z-index: 102"></mt-button>
       <span slot="right" v-if="changeOrSave === 'change'" @click="change">编辑</span>
       <span slot="right" v-else @click="updateHouse">保存</span>
     </mt-header>
@@ -394,6 +394,8 @@
     white-space: nowrap;
     text-overflow: ellipsis;
     overflow: hidden;
+    width: 250px;
+    text-align: right;
   }
   #changeHouse .mint-cell-wrapper {
     width: 95%;
