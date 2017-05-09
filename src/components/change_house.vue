@@ -394,7 +394,7 @@
     white-space: nowrap;
     text-overflow: ellipsis;
     overflow: hidden;
-    width: 250px;
+    width: 200px;
     text-align: right;
   }
   #changeHouse .mint-cell-wrapper {
