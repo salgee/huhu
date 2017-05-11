@@ -37,8 +37,6 @@ import unhome from '../assets/unselected/home@2x.png'
 import unwallet from '../assets/unselected/wallet@2x.png'
 export default {
   name: 'homepage',
-  mounted () {
-  },
   data () {
     return {
       selected: sessionStorage.huhu_homeselected || 'home'

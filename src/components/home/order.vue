@@ -36,11 +36,6 @@
         selected: sessionStorage.huhu_selected || 'processing'
       }
     },
-    methods: {
-//      goPushList: function () {
-//        this.$router.push('/order/pushList')
-//      }
-    },
     watch: {
       selected (val) {
         let vm = this

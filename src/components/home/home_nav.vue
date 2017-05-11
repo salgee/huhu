@@ -94,7 +94,10 @@
         }}).then(function (data) {
           if (data.data.message === 'isOk') {
             that.houseInfos = data.data.data
+            localStorage.isLogin = true
           } else {
+            localStorage.isLogin = false
+            that.isLogin = false
             that.$toast({
               message: '您的登录已过期',
               position: 'bottom'
