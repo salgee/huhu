@@ -88,15 +88,19 @@
   #order-track > section+section:before {
     content: '';
     width: 0;
-    height: 37px;
+    height: 55px;
     border: 1px dashed #000;
     position: absolute;
-    top: -40px;
+    top: -50px;
     left: 7px;
+    z-index: -1;
   }
   #order-track section .order-info {
-    font-size: 12px;
+    font-size: 0px;
     display: table-cell;
+  }
+  #order-track section span{
+    font-size: 12px;
   }
   #order-track .order-info span:last-child {
     display: inline-block;
