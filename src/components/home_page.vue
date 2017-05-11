@@ -76,6 +76,11 @@ export default {
   // 通过路由名字判断底部导航栏选中状态
   beforeRouteEnter (to, from, next) {
     sessionStorage.huhu_homeselected = to.matched[1].name
+    Indicator.open()
+    next()
+  },
+  beforeRouteLeave (to, from, next) {
+    Indicator.close()
     next()
   }
 }
