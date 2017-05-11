@@ -139,7 +139,7 @@
   height: 200px;
   background-color: #000;
 }
-.houseList {
+.houseList .homeBackground{
   position:fixed;
   top:200px;
   padding-top: 25px;
@@ -171,8 +171,6 @@
   color: rgba(121,172,54,.8)
 }
 .homeBackground {
-  position: relative;
-  padding-top: 90%;
   font-size: 13px;
   text-align: center;
   background: url(../../assets/images/activity_one_house.png) no-repeat center;
