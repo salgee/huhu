@@ -145,7 +145,8 @@
   padding-top: 25px;
   bottom: 56px;
   width: 100%;
-  overflow: scroll;
+  overflow: hidden;
+  overflow-y: auto;
 }
 .home-nav .mint-cell-title img{
   margin-right: 12px;
