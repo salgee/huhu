@@ -26,7 +26,7 @@
 </template>
 
 <script>
-import {Tabbar, TabItem} from 'mint-ui'
+import {Tabbar, TabItem, Indicator} from 'mint-ui'
 import user from '../assets/selected/user@2x.png'
 import home from '../assets/selected/home@2x.png'
 import order from '../assets/selected/processing@2x.png'
@@ -43,7 +43,7 @@ export default {
     }
   },
   components: {
-    Tabbar, TabItem
+    Tabbar, TabItem, Indicator
   },
   computed: {
     home () {
@@ -66,6 +66,11 @@ export default {
       } else {
         this.$router.push(`/${val}`)
       }
+    },
+    $route (val) {
+      console.log(val)
+      if (val.name === 'user') return
+      Indicator.open()
     }
   },
   // 通过路由名字判断底部导航栏选中状态

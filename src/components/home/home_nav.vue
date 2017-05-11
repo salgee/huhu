@@ -18,7 +18,7 @@
   </div>
 </template>
 <script>
-  import {Swipe, SwipeItem, Cell} from 'mint-ui'
+  import {Swipe, SwipeItem, Cell, Indicator} from 'mint-ui'
   import houseItem from '../house_item.vue'
   import Axios from 'axios'
   import moment from 'moment'
@@ -103,10 +103,12 @@
               position: 'bottom'
             })
           }
+          Indicator.close()
         })
       },
       getOrder () {
         let that = this
+        Indicator.open()
         Axios.get('/api/order/findOrders/landlord/waitConfirm/0/0', {
           headers: {
             'Content-Type': 'application/json',
@@ -123,7 +125,7 @@
       }
     },
     components: {
-      Swipe, SwipeItem, Cell, houseItem
+      Swipe, SwipeItem, Cell, houseItem, Indicator
     }
   }
 </script>
