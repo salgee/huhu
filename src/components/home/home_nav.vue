@@ -139,7 +139,7 @@
   height: 200px;
   background-color: #000;
 }
-.houseList .homeBackground{
+.houseList ,.homeBackground{
   position:fixed;
   top:200px;
   padding-top: 25px;
