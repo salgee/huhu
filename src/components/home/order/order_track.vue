@@ -15,7 +15,7 @@
 </template>
 <script>
   import Axios from 'axios'
-  import {Header, Toast, Button} from 'mint-ui'
+  import {Header, Toast, Button, Indicator} from 'mint-ui'
   export default{
     name: 'track',
     data () {
@@ -29,6 +29,7 @@
     methods: {
       getOrderTrack () {
         let vm = this
+        Indicator.open()
         Axios.get(`api/order/orderOperation/${vm.$route.params.orderId}`, {
           headers: {
             'Content-Type': 'application/json',
@@ -46,6 +47,7 @@
                 duration: 2000
               })
             }
+            Indicator.close()
           })
           .catch(function () {
             Toast({
@@ -53,13 +55,15 @@
               position: 'bottom',
               duration: 2000
             })
+            Indicator.close()
           })
       }
     },
     components: {
       mtButton: Button,
       Toast,
-      mtHeader: Header
+      mtHeader: Header,
+      Indicator
     }
   }
 </script>

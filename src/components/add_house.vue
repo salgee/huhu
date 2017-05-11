@@ -320,7 +320,7 @@ a {
 }
 #add .submit{
   position: absolute;
-  bottom: 60px;
+  top: 480px;
   right: 0;
   left: 0;
   margin: auto;

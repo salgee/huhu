@@ -8,8 +8,8 @@ Vue.use(VueRouter)
 const router = new VueRouter({
   routes
 })
-let isLogin = false
 router.beforeEach((to, from, next) => {
+  let isLogin = false
   if (to.matched.some(record => record.meta.requiresAuth)) {
     Axios.get('http://a.com/api/customer/landlord', {
       headers: {

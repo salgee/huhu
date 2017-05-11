@@ -79,7 +79,7 @@ export default {
         console.log(sessionStorage.huhu_bedNum)
         let path = localStorage.bed_info_fromPath || '/home/addHouse'
         localStorage.removeItem('bed_info_fromPath')
-        vm.$router.push(path)
+        vm.$router.replace(path)
       }
     }
   }
