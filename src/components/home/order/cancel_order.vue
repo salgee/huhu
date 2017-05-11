@@ -7,7 +7,8 @@
       ref="loadmore"
       class="wrapper"
       :autoFill=false
-      v-if="orderInfos.length !== 0">
+      v-if="orderInfos.length !== 0"
+      >
       <div class="wrapper" v-if="orderInfos.length !== 0">
         <section v-for="(infos, index) in orderInfos" :key="infos.orderInfo.id" class="cancel-order"
           @click=pushDetails(infos)>
@@ -22,7 +23,7 @@
         </section>
       </div>
     </mt-loadmore>
-    <div v-else class="default">没有订单</div>
+    <div v-else class="default"></div>
   </div>
 </template>
 
@@ -40,7 +41,8 @@
         orderInfos: [],
         remark: '未被抢单',
         allLoaded: false,
-        page: 1
+        page: 1,
+        msg: '加载完成'
       }
     },
     mounted () {
@@ -71,6 +73,10 @@
                 vm.orderInfos = dt.data.list
               } else {
                 vm.orderInfos = vm.orderInfos.concat(dt.data.list)
+              }
+              if (dt.data.list.length === 0) {
+                vm.allLoaded = true
+                vm.msg = '没有跟多订单了~~'
               }
             } else {
               Indicator.close()
@@ -247,17 +253,12 @@
 
 <style>
   #cancel {
+    font-size: 12px;
     position: fixed;
     top: 75px;
     bottom: 56px;
     width: 100%;
     overflow: scroll;
-  }
-  #cancel .default {
-    width: 100%;
-    height: 100%;
-    background: url(../../../assets/images/activity_one_house.png) no-repeat center;
-    background-size: 40%;
   }
   #cancel .cancel-order {
     padding:20px 15px 25px;
