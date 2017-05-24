@@ -18,7 +18,7 @@
         </order-item>
       </div>
     </mt-loadmore>
-    <div v-else class="default">没有订单</div>
+    <div v-else class="default"></div>
   </div>
 </template>
 

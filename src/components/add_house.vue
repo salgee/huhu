@@ -272,6 +272,12 @@ export default {
     Picker,
     Popup,
     Toast
+  },
+  beforeRouteLeave (to, from, next) {
+    if (to.path.split('/').length === 2) {
+      sessionStorage.clear()
+    }
+    next()
   }
 }
 </script>
@@ -320,7 +326,7 @@ a {
 }
 #add .submit{
   position: absolute;
-  bottom: 60px;
+  top: 480px;
   right: 0;
   left: 0;
   margin: auto;

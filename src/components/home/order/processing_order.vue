@@ -1,5 +1,5 @@
 <template>
-  <div id="processing">
+  <div id="processing" :is="">
     <mt-loadmore
       :top-method="loadTop"
       :bottom-method="loadBottom"
@@ -20,7 +20,7 @@
                       :show=true></append-order>
       </order-item>
     </mt-loadmore>
-    <div v-else class="default">没有订单</div>
+    <div v-else class="default"></div>
   </div>
 </template>
 
@@ -41,6 +41,7 @@
     },
     mounted () {
       this.getOrderList(1)
+      console.log(this)
     },
     components: {
       Toast,
@@ -144,17 +145,29 @@
 
 <style>
   #processing {
+    font-size: 12px;
     position: fixed;
     top: 75px;
     bottom: 56px;
     width: 100%;
     overflow: scroll;
   }
-  #processing .default {
+  .default {
+    position: relative;
     width: 100%;
     height: 100%;
     background: url(../../../assets/images/activity_one_house.png) no-repeat center;
     background-size: 40%;
+  }
+  .default::after {
+    content: '还没有订单哟~~';
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 60%;
+    font-size:12px;
+    text-align: center;
+    color: #cdcdcd;
   }
   #processing .processing-order {
     padding:10px 15px 20px;

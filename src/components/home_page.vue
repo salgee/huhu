@@ -11,7 +11,7 @@
      订单
    </mt-tab-item>
    <mt-tab-item id="add" class="add">
-     <img slot="icon" src="../../static/unselected/添加@2x.png" height="24" width="24">
+     <img slot="icon" src="../assets/unselected/添加@2x.png" height="24" width="24">
    </mt-tab-item>
    <mt-tab-item id="wallet" >
      <img slot="icon" :src="wallet">
@@ -26,47 +26,37 @@
 </template>
 
 <script>
-import {Tabbar, TabItem} from 'mint-ui'
+import {Tabbar, TabItem, Indicator} from 'mint-ui'
+import user from '../assets/selected/user@2x.png'
+import home from '../assets/selected/home@2x.png'
+import order from '../assets/selected/processing@2x.png'
+import wallet from '../assets/selected/wallet@2x.png'
+import unuser from '../assets/unselected/user@2x.png'
+import unorder from '../assets/unselected/processing@2x.png'
+import unhome from '../assets/unselected/home@2x.png'
+import unwallet from '../assets/unselected/wallet@2x.png'
 export default {
   name: 'homepage',
-  mounted () {
-  },
   data () {
     return {
       selected: sessionStorage.huhu_homeselected || 'home'
     }
   },
   components: {
-    Tabbar, TabItem
+    Tabbar, TabItem, Indicator
   },
   computed: {
     home () {
-      if (this.selected === 'home') {
-        return '../../static/selected/home@2x.png'
-      } else {
-        return '../../static/unselected/home@2x.png'
-      }
+      return this.selected === 'home' ? home : unhome
     },
     processing () {
-      if (this.selected === 'order') {
-        return '../../static/selected/processing@2x.png'
-      } else {
-        return '../../static/unselected/processing@2x.png'
-      }
+      return this.selected === 'order' ? order : unorder
     },
     wallet () {
-      if (this.selected === 'wallet') {
-        return '../../static/selected/wallet@2x.png'
-      } else {
-        return '../../static/unselected/wallet@2x.png'
-      }
+      return this.selected === 'wallet' ? wallet : unwallet
     },
     user () {
-      if (this.selected === 'user') {
-        return '../../static/selected/user@2x.png'
-      } else {
-        return '../../static/unselected/user@2x.png'
-      }
+      return this.selected === 'user' ? user : unuser
     }
   },
   watch: {
@@ -77,17 +67,20 @@ export default {
         this.$router.push(`/${val}`)
       }
     },
-    $route (to, from) {
-      let vm = this
-      vm.selected = to.matched[1].name
-      if (to.path.split('/').length > 2) return
-      vm[to.name] = `../../static/selected/${to.name}@2x.png`
-      vm[from.name] = `../../static/unselected/${from.name}@2x.png`
+    $route (val) {
+      console.log(val)
+      if (val.name === 'user') return
+      Indicator.open()
     }
   },
   // 通过路由名字判断底部导航栏选中状态
   beforeRouteEnter (to, from, next) {
     sessionStorage.huhu_homeselected = to.matched[1].name
+    Indicator.open()
+    next()
+  },
+  beforeRouteLeave (to, from, next) {
+    Indicator.close()
     next()
   }
 }

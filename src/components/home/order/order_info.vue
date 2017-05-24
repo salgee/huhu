@@ -95,7 +95,7 @@
 
 <script>
   import Axios from 'axios'
-  import {Header, Toast, Cell, Popup} from 'mint-ui'
+  import {Header, Toast, Cell, Popup, Indicator} from 'mint-ui'
   import appendOrder from './append_order.vue'
   import moment from 'moment'
   moment.locale('zh-cn')
@@ -133,6 +133,7 @@
     methods: {
       getOrderInfo (id) {
         let vm = this
+        Indicator.open()
         Axios.get('http://a.com/api/order/findOrder/' + id, {
           headers: {
             'Content-Type': 'application/json',
@@ -150,6 +151,7 @@
                 duration: 2000
               })
             }
+            Indicator.close()
           })
           .catch(function () {
             Toast({
@@ -157,6 +159,7 @@
               position: 'bottom',
               duration: 2000
             })
+            Indicator.close()
           })
       },
       extraFee (total) {
@@ -272,7 +275,8 @@
       Toast,
       Cell,
       Popup,
-      appendOrder
+      appendOrder,
+      Indicator
     },
     beforeRouteLeave (to, from, next) {
       Promise.resolve(

@@ -27,6 +27,7 @@
 
 <script>
   import Axios from 'axios'
+  import {Indicator} from 'mint-ui'
   Axios.defaults.baseURL = 'http://a.com'
   export default {
     name: 'wallet',
@@ -55,10 +56,13 @@
           that.foregiftBalance = Number(data.data.data.forgift).toFixed(2)
           that.foregiftBack = Number(data.data.data.refunding).toFixed(2)
           that.transactions = data.data.data.transactions
+          Indicator.close()
         })
       }
     },
-    components: {}
+    components: {
+      Indicator
+    }
   }
 </script>
 

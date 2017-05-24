@@ -373,6 +373,12 @@
       } else {
         next()
       }
+    },
+    beforeRouteLeave (to, from, next) {
+      if (to.path.split('/').length === 2) {
+        sessionStorage.clear()
+      }
+      next()
     }
   }
 </script>

@@ -18,7 +18,7 @@
   </div>
 </template>
 <script>
-  import {Swipe, SwipeItem, Cell} from 'mint-ui'
+  import {Swipe, SwipeItem, Cell, Indicator} from 'mint-ui'
   import houseItem from '../house_item.vue'
   import Axios from 'axios'
   import moment from 'moment'
@@ -94,16 +94,21 @@
         }}).then(function (data) {
           if (data.data.message === 'isOk') {
             that.houseInfos = data.data.data
+            localStorage.isLogin = true
           } else {
+            localStorage.isLogin = false
+            that.isLogin = false
             that.$toast({
               message: '您的登录已过期',
               position: 'bottom'
             })
           }
+          Indicator.close()
         })
       },
       getOrder () {
         let that = this
+        Indicator.open()
         Axios.get('/api/order/findOrders/landlord/waitConfirm/0/0', {
           headers: {
             'Content-Type': 'application/json',
@@ -120,7 +125,7 @@
       }
     },
     components: {
-      Swipe, SwipeItem, Cell, houseItem
+      Swipe, SwipeItem, Cell, houseItem, Indicator
     }
   }
 </script>
@@ -136,13 +141,14 @@
   height: 200px;
   background-color: #000;
 }
-.houseList {
+.houseList ,.homeBackground{
   position:fixed;
   top:200px;
   padding-top: 25px;
   bottom: 56px;
   width: 100%;
-  overflow: scroll;
+  overflow: hidden;
+  overflow-y: auto;
 }
 .home-nav .mint-cell-title img{
   margin-right: 12px;
@@ -168,8 +174,6 @@
   color: rgba(121,172,54,.8)
 }
 .homeBackground {
-  position: relative;
-  padding-top: 90%;
   font-size: 13px;
   text-align: center;
   background: url(../../assets/images/activity_one_house.png) no-repeat center;

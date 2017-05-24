@@ -48,6 +48,7 @@
               localStorage.token = response.data.data.token
               localStorage.accountType = response.data.data.accountType
               console.log(_this.$route.query.redirect)
+              localStorage.isLogin = true
               _this.$router.replace(_this.$route.query.redirect || '/user')
             } else {
 

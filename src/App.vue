@@ -49,13 +49,13 @@ a{
   bottom: 0;
   z-index: 100;
   background-color: #fff;
-  transition: transform .334s linear;
+  transition: transform .167s linear;
 }
 .slide-left-leave-active {
   position: relative;
   z-index: 99;
   transform: translateX(-10%);
-  transition: transform .333s ease-in;
+  transition: transform .167s ease-in;
 }
 .slide-left-enter {
   position: fixed;
@@ -75,14 +75,14 @@ a{
   top: 0;
   bottom: 0;
   z-index: 99;
-  transition: transform .334s linear;
+  transition: transform .167s linear;
 }
 .slide-right-leave-active {
   position: relative;
   z-index: 100;
   background-color: #fff;
   transform: translateX(100%);
-  transition: transform .334s ease-in;
+  transition: transform .167s ease-in;
 }
 .slide-right-enter {
   position: fixed;

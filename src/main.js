@@ -9,7 +9,7 @@ import 'mint-ui/lib/style.css'
 Vue.use(MintUI)
 
 Vue.config.productionTip = false
-
+localStorage.isLogin = localStorage.isLogin || false
 /* eslint-disable no-new */
 new Vue({
   el: '#app',
